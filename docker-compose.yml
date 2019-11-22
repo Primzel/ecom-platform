@@ -1,0 +1,11 @@
+version: '3'
+services:
+  web:
+    command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ ; sleep 2; done'
+    container_name: com.oscar.store
+    hostname: store.oscar.com
+    build: .
+    stdin_open: true
+    tty: true
+    ports:
+      - 8081:8080
