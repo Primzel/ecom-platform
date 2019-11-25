@@ -10,7 +10,7 @@ services:
     ports:
       - 8081:8080
   celery_worker:
-    command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app --workdir /src/backend/; sleep 2; done'
+    command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_worker
     build: .
     stdin_open: true
