@@ -22,7 +22,7 @@ services:
       CELERY_RESULT_BACKEND: redis://redis:6379/
   celery_beat:
     command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
-    container_name: com.oscar.celery_worker
+    container_name: com.oscar.celery_beat
     build: .
     stdin_open: true
     tty: true
