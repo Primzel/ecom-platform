@@ -4,3 +4,7 @@ pycountry
 sorl-thumbnail
 gunicorn
 whitenoise
+django-split-settings==0.3.0
+celery==4.2.2
+redis==3.3.8
+django-redis-cache==2.0.0

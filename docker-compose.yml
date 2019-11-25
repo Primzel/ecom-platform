@@ -1,7 +1,7 @@
 version: '3'
 services:
   web:
-    command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ ; sleep 2; done'
+    command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ --log-level debug ; sleep 2; done'
     container_name: com.oscar.store
     hostname: store.oscar.com
     build: .
@@ -9,3 +9,29 @@ services:
     tty: true
     ports:
       - 8081:8080
+  celery_worker:
+    command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app --workdir /src/backend/; sleep 2; done'
+    container_name: com.oscar.celery_worker
+    build: .
+    stdin_open: true
+    tty: true
+    links:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/
+      CELERY_RESULT_BACKEND: redis://redis:6379/
+  celery_beat:
+    command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
+    container_name: com.oscar.celery_worker
+    build: .
+    stdin_open: true
+    tty: true
+    links:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/
+      CELERY_RESULT_BACKEND: redis://redis:6379/
+  redis:
+    image: redis:latest
+    container_name: com.oscar.redis
+    hostname: redis.oscar.com
