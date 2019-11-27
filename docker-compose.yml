@@ -9,6 +9,8 @@ services:
     tty: true
     ports:
       - 8081:8080
+    depends_on:
+      - redis
   celery_worker:
     command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_worker
@@ -16,6 +18,8 @@ services:
     stdin_open: true
     tty: true
     links:
+      - redis
+    depends_on:
       - redis
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
@@ -27,6 +31,8 @@ services:
     stdin_open: true
     tty: true
     links:
+      - redis
+    depends_on:
       - redis
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
