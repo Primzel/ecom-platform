@@ -89,31 +89,10 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
+    'middlewares.site_middlewares.SiteMiddleware',
 ]
 
 ROOT_URLCONF = 'e_store_primzel.urls'
-
-TEMPLATES = [
-    {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.i18n',
-                'django.contrib.messages.context_processors.messages',
-
-                'oscar.apps.search.context_processors.search_form',
-                'oscar.apps.checkout.context_processors.checkout',
-                'oscar.apps.customer.notifications.context_processors.notifications',
-                'oscar.core.context_processors.metadata',
-            ],
-        },
-    },
-]
 
 WSGI_APPLICATION = 'e_store_primzel.wsgi.application'
 
@@ -164,7 +143,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 SITE_ID = 1
-
+DEFAULT_SITE_ID = SITE_ID
 AUTHENTICATION_BACKENDS = (
     'oscar.apps.customer.auth_backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -183,7 +162,7 @@ OSCAR_ORDER_STATUS_PIPELINE = {
     'Cancelled': (),
 }
 
-OSCAR_SHOP_NAME='Primzel Shop'
+OSCAR_SHOP_NAME = 'Primzel Shop'
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
