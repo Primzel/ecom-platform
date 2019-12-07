@@ -38,7 +38,9 @@ class CustomTemplateLoader(Loader):
             content = open(
                 absolute_path
             ).read()
-            logger.info(absolute_path)
+            logger.info(absolute_path,extra=dict(template_name=origin.name,
+                             partner_template_dir=current_site.name,
+                             app_template_directory=origin.loader.engine.dirs))
             return content
         except FileNotFoundError:
             raise TemplateDoesNotExist(origin)

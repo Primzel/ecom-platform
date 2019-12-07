@@ -1,3 +1,4 @@
+from .logging import *
 from .base import *
 from .celery import *
 from .templates import *
