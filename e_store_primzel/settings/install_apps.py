@@ -1,3 +1,5 @@
+from django.conf import settings
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,3 +48,6 @@ INSTALLED_APPS = [
     'sorl.thumbnail',
     'django_tables2',
 ]
+
+if settings.DEBUG:
+    INSTALLED_APPS = INSTALLED_APPS + ['debug_toolbar', ]

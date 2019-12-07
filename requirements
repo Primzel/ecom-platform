@@ -9,3 +9,4 @@ celery==4.2.2
 redis==3.3.8
 django-redis-cache==2.0.0
 django-crequest==2018.5.11
+django-debug-toolbar
