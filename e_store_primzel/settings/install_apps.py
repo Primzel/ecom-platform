@@ -27,11 +27,11 @@ INSTALLED_APPS = [
     'oscar.apps.search',
     'oscar.apps.voucher',
     'oscar.apps.wishlists',
-    'oscar.apps.dashboard',
+    'apps.dashboard',
     'oscar.apps.dashboard.reports',
     'oscar.apps.dashboard.users',
     'oscar.apps.dashboard.orders',
-    'oscar.apps.dashboard.catalogue',
+    'apps.dashboard.catalogue',
     'oscar.apps.dashboard.offers',
     'oscar.apps.dashboard.partners',
     'oscar.apps.dashboard.pages',
@@ -40,13 +40,16 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.vouchers',
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
-
+]+[
     # 3rd-party apps that oscar depends on
     'widget_tweaks',
     'haystack',
     'treebeard',
     'sorl.thumbnail',
     'django_tables2',
+]+[
+    # Primzel Apps
+    'apps.dashboard.configurable_menu'
 ]
 
 if settings.DEBUG:

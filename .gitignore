@@ -106,4 +106,6 @@ venv.bak/
 .mypy_cache/
 .idea/
 
-!/db.sqlite3
+db.sqlite3
+sandbox/
+staticfiles/
