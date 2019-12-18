@@ -13,7 +13,6 @@ class DashboardConfig(apps.DashboardConfig):
     def get_urls(self):
         from django.contrib.auth import views as auth_views
         from django.contrib.auth.forms import AuthenticationForm
-
         urls = [
             url(r'^$', self.index_view.as_view(), name='index'),
             url(r'^catalogue/', include(self.catalogue_app.urls[0])),
@@ -28,7 +27,8 @@ class DashboardConfig(apps.DashboardConfig):
             url(r'^vouchers/', include(self.vouchers_app.urls[0])),
             url(r'^comms/', include(self.comms_app.urls[0])),
             url(r'^shipping/', include(self.shipping_app.urls[0])),
-            url(r'^partner-configurable-menu/', include(self.configurable_menu_app.urls[0])),
+            url(r'^partner-configurable-menu/',
+                include((self.configurable_menu_app.urls[0], 'configurable_menu'), namespace='configurable_menu')),
             url(r'^login/$',
                 auth_views.LoginView.as_view(template_name='oscar/dashboard/login.html',
                                              authentication_form=AuthenticationForm),

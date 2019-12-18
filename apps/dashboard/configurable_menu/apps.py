@@ -1,10 +1,10 @@
 from django.conf.urls import url
 from django.utils.translation import gettext_lazy as _
-from oscar.core.application import OscarConfig
+`from oscar.core.application import OscarDashboardConfig
 from oscar.core.loading import get_class
 
 
-class ConfigurableMenuConfig(OscarConfig):
+class ConfigurableMenuConfig(OscarDashboardConfig):
     name = 'apps.dashboard.configurable_menu'
     label = 'configurable_menu'
     verbose_name = _('Configurable Menu')
