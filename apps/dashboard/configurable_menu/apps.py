@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.utils.translation import gettext_lazy as _
-`from oscar.core.application import OscarDashboardConfig
+from oscar.core.application import OscarDashboardConfig
 from oscar.core.loading import get_class
 
 
