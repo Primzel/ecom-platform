@@ -7,7 +7,7 @@ PartnerConfigurableMenuForm = get_class('dashboard.configurable_menu.forms', 'Pa
 
 
 class PartnerConfigurableMenuCreateView(generic.CreateView):
-    template_name = 'oscar/dashboard/catalogue/category_form.html'
+    template_name = 'oscar/dashboad/configurable_menu/partner_configurable_menu_form.html'
     model = PartnerConfigurableMenu
     form_class = PartnerConfigurableMenuForm
 
