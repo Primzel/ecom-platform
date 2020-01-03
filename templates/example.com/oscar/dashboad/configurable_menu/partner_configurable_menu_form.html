@@ -20,9 +20,23 @@
 
 {% block dashboard_content %}
     <div class="table-header">
+        <h2>
+            <i class="icon-search icon-large"></i>
+            Search
+        </h2>
+    </div>
+    <div class="well">
+    </div>
+    <div class="table-header">
         <h2>{{ title }}</h2>
     </div>
     <div class="well">
-{#        {% include 'oscar/dashboard/partials/form.html' with includes_files=1 class='wysiwyg' %}#}
+        {% include 'oscar/dashboard/partials/form.html' with includes_files=1 class='wysiwyg' %}
+    </div>
+    <div class="table-header">
+        <h2>All Menus</h2>
+    </div>
+    <div class="well">
+
     </div>
 {% endblock dashboard_content %}

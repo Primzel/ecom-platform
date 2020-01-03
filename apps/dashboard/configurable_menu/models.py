@@ -11,6 +11,7 @@ class PartnerConfigurableMenu(models.Model):
     is_primary=models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    partner=models.ForeignKey('partner.Partner',related_name="partner_menus",on_delete=models.CASCADE)
 
 class PartnerConfigurableMenuItem(AbstractCategory):
     category = models.ManyToManyField(

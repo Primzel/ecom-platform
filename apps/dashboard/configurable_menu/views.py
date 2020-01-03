@@ -12,6 +12,6 @@ class PartnerConfigurableMenuCreateView(generic.CreateView):
     form_class = PartnerConfigurableMenuForm
 
     def get_context_data(self, **kwargs):
-        ctx = dict()
+        ctx = super(PartnerConfigurableMenuCreateView,self).get_context_data(**kwargs)
         ctx['title'] = _("Add a new partner menu")
         return ctx
