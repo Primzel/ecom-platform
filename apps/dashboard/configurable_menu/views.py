@@ -11,6 +11,11 @@ class PartnerConfigurableMenuCreateView(generic.CreateView):
     model = PartnerConfigurableMenu
     form_class = PartnerConfigurableMenuForm
 
+    def get_form_kwargs(self):
+        kwargs=super(PartnerConfigurableMenuCreateView,self).get_form_kwargs()
+        kwargs['user']=self.request.user
+        return kwargs
+
     def get_context_data(self, **kwargs):
         ctx = super(PartnerConfigurableMenuCreateView,self).get_context_data(**kwargs)
         ctx['title'] = _("Add a new partner menu")
