@@ -109,3 +109,4 @@ venv.bak/
 db.sqlite3
 sandbox/
 staticfiles/
+*.iml
