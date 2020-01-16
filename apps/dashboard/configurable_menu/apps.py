@@ -1,4 +1,5 @@
-from django.conf.urls import url
+# from django.conf.urls import include, url  # < Django-2.0
+from django.urls import include, path  # > Django-2.0
 from django.utils.translation import gettext_lazy as _
 from oscar.core.application import OscarDashboardConfig
 from oscar.core.loading import get_class
@@ -18,7 +19,7 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
 
     def get_urls(self):
         urls = [
-            url(r'^create/$',
+            path(r'create/',
                 self.partner_configurable_menu_create_view.as_view(), name='partner-configurable-menu-create')
         ]
         return self.post_process_urls(urls)
