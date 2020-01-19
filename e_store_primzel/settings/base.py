@@ -27,12 +27,6 @@ DEBUG = os.getenv('PRIMZEL_DEBUG',False)
 
 ALLOWED_HOSTS = ['*']
 
-# Application definition
-
-ROOT_URLCONF = os.getenv('PRIMZEL_ROOT_URLCONF','e_store_primzel.urls')
-
-WSGI_APPLICATION = os.getenv('PRIMZEL_WSGI_APPLICATION','e_store_primzel.wsgi.application')
-
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
