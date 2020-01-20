@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = '-t&x9om9(9s_q4qn_*4zj5^u2(__vyfmy47s+zx4st5nl!$2($'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('PRIMZEL_DEBUG',False)
+DEBUG = eval(os.getenv('PRIMZEL_DEBUG','False'))
 
 ALLOWED_HOSTS = ['*']
 
