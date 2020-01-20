@@ -11,6 +11,8 @@ services:
       - 8081:8080
     depends_on:
       - redis
+      - celery_worker
+      - celery_beat
   celery_worker:
     command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_worker
@@ -24,7 +26,6 @@ services:
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
       CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
-      PRIMZEL_ROOT_URLCONF:
   celery_beat:
     command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_beat
@@ -38,7 +39,6 @@ services:
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
       CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
-      PRIMZEL_ROOT_URLCONF:
   redis:
     image: redis:latest
     container_name: com.oscar.redis
