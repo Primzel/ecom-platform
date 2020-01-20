@@ -108,3 +108,4 @@ venv.bak/
 db.sqlite3
 sandbox/
 staticfiles/
+/celerybeat-schedule.db
