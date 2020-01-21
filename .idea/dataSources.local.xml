@@ -14,5 +14,20 @@
         </introspection-scope>
       </schema-mapping>
     </data-source>
+    <data-source name="PostgreSQL - primzel_store@psql.primzel.com" uuid="973c5004-01f6-4530-b0ba-c533d4abc6cc">
+      <database-info product="PostgreSQL" version="9.5.4" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.2.5" dbms="POSTGRES" exact-version="9.5.4" exact-driver-version="42.2">
+        <identifier-quote-string>&quot;</identifier-quote-string>
+      </database-info>
+      <case-sensitivity plain-identifiers="lower" quoted-identifiers="exact" />
+      <secret-storage>master_key</secret-storage>
+      <user-name>primzel_store</user-name>
+      <schema-mapping>
+        <introspection-scope>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
+          </node>
+        </introspection-scope>
+      </schema-mapping>
+    </data-source>
   </component>
 </project>

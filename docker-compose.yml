@@ -9,10 +9,26 @@ services:
     tty: true
     ports:
       - 8081:8080
-    depends_on:
+    environment:
+      CELERY_BROKER_URL: redis://redis.oscar.com:6379/
+      CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
+      POSTGRES_USER: primzel_store
+      POSTGRES_PASSWORD: primzel_store
+      POSTGRES_DB: primzel_store
+      POSTGRES_HOST: psql.primzel.com
+      POSTGRES_PORT: 5432
+    links:
       - redis
+      - postgres
       - celery_worker
       - celery_beat
+    depends_on:
+      - redis
+      - postgres
+#      - celery_beat
+#      - celery_worker
+    networks:
+      - primzel-docker-network
   celery_worker:
     command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_worker
@@ -21,11 +37,20 @@ services:
     tty: true
     links:
       - redis
+      - postgres
     depends_on:
       - redis
+      - postgres
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
       CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
+      POSTGRES_USER: primzel_store
+      POSTGRES_PASSWORD: primzel_store
+      POSTGRES_DB: primzel_store
+      POSTGRES_HOST: psql.primzel.com
+      POSTGRES_PORT: 5432
+    networks:
+      - primzel-docker-network
   celery_beat:
     command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_beat
@@ -34,16 +59,43 @@ services:
     tty: true
     links:
       - redis
+      - postgres
     depends_on:
       - redis
+      - postgres
     environment:
       CELERY_BROKER_URL: redis://redis.oscar.com:6379/
       CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
+      POSTGRES_USER: primzel_store
+      POSTGRES_PASSWORD: primzel_store
+      POSTGRES_DB: primzel_store
+      POSTGRES_HOST: psql.primzel.com
+      POSTGRES_PORT: 5432
+    networks:
+      - primzel-docker-network
   redis:
     image: redis:latest
     container_name: com.oscar.redis
     hostname: redis.oscar.com
     networks:
-      default:
+      primzel-docker-network:
         aliases:
           - redis.oscar.com
+  postgres:
+    restart: always
+    image: kiasaki/alpine-postgres:9.5
+    container_name: com.primzel.psql
+    hostname: psql.primzel.com
+    environment:
+      POSTGRES_USER: primzel_store
+      POSTGRES_PASSWORD: primzel_store
+      POSTGRES_DB: primzel_store
+    networks:
+      primzel-docker-network:
+        aliases:
+          - psql.primzel.com
+    ports:
+      - 5432:5432
+networks:
+  primzel-docker-network:
+    driver: bridge

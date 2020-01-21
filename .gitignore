@@ -109,3 +109,4 @@ db.sqlite3
 sandbox/
 staticfiles/
 /celerybeat-schedule.db
+data
