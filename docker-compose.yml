@@ -25,8 +25,8 @@ services:
     depends_on:
       - redis
       - postgres
-#      - celery_beat
-#      - celery_worker
+      - celery_beat
+      - celery_worker
     networks:
       - primzel-docker-network
   celery_worker:
