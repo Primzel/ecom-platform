@@ -8,6 +8,10 @@ OSCAR_DASHBOARD_NAVIGATION += [
             {
                 'label': _('Create Menu'),
                 'url_name': 'dashboard:configurable_menu:partner-configurable-menu-create',
+            },
+            {
+                'label': _('All Menus'),
+                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
             }
         ]
     },

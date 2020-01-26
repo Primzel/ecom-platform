@@ -13,13 +13,17 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
     default_permissions = ['is_staff']
     permissions_map = _map = {
         'partner-configurable-menu-create': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-listing': (['is_staff'], ['partner.dashboard_access']),
     }
     def ready(self):
         self.partner_configurable_menu_create_view = get_class('dashboard.configurable_menu.views','PartnerConfigurableMenuCreateView')
+        self.partner_configurable_menu_listing = get_class('dashboard.configurable_menu.views','ConfigurableMenuListView')
 
     def get_urls(self):
         urls = [
             path(r'create/',
-                self.partner_configurable_menu_create_view.as_view(), name='partner-configurable-menu-create')
+                self.partner_configurable_menu_create_view.as_view(), name='partner-configurable-menu-create'),
+            path(r'',
+                self.partner_configurable_menu_listing.as_view(), name='partner-configurable-menu-listing'),
         ]
         return self.post_process_urls(urls)
