@@ -1,12 +1,18 @@
 # Create your views here.
-from django.views import generic
-from django_tables2 import SingleTableView
-from oscar.core.loading import get_model, get_class
+from django.contrib import messages
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django.views import generic
+from django_tables2 import SingleTableView, SingleTableMixin
+from oscar.core.loading import get_model, get_class
+
+from apps.dashboard.configurable_menu.forms import PartnerMenuItemForm
+from apps.dashboard.configurable_menu.tables import MenuItemTable
 
 PartnerConfigurableMenu = get_model('configurable_menu', 'PartnerConfigurableMenu')
 PartnerConfigurableMenuForm = get_class('dashboard.configurable_menu.forms', 'PartnerConfigurableMenuForm')
 MenuTable = get_class('dashboard.configurable_menu.tables', 'MenuTable')
+PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurableMenuItem')
 
 
 class PartnerConfigurableMenuCreateView(generic.CreateView):
@@ -42,3 +48,78 @@ class ConfigurableMenuListView(SingleTableView):
         ctx = super(ConfigurableMenuListView, self).get_context_data(**kwargs)
         ctx['title'] = _("Menus")
         return ctx
+
+
+class MenuItemListView(SingleTableView):
+    template_name = 'oscar/dashboad/configurable_menu/menuitems_listing.html'
+    table_class = MenuItemTable
+    context_table_name = 'menuitems'
+
+    def get_queryset(self):
+        return PartnerConfigurableMenuItem.get_root_nodes()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx['child_categories'] = PartnerConfigurableMenuItem.get_root_nodes()
+        return ctx
+
+class MenuItemListMixin(object):
+
+    def get_success_url(self):
+        parent = self.object.get_parent()
+        if parent is None:
+            return reverse("dashboard:configurable_menu:partner-configurable-menu-items")
+        else:
+            return reverse("dashboard:configurable_menu:partner-configurable-menu-item-details",
+                           args=(parent.pk,))
+
+class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
+    template_name = 'oscar/dashboard/catalogue/category_form.html'
+    model = PartnerConfigurableMenuItem
+    form_class = PartnerMenuItemForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = _("Add a new category")
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Category created successfully"))
+        return super().get_success_url()
+
+    def get_initial(self):
+        # set child category if set in the URL kwargs
+        initial = super().get_initial()
+        if 'parent' in self.kwargs:
+            initial['_ref_node_id'] = self.kwargs['parent']
+        return initial
+
+class MenuItemDetailListView(SingleTableMixin, generic.DetailView):
+    template_name = 'oscar/dashboad/configurable_menu/menuitems_listing.html'
+    model = PartnerConfigurableMenuItem
+    context_object_name = 'menuitem'
+    table_class = MenuItemTable
+    context_table_name = 'menuitems'
+
+    def get_table_data(self):
+        return self.object.get_children()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx['child_categories'] = self.object.get_children()
+        ctx['ancestors'] = self.object.get_ancestors_and_self()
+        return ctx
+
+class CategoryUpdateView(MenuItemListMixin, generic.UpdateView):
+    template_name = 'oscar/dashboard/catalogue/category_form.html'
+    model = PartnerConfigurableMenuItem
+    form_class = PartnerMenuItemForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['title'] = _("Update menuitem '%s'") % self.object.name
+        return ctx
+
+    def get_success_url(self):
+        messages.info(self.request, _("Category updated successfully"))
+        return super().get_success_url()

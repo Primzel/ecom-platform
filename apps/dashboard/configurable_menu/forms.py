@@ -2,14 +2,15 @@ from django import forms
 from oscar.core.loading import get_model
 
 # from treebeard.forms import movenodeform_factory
+from treebeard.forms import movenodeform_factory
 
 PartnerConfigurableMenu = get_model('configurable_menu', 'PartnerConfigurableMenu')
+PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurableMenuItem')
 Partner = get_model('partner', 'Partner')
 
-
-# PartnerConfigurableMenuForm = movenodeform_factory(
-#     PartnerConfigurableMenu,
-#     fields=['title', 'site', 'is_primary'])
+PartnerMenuItemForm = movenodeform_factory(
+    PartnerConfigurableMenuItem,
+    fields=['name', 'description', 'image','patner_menu'])
 
 class PartnerConfigurableMenuForm(forms.ModelForm):
     partner = forms.ModelChoiceField(queryset=None)

@@ -14,6 +14,10 @@ class PartnerConfigurableMenu(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     partner = models.ForeignKey('partner.Partner', related_name="partner_menus", on_delete=models.CASCADE)
 
+    def __str__(self):
+        return "{patner_name} {status}".format(patner_name=self.partner.name,
+                                               status=' (primary)' if self.is_primary else '')
+
     def get_absolute_url(self):
         return reverse('dashboard:configurable_menu:partner-configurable-menu-create')
 
