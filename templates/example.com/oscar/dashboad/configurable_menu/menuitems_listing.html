@@ -24,7 +24,17 @@
 
         {% block header %}
             <div class="page-header">
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=menu_id %}" class="btn btn-primary btn-lg pull-right"><i class="icon-plus"></i> {% trans "Create new menuitem" %}</a>
+                {% if parent %}
+                    <a href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=menu_id parent=parent %}"
+                       class="btn btn-primary btn-lg pull-right"><i
+                            class="icon-plus"></i> {% trans "Create new menuitem" %}
+                    </a>
+                {% else %}
+                    <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=menu_id %}"
+                       class="btn btn-primary btn-lg pull-right"><i
+                            class="icon-plus"></i> {% trans "Create new menuitem" %}
+                    </a>
+                {% endif %}
                 <h1>{% trans "MenuItems" %}</h1>
             </div>
         {% endblock header %}
@@ -36,7 +46,9 @@
                     {% if ancestors %}
                         &gt;
                         {% for ancestor in ancestors %}
-                            <strong><a href="{% url 'dashboard:catalogue-category-detail-list' pk=ancestor.pk %}">{{ ancestor.name }}</a></strong>{% if not forloop.last %} > {% endif %}
+                            <strong><a
+                                    href="{% url 'dashboard:catalogue-category-detail-list' pk=ancestor.pk %}">{{ ancestor.name }}</a></strong>
+                            {% if not forloop.last %} > {% endif %}
                         {% endfor %}
                     {% endif %}
                 </p>

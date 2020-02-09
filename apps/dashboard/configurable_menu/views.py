@@ -104,7 +104,7 @@ class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        ctx['title'] = _("Add a new category")
+        ctx['title'] = _("Add a new menu item")
         return ctx
 
     def get_success_url(self):
@@ -139,6 +139,7 @@ class MenuItemDetailListView(SingleTableMixin, generic.DetailView):
         ctx['child_categories'] = self.object.get_children()
         ctx['ancestors'] = self.object.get_ancestors_and_self()
         ctx['menu_id'] = kwargs.get('menu_id')
+        ctx['parent']=kwargs.get('pk')
         return ctx
 
 

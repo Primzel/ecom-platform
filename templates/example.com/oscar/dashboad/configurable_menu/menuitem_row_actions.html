@@ -8,13 +8,18 @@
         </button>
         <ul class="nav dropdown-menu pull-right">
             <li>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=record.id %}">
-                    {% trans "Add menu items" %}
+                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-update' menu_id=record.patner_menu_id pk=record.id %}">
+                    {% trans "Edit menu item" %}
                 </a>
             </li>
             <li>
-                <a href="{% url 'dashboard:catalogue-category-delete' pk=record.id %}">
-                    {% trans "Delete" %}
+                <a href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=record.patner_menu_id parent=record.pk %}">
+                    {% trans "Add child menu item" %}
+                </a>
+            </li>
+            <li{% if not record.has_children %} class="disabled"{% endif %}>
+                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-details' menu_id=record.patner_menu_id pk=record.pk %}">
+                    {% trans "Edit children" %}
                 </a>
             </li>
         </ul>
