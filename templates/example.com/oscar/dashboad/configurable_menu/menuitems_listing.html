@@ -24,7 +24,7 @@
 
         {% block header %}
             <div class="page-header">
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' %}" class="btn btn-primary btn-lg pull-right"><i class="icon-plus"></i> {% trans "Create new menuitem" %}</a>
+                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=menu_id %}" class="btn btn-primary btn-lg pull-right"><i class="icon-plus"></i> {% trans "Create new menuitem" %}</a>
                 <h1>{% trans "MenuItems" %}</h1>
             </div>
         {% endblock header %}

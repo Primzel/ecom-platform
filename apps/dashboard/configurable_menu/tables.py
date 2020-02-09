@@ -9,19 +9,22 @@ PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurabl
 
 
 class MenuTable(DashboardTable):
+    actions = TemplateColumn(
+        template_name='oscar/dashboad/configurable_menu/menuitem_row_actions.html',
+        orderable=False)
     class Meta(DashboardTable.Meta):
         model = PartnerConfigurableMenu
 
 
 class MenuItemTable(DashboardTable):
-    name = LinkColumn('dashboard:configurable_menu:partner-configurable-menu-item-update', args=[A('pk')])
+    name = LinkColumn('dashboard:configurable_menu:partner-configurable-menu-item-update', args=[A('patner_menu_id'),A('pk')])
     description = TemplateColumn(
         template_code='{{ record.description|default:""|striptags'
                       '|cut:"&nbsp;"|truncatewords:6 }}')
     # mark_safe is needed because of
     # https://github.com/bradleyayers/django-tables2/issues/187
     num_children = LinkColumn(
-        'dashboard:configurable_menu:partner-configurable-menu-item-details', args=[A('pk')],
+        'dashboard:configurable_menu:partner-configurable-menu-item-details', args=[A('patner_menu_id'),A('pk')],
         verbose_name=mark_safe(_('Number of child categories')),
         accessor='get_num_children',
         orderable=False)

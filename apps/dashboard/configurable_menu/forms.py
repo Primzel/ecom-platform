@@ -8,9 +8,16 @@ PartnerConfigurableMenu = get_model('configurable_menu', 'PartnerConfigurableMen
 PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurableMenuItem')
 Partner = get_model('partner', 'Partner')
 
-PartnerMenuItemForm = movenodeform_factory(
+_PartnerMenuItemForm = movenodeform_factory(
     PartnerConfigurableMenuItem,
-    fields=['name', 'description', 'image','patner_menu'])
+    fields=['name', 'description', 'image', 'patner_menu'])
+
+
+class PartnerMenuItemForm(_PartnerMenuItemForm):
+    def __init__(self, *args, **kwargs):
+        super(PartnerMenuItemForm, self).__init__(*args, **kwargs)
+        # self.fields['patner_menu'].widget.attrs['disabled'] = True
+
 
 class PartnerConfigurableMenuForm(forms.ModelForm):
     partner = forms.ModelChoiceField(queryset=None)
