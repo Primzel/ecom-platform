@@ -1,68 +1,58 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{% extends 'oscar/dashboard/layout.html' %}
-        {% load category_tags %}
-        {% load i18n %}
-        {% load render_table from django_tables2 %}
+{% extends 'oscar/dashboard/layout.html' %}
+{% load category_tags %}
+{% load i18n %}
+{% load render_table from django_tables2 %}
 
-        {% block body_class %}{{ block.super }} catalogue{% endblock %}
+{% block body_class %}{{ block.super }} catalogue{% endblock %}
 
-        {% block title %}
-            {% trans "MenuItems" %} | {{ block.super }}
-        {% endblock %}
+{% block title %}
+    {% trans "MenuItems" %} | {{ block.super }}
+{% endblock %}
 
-        {% block breadcrumbs %}
-            <ul class="breadcrumb">
-                <li>
-                    <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
-                </li>
-                <li class="active">{% trans "MenuItems" %}</li>
-            </ul>
-        {% endblock %}
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        </li>
+        <li class="active">{% trans "MenuItems" %}</li>
+    </ul>
+{% endblock %}
 
-        {% block header %}
-            <div class="page-header">
-                {% if parent %}
-                    <a href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=menu_id parent=parent %}"
-                       class="btn btn-primary btn-lg pull-right"><i
-                            class="icon-plus"></i> {% trans "Create new menuitem" %}
-                    </a>
-                {% else %}
-                    <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=menu_id %}"
-                       class="btn btn-primary btn-lg pull-right"><i
-                            class="icon-plus"></i> {% trans "Create new menuitem" %}
-                    </a>
-                {% endif %}
-                <h1>{% trans "MenuItems" %}</h1>
-            </div>
-        {% endblock header %}
+{% block header %}
+    <div class="page-header">
+        {% if parent %}
+            <a href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=menu_id parent=parent %}"
+               class="btn btn-primary btn-lg pull-right"><i
+                    class="icon-plus"></i> {% trans "Create new menuitem" %}
+            </a>
+        {% else %}
+            <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=menu_id %}"
+               class="btn btn-primary btn-lg pull-right"><i
+                    class="icon-plus"></i> {% trans "Create new menuitem" %}
+            </a>
+        {% endif %}
+        <h1>{% trans "MenuItems" %}</h1>
+    </div>
+{% endblock header %}
 
-        {% block dashboard_content %}
-            <div class="alert alert-info">
-                <p>{% trans "You are editing:" %}
-                    <strong><a href="{% url 'dashboard:catalogue-category-list' %}">{% trans "Home" %}</a></strong>
-                    {% if ancestors %}
-                        &gt;
-                        {% for ancestor in ancestors %}
-                            <strong><a
-                                    href="{% url 'dashboard:catalogue-category-detail-list' pk=ancestor.pk %}">{{ ancestor.name }}</a></strong>
-                            {% if not forloop.last %} > {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </p>
-            </div>
-
-            {% render_table menuitems %}
-
-            {% if not child_categories %}
-                <p>{% trans "There are no menu item." %}</p>
+{% block dashboard_content %}
+    <div class="alert alert-info">
+        <p>{% trans "You are editing:" %}
+            <strong><a href="{% url 'dashboard:catalogue-category-list' %}">{% trans "Home" %}</a></strong>
+            {% if ancestors %}
+                &gt;
+                {% for ancestor in ancestors %}
+                    <strong><a
+                            href="{% url 'dashboard:catalogue-category-detail-list' pk=ancestor.pk %}">{{ ancestor.name }}</a></strong>
+                    {% if not forloop.last %} > {% endif %}
+                {% endfor %}
             {% endif %}
-        {% endblock dashboard_content %}
-    </title>
-</head>
-<body>
+        </p>
+    </div>
 
-</body>
-</html>
+    {% render_table menuitems %}
+
+    {% if not child_categories %}
+        <p>{% trans "There are no menu item." %}</p>
+    {% endif %}
+{% endblock dashboard_content %}
