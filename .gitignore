@@ -113,3 +113,7 @@ staticfiles/
 /celerybeat-schedule.db
 data
 .idea/*
+web-backend.iml
+cache
+images
+.DS_Store
