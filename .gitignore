@@ -110,3 +110,4 @@ sandbox/
 staticfiles/
 /celerybeat-schedule.db
 data
+.idea/*
