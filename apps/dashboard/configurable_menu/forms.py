@@ -10,7 +10,7 @@ Partner = get_model('partner', 'Partner')
 
 _PartnerMenuItemForm = movenodeform_factory(
     PartnerConfigurableMenuItem,
-    fields=['name', 'description', 'image', 'patner_menu'])
+    fields=['name', 'description', 'image', 'patner_menu','included_categories'])
 
 
 class PartnerMenuItemForm(_PartnerMenuItemForm):

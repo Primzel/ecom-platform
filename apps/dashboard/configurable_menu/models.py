@@ -28,6 +28,10 @@ class PartnerConfigurableMenuItem(AbstractCategory):
         blank=True, verbose_name=_("Categories"))
     patner_menu = models.ForeignKey('PartnerConfigurableMenu', related_name='menu', on_delete=models.CASCADE)
 
+    included_categories = models.ManyToManyField(
+        'catalogue.Category', related_name='menu_includes', blank=True,
+        verbose_name=_("Included Categories"))
+
     class Meta:
         abstract = False
         app_label = 'configurable_menu'
