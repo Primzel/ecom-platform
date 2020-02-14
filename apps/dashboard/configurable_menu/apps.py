@@ -14,6 +14,11 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
     permissions_map = _map = {
         'partner-configurable-menu-create': (['is_staff'], ['partner.dashboard_access']),
         'partner-configurable-menu-listing': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-items': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-item-create': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-child-menu-item-create': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-item-details': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-item-update': (['is_staff'], ['partner.dashboard_access']),
     }
 
     def ready(self):
