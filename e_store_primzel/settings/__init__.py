@@ -7,8 +7,8 @@ from .middleware import *
 from .install_apps import *
 from .navigation import *
 from .application_defination import *
+from .multitenant import *
 from split_settings.tools import include, optional
-
 include(
     optional('env/local.py'),
     scope=locals()

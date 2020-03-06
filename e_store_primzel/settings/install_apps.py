@@ -1,16 +1,7 @@
 from django.conf import settings
 
-INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
+TENANT_APPS = [
     'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'django.contrib.sites',
-    'django.contrib.flatpages',
-
     'oscar',
     'oscar.apps.analytics',
     'oscar.apps.checkout',
@@ -41,16 +32,32 @@ INSTALLED_APPS = [
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
 ]+[
-    # 3rd-party apps that oscar depends on
+    # Primzel Apps
+    'apps.dashboard.configurable_menu'
+]
+
+SHARED_APPS = [
+    'django_tenants',
+    'multitenancy',
+
+    # everything below here is optional
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+    'django.contrib.flatpages',
     'widget_tweaks',
     'haystack',
     'treebeard',
     'sorl.thumbnail',
     'django_tables2',
-]+[
-    # Primzel Apps
-    'apps.dashboard.configurable_menu'
 ]
+
+INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]
 
 if settings.DEBUG:
     INSTALLED_APPS = INSTALLED_APPS + ['debug_toolbar', ]

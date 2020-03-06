@@ -28,3 +28,7 @@ TEMPLATES = [
         },
     },
 ]
+
+TEMPLATE_LOADERS=(
+    'django_tenant_templates.loaders.TenantFileSystemLoader',
+)

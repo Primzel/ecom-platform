@@ -21,4 +21,4 @@ dev.web.shell:
 dev.redis.shell:
 	docker exec -it -w /src/backend/ com.oscar.redis bash
 dev.postgres.shell:
-	docker exec -it -w /src/backend/ com.primzel.psql bash
+	docker exec -it com.primzel.psql psql -U postgres

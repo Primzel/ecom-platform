@@ -11,3 +11,5 @@ django-redis-cache==2.0.0
 django-crequest==2018.5.11
 django-debug-toolbar
 psycopg2
+django-tenants==3.0.1
+django-tenant-templates==0.5
