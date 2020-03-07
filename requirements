@@ -13,3 +13,4 @@ django-debug-toolbar
 psycopg2
 django-tenants==3.0.1
 django-tenant-templates==0.5
+django-jet==1.0.8

@@ -41,6 +41,7 @@ SHARED_APPS = [
     'multitenancy',
 
     # everything below here is optional
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

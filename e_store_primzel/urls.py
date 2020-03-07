@@ -31,6 +31,7 @@ urlpatterns = [
 
     # url(r'^', include(apps.get_app_config('oscar').urls[0])),
     path('', include(apps.get_app_config('oscar').urls[0])),  # > Django-2.0
+    path(r'^jet/', include('jet.urls', 'jet')),  # Django JET URLS
 ]
 
 
