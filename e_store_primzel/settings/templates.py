@@ -6,12 +6,12 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR,'templates'),  # templates directory of the project
+            os.path.join(BASE_DIR, 'templates'),  # templates directory of the project
         ],
         'OPTIONS': {
-            'loaders':[
-                'template_loader.CustomTemplateLoader',
+            'loaders': [
                 'django.template.loaders.app_directories.Loader',
+                'multitenancy.template_loaders.TenantFileSystemLoader'
             ],
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -28,7 +28,3 @@ TEMPLATES = [
         },
     },
 ]
-
-TEMPLATE_LOADERS=(
-    'django_tenant_templates.loaders.TenantFileSystemLoader',
-)
