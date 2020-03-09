@@ -10,8 +10,9 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             'loaders': [
-                'django.template.loaders.app_directories.Loader',
-                'multitenancy.template_loaders.TenantFileSystemLoader'
+                "django_tenants.template.loaders.filesystem.Loader",  # Must be first
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -27,4 +28,8 @@ TEMPLATES = [
             ],
         },
     },
+]
+
+MULTITENANT_TEMPLATE_DIRS = [
+    os.path.join(BASE_DIR, 'templates/%s/templates')
 ]
