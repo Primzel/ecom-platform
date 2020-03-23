@@ -2,10 +2,15 @@
 @top-navbar-height: 30px;
 @theme-primary-text-color: rgba(255, 255, 255, .8);
 @theme-primary-text-hover-color: white;
+@theme-primary-background-color: white;
+body{
+  background-color: @theme-primary-background-color;
+}
 .navbar-default {
   .navbar-nav > li {
     height: 30px;
     height: 100%;
+
     a {
       padding-top: 0px;
       padding-bottom: 0px;
@@ -17,10 +22,12 @@
       color: @theme-primary-text-hover-color;
     }
   }
-  .navbar-form{
+
+  .navbar-form {
     margin: 0px;
     min-height: @top-navbar-height;
-    .form-control{
+
+    .form-control {
       height: 10px;
     }
   }
