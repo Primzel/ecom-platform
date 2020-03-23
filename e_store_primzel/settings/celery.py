@@ -1,6 +1,6 @@
 from __future__ import absolute_import, unicode_literals
 import os
-from celery import Celery
+from tenant_schemas_celery.app import CeleryApp as Celery
 
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379')
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379')
