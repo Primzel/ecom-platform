@@ -13,3 +13,5 @@ MULTITENANT_STATICFILES_DIRS = [
 ]
 
 STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"
+MULTITENANT_RELATIVE_STATIC_ROOT = ""  # (default: create sub-directory for each tenant)
+DEFAULT_FILE_STORAGE = "django_tenants.files.storage.TenantFileSystemStorage"

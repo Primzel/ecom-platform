@@ -4,7 +4,6 @@ MIDDLEWARE = [
     'django_tenants.middleware.main.TenantMainMiddleware',
     'middlewares.multitenancy.TenantTemplatesMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
