@@ -1,7 +1,13 @@
 from django.conf import settings
 
 TENANT_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django.contrib.flatpages',
     'oscar',
     'oscar.apps.analytics',
     'oscar.apps.checkout',
@@ -39,18 +45,10 @@ TENANT_APPS = [
 SHARED_APPS = [
     'django_tenants',
     'multitenancy',
+    'django.contrib.sites',
 
     # everything below here is optional
     'jet',
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-
-    'django.contrib.sites',
-    'django.contrib.flatpages',
     'widget_tweaks',
     'haystack',
     'treebeard',

@@ -85,7 +85,6 @@ OSCAR_ORDER_STATUS_PIPELINE = {
 
 OSCAR_SHOP_NAME = 'Primzel Shop'
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 INTERNAL_IPS = [
