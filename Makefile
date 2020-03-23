@@ -3,7 +3,7 @@ dev.makemigrations:
 dev.collectstatic :
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py collectstatic --noinput
 dev.migrate:
-	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py migrate
+	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py migrate_schemas
 dev.oscar_populate_countries:
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py oscar_populate_countries
 dev.requirements:
