@@ -1,0 +1,58 @@
+@theme-primary-color: #bc1470;
+@top-navbar-height: 30px;
+@theme-primary-text-color: rgba(255, 255, 255, .8);
+@theme-primary-text-hover-color: white;
+.navbar-default {
+  .navbar-nav > li {
+    height: 30px;
+    height: 100%;
+    a {
+      padding-top: 0px;
+      padding-bottom: 0px;
+      font-size: .75em;
+      color: @theme-primary-text-color;
+    }
+
+    a:hover {
+      color: @theme-primary-text-hover-color;
+    }
+  }
+  .navbar-form{
+    margin: 0px;
+    min-height: @top-navbar-height;
+    .form-control{
+      height: 10px;
+    }
+  }
+}
+
+.navbar {
+  background-color: @theme-primary-color;
+}
+
+.navbar.accounts {
+  min-height: @top-navbar-height;
+
+  .container-flex {
+    min-height: @top-navbar-height;
+  }
+}
+
+.full-height {
+  height: 100%;
+}
+
+.container-flex {
+  display: flex;
+  align-items: stretch;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
+  flex: auto;
+  align-self: center;
+}
