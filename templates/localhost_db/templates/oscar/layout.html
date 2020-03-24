@@ -29,10 +29,12 @@
                 {% block mini_basket %}{% include "oscar/partials/mini_basket.html" %}{% endblock %}
             </div>
         </div>
-        {% block navigation %}
-            {% include "oscar/partials/nav_primary.html" %}
-        {% endblock %}
     </header>
+    <div>
+        {% block navigation %}
+        {% include "oscar/partials/nav_primary.html" %}
+        {% endblock %}
+    </div>
 
     {# Main content of page - other layout templates may override this block #}
     {% block content_wrapper %}
