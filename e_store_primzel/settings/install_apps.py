@@ -54,6 +54,7 @@ SHARED_APPS = [
     'treebeard',
     'sorl.thumbnail',
     'django_tables2',
+    'storages'
 ]
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

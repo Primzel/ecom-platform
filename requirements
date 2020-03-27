@@ -15,3 +15,5 @@ django-tenants==3.0.1
 django-tenant-templates==0.5
 django-jet==1.0.8
 tenant-schemas-celery==0.3.0
+boto3
+django-storages
