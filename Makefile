@@ -1,7 +1,7 @@
 dev.makemigrations:
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py makemigrations
 dev.collectstatic :
-	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py collectstatic --noinput
+	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py collectstatic_schemas --noinput --schema=$(schema)
 dev.migrate:
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py migrate_schemas
 dev.oscar_populate_countries:

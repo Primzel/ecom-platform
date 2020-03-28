@@ -1,5 +1,21 @@
 version: '3'
 services:
+  webserver:
+    image: nginx:alpine
+    hostname: nginx.oscar.com
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8080:80"
+      - "4343:443"
+    volumes:
+      - ./:/var/www/
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      primzel-docker-network:
+        aliases:
+          - nginx.oscar.com
   web:
     command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ --log-level debug ; sleep 2; done'
     container_name: com.oscar.store
@@ -7,6 +23,8 @@ services:
     build: .
     stdin_open: true
     tty: true
+    volumes:
+    - './:/src/backend/'
     ports:
       - 8081:8080
     environment:
@@ -17,7 +35,7 @@ services:
       POSTGRES_DB: primzel_store
       POSTGRES_HOST: psql.primzel.com
       POSTGRES_PORT: 5432
-      PRIMZEL_DEBUG: 1
+      PRIMZEL_DEBUG: 'True'
       AWS_S3_ENDPOINT_URL: http://com.localstack.s3:4572/
     links:
       - redis
