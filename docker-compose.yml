@@ -24,6 +24,7 @@ services:
       - celery_worker
       - celery_beat
     depends_on:
+      - localstack
       - redis
       - postgres
       - celery_beat
