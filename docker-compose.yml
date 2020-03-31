@@ -12,6 +12,8 @@ services:
     volumes:
       - ./:/var/www/
       - ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - web
     networks:
       primzel-docker-network:
         aliases:
@@ -119,7 +121,7 @@ services:
       - 5432:5432
   localstack:
     image: localstack/localstack:latest
-    container_name: localstack_demo
+    container_name: localstack
     hostname: com.localstack.s3
     ports:
       - '4563-4599:4563-4599'
