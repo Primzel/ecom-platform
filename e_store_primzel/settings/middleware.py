@@ -1,6 +1,7 @@
 from django.conf import settings
 
 MIDDLEWARE = [
+    'elasticapm.contrib.django.middleware.TracingMiddleware',
     'django_tenants.middleware.main.TenantMainMiddleware',
     'middlewares.multitenancy.TenantTemplatesMiddleware',
     'django.middleware.security.SecurityMiddleware',

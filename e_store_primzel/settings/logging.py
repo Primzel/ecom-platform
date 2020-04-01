@@ -33,6 +33,16 @@ LOGGING = {
             'class': 'django.utils.log.AdminEmailHandler',
             'filters': ['require_debug_false'],
         },
+        'logstash': {
+            'level': 'DEBUG',
+            'class': 'logstash.TCPLogstashHandler',
+            'host': os.getenv('LOGSTASH_HOST','com.primzel.elk'),   # IP/name of our Logstash EC2 instance
+            'port': os.getenv('LOGSTASH_TCP_INPUT_PORT',5959),
+            'version': 1,
+            'message_type': 'logstash',
+            'fqdn': True,
+            'tags': ['store'],
+        }
     },
     'formatters': {
         'verbose': {
@@ -46,12 +56,12 @@ LOGGING = {
     },
     'loggers': {
         'template_loader': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },
         'oscar': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
             'propagate': True,
         },
@@ -66,12 +76,12 @@ LOGGING = {
             'propagate': False,
         },
         'oscar.checkout': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'propagate': True,
             'level': 'INFO',
         },
         'datacash': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'propagate': True,
             'level': 'INFO',
         },
@@ -81,7 +91,7 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'primzel.requests': {
-            'handlers': ['console'],
+            'handlers': ['console','logstash'],
             'level': 'DEBUG',
             'propagate': False,
         },

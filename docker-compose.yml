@@ -140,6 +140,23 @@ services:
       primzel-docker-network:
         aliases:
           - com.localstack.s3
+  elk:
+    # image documentations : https://elk-docker.readthedocs.io/
+    image: sebp/elk
+    container_name: com.primzel.elk
+    hostname: com.primzel.elk
+    volumes:
+    - './logstash/conf.d/:/etc/logstash/conf.d'
+    ports:
+      - "5601:5601"
+      - "9200:9200"
+      - "5044:5044"
+      - "5959:5959"
+      - "8200:8200"
+    networks:
+      primzel-docker-network:
+        aliases:
+          - com.primzel.elk
 networks:
   primzel-docker-network:
     driver: bridge

@@ -117,3 +117,5 @@ web-backend.iml
 cache
 images
 .DS_Store
+/.localstack/
+/pki/

@@ -17,3 +17,5 @@ django-jet==1.0.8
 tenant-schemas-celery==0.3.0
 boto3
 django-storages
+python-logstash==0.4.6
+elastic-apm==5.5.2
