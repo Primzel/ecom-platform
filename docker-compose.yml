@@ -51,7 +51,10 @@ services:
       - celery_beat
       - celery_worker
     networks:
-      - primzel-docker-network
+      primzel-docker-network:
+        aliases:
+          - store.oscar.com
+
   celery_worker:
     command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_worker
