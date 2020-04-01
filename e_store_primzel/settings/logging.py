@@ -80,5 +80,10 @@ LOGGING = {
             'propagate': False,
             'level': 'DEBUG',
         },
+        'primzel.requests': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
     },
 }
