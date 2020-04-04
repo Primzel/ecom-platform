@@ -14,4 +14,4 @@ DATABASES = {
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
-DEBUG = OSCAR_USE_LESS = USE_LESS = True
+DEBUG = OSCAR_USE_LESS = USE_LESS = False

@@ -1,0 +1,53 @@
+body {
+  background-color: white;
+}
+.navbar-default .navbar-nav > li {
+  height: 30px;
+  height: 100%;
+}
+.navbar-default .navbar-nav > li a {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  font-size: 0.75em;
+  color: rgba(255, 255, 255, 0.8);
+}
+.navbar-default .navbar-nav > li a:hover {
+  color: white;
+}
+.navbar-default .navbar-form {
+  margin: 0px;
+  min-height: 30px;
+}
+.navbar-default .navbar-form .form-control {
+  height: 10px;
+}
+.navbar {
+  background-color: #bc1470;
+}
+.navbar.accounts {
+  min-height: 30px;
+}
+.navbar.accounts .container-flex {
+  min-height: 30px;
+}
+.full-height {
+  height: 100%;
+}
+.container-flex {
+  display: flex;
+  align-items: stretch;
+}
+.flex-row {
+  flex-direction: row;
+}
+.flex-col {
+  flex-direction: column;
+  flex: auto;
+  align-self: center;
+}
+.navbar-inverse .container-fluid .collapse .nav li a {
+  color: rgba(255, 255, 255, 0.8);
+}
+.navbar-inverse .container-fluid .collapse .nav a:hover {
+  color: white;
+}
