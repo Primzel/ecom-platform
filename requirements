@@ -19,3 +19,4 @@ boto3
 django-storages
 python-logstash==0.4.6
 elastic-apm==5.5.2
+woocommerce==2.1.1

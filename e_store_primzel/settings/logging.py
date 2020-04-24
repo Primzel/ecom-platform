@@ -62,7 +62,7 @@ LOGGING = {
         },
         'oscar': {
             'handlers': ['console','logstash'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
             'propagate': True,
         },
         'django': {
@@ -91,6 +91,11 @@ LOGGING = {
             'level': 'DEBUG',
         },
         'primzel.requests': {
+            'handlers': ['console','logstash'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+        'primzel.logger': {
             'handlers': ['console','logstash'],
             'level': 'DEBUG',
             'propagate': False,
