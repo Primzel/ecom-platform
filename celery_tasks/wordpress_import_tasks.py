@@ -11,6 +11,13 @@ logger = logging.getLogger('primzel.logger')
 def import_categories_from_wordpress(host="http://www.hoko.pk",
                                      consumer_key="ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2",
                                      consumer_secret="cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e"):
+    """
+    The function is used to import categories from woocommerce host to current tenant.
+    :param host: base url of woocommerce host.
+    :param consumer_key: woocommerce consumer key
+    :param consumer_secret: woocommerce consumer secret
+    :return:
+    """
     kwargs = dict(
         url=host,
         consumer_key=consumer_key,
