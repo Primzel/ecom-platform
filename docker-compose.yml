@@ -26,7 +26,7 @@ services:
     stdin_open: true
     tty: true
     volumes:
-    - './:/src/backend/'
+      - './:/src/backend/'
     ports:
       - 8081:8080
     environment:
@@ -146,17 +146,34 @@ services:
     container_name: com.primzel.elk
     hostname: com.primzel.elk
     volumes:
-    - './logstash/conf.d/:/etc/logstash/conf.d'
+      - './logstash/conf.d/:/etc/logstash/conf.d'
     ports:
       - "5601:5601"
       - "9200:9200"
       - "5044:5044"
       - "5959:5959"
-      - "8200:8200"
     networks:
       primzel-docker-network:
         aliases:
           - com.primzel.elk
+  apm-server:
+    image: docker.elastic.co/apm/apm-server:7.6.0
+    command: --strict.perms=false
+    container_name: com.primzel.apm
+    hostname: com.primzel.apm
+    ports:
+      - '8200:8200'
+      - '8201:8200'
+    environment:
+      - apm-server.host=0.0.0.0
+      - setup.kibana.host=com.primzel.elk:5601
+      - output.elasticsearch.hosts=["com.primzel.elk:9200"]
+    depends_on:
+      - elk
+    networks:
+      primzel-docker-network:
+        aliases:
+          - com.primzel.apm
 networks:
   primzel-docker-network:
     driver: bridge
