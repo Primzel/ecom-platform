@@ -60,7 +60,7 @@ def import_categories_from_wordpress(*args, **kwargs):
                 product_class.save(update_fields=['requires_shipping', 'track_stock'])
 
             if p_created:
-                oscar_product.title = product['title'],
+                oscar_product.title = product['title']
                 oscar_product.description = product['description']
                 for woo_option_group in product['attributes']:
                     option_group, opg_created = AttributeOptionGroup.objects.get_or_create(
