@@ -70,7 +70,7 @@ def import_categories_from_wordpress(*args, **kwargs):
 
                     ProductAttribute.objects.get_or_create(
                         product_class=product_class, name=option_group.name, code=slugify(option_group.name),
-                        type='option')
+                        type='option', option_group=option_group)
                 oscar_product.product_class = product_class
                 oscar_product.save()
 
