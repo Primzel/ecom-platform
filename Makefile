@@ -22,3 +22,5 @@ dev.redis.shell:
 	docker exec -it -w /src/backend/ com.oscar.redis bash
 dev.postgres.shell:
 	docker exec -it com.primzel.psql psql -U postgres
+dev.import.wordpress
+    docker exec -it -w /src/backend/ com.oscar.store python3 --schema=$(schema) $(host) $(consumer_key) $(consumer_secret)
