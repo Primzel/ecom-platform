@@ -6,7 +6,7 @@ from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from oscar.apps.catalogue.categories import create_from_breadcrumbs
 from oscar.apps.catalogue.models import Product, ProductClass, slugify, AttributeOptionGroup, AttributeOption, \
-    ProductAttribute, ProductImage
+    ProductAttribute, ProductImage, ProductCategory
 
 from utils.wordpress.client import Client
 from utils.wordpress.utils import stringify_breadcrumbs, format_oscar_friendly_breadcrumb_chain, get_categories, \
@@ -85,6 +85,9 @@ def import_categories_from_wordpress(*args, **kwargs):
                     product_image.original.save(os.path.basename(woo_image['src']), File(img_temp))
 
                     product_image.save()
+            for breadcrumbs in product['categories']:
+                category_string = create_from_breadcrumbs(breadcrumbs)
+                ProductCategory.objects.update_or_create(product=oscar_product, category=category_string)
 
         else:
             logger.info('missing sku value for product {permalink}'.format(permalink=product['permalink']))
