@@ -11,7 +11,7 @@ from .navigation import *
 from .application_defination import *
 from .multitenant import *
 from .aws import *
-from .apm import *
+# from .apm import *
 
 include(
     optional('env/local.py'),
