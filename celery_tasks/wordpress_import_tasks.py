@@ -6,7 +6,7 @@ from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
 from oscar.apps.catalogue.categories import create_from_breadcrumbs
 from oscar.apps.catalogue.models import Product, ProductClass, slugify, AttributeOptionGroup, AttributeOption, \
-    ProductAttribute, ProductImage
+    ProductAttribute, ProductImage, ProductCategory
 
 from utils.wordpress.client import Client
 from utils.wordpress.utils import stringify_breadcrumbs, format_oscar_friendly_breadcrumb_chain, get_categories, \
@@ -23,7 +23,7 @@ def import_categories_from_wordpress(*args, **kwargs):
     :param consumer_secret: woocommerce consumer secret
     :return:
     """
-    print(kwargs)
+
     host = kwargs.get('host', "http://www.hoko.pk")
     consumer_key = kwargs.get('consumer_key', "ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2")
     consumer_secret = kwargs.get('consumer_secret', "cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e")
@@ -50,8 +50,8 @@ def import_categories_from_wordpress(*args, **kwargs):
     for product in products:
         upc = product['upc']
         if upc:
-            product_class, t_created = ProductClass.objects.get_or_create(name=product['type'],
-                                                                          slug=slugify(product['type']))
+            product_class, t_created = ProductClass.objects.get_or_create(name=product['product_class'],
+                                                                          slug=slugify(product['product_class']))
             oscar_product, p_created = Product.objects.get_or_create(upc=upc, product_class=product_class)
 
             if t_created:
@@ -60,7 +60,7 @@ def import_categories_from_wordpress(*args, **kwargs):
                 product_class.save(update_fields=['requires_shipping', 'track_stock'])
 
             if p_created:
-                oscar_product.title = product['title'],
+                oscar_product.title = product['title']
                 oscar_product.description = product['description']
                 for woo_option_group in product['attributes']:
                     option_group, opg_created = AttributeOptionGroup.objects.get_or_create(
@@ -70,7 +70,7 @@ def import_categories_from_wordpress(*args, **kwargs):
 
                     ProductAttribute.objects.get_or_create(
                         product_class=product_class, name=option_group.name, code=slugify(option_group.name),
-                        type='option')
+                        type='option', option_group=option_group)
                 oscar_product.product_class = product_class
                 oscar_product.save()
 
@@ -85,6 +85,9 @@ def import_categories_from_wordpress(*args, **kwargs):
                     product_image.original.save(os.path.basename(woo_image['src']), File(img_temp))
 
                     product_image.save()
+            for breadcrumbs in product['categories']:
+                category_string = create_from_breadcrumbs(breadcrumbs)
+                ProductCategory.objects.update_or_create(product=oscar_product, category=category_string)
 
         else:
             logger.info('missing sku value for product {permalink}'.format(permalink=product['permalink']))
