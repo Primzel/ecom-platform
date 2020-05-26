@@ -13,3 +13,4 @@ AWS_S3_OBJECT_PARAMETERS = {
 DEFAULT_FILE_STORAGE = 'backends.storage_backends.MediaStorage'
 AWS_S3_SECURE_URLS = os.getenv('AWS_S3_SECURE_URLS', False)
 AWS_PRELOAD_METADATA = os.getenv('AWS_PRELOAD_METADATA', False)
+AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-2')
