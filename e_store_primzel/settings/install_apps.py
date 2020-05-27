@@ -37,6 +37,7 @@ TENANT_APPS = [
     'oscar.apps.dashboard.vouchers',
     'oscar.apps.dashboard.communications',
     'oscar.apps.dashboard.shipping',
+    'sorl.thumbnail',
 ]+[
     # Primzel Apps
     'apps.dashboard.configurable_menu'
@@ -52,7 +53,6 @@ SHARED_APPS = [
     'widget_tweaks',
     'haystack',
     'treebeard',
-    'sorl.thumbnail',
     'django_tables2',
     'storages',
     'elasticapm.contrib.django',
