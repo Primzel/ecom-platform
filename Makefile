@@ -5,7 +5,7 @@ dev.collectstatic:
 dev.migrate:
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py migrate_schemas
 dev.oscar_populate_countries:
-	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py oscar_populate_countries
+	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py tenant_command oscar_populate_countries --schema=$(schema)
 dev.requirements:
 	docker exec -it -w /src/backend/ com.oscar.store pip3 install -r requirements
 dev.ping.psql.primzel.com:

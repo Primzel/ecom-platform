@@ -1,5 +1,5 @@
 from split_settings.tools import include, optional
-
+from .payment import *
 from .logging import *
 from .base import *
 from .install_apps import *

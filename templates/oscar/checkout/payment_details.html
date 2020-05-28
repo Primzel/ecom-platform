@@ -1,0 +1,41 @@
+{% extends "oscar/checkout/checkout.html" %}
+{% load i18n %}
+
+{% block title %}
+{% trans "Payment details" %} | {{ block.super }}
+{% endblock %}
+
+{% block checkout_nav %}
+{% include 'oscar/checkout/nav.html' with step=3 %}
+{% endblock %}
+
+{% block checkout_title %}{% trans "Enter payment details" %}{% endblock %}
+
+{% block order_contents %}{% endblock %}
+{% block shipping_address %}{% endblock %}
+{% block shipping_method %}{% endblock %}
+{% block payment_method %}{% endblock %}
+
+{% block payment_details %}
+{% block payment_details_content %}
+{% if error %}
+<div class="alert alert-error">
+    {{ error }}
+</div>
+{% endif %}
+
+<form action="{% url 'checkout:preview' %}" method="post">
+    {% csrf_token %}
+
+    {% if form.payment_method.errors %}{{ form.payment_method.errors }}{% endif %}
+    <div class="radio">
+        <label for="id_payment_method_0">
+            <input id="id_payment_method_0" name="payment_method" type="radio" value="cod" required="">{% trans "Cash on
+            Delivery" %}
+        </label>
+    </div>
+    <button type="submit" class="btn btn-primary btn-lg">{% trans "Continue" %}</button>
+
+</form>
+{% endblock payment_details_content %}
+{% endblock payment_details %}

@@ -1,0 +1,18 @@
+{% extends 'oscar/checkout/preview.html' %}
+{% load currency_filters %}
+{% load thumbnail %}
+{% load i18n %}
+{% load purchase_info_tags %}
+{% load staticfiles %}
+
+{% block payment_method %}
+<div class="col-sm-6">
+    <div class="sub-header">
+        <h2>{% trans "Payment" %}</h2>
+    </div>
+    <div class="well well-success">
+        <a href="{% url 'checkout:payment-method' %}" class="pull-right">{% trans "Change" %}</a>
+        <h4>{% trans "Cash on Delivery" %}</h4>
+    </div>
+</div>
+{% endblock payment_method %}

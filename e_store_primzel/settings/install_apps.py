@@ -10,7 +10,6 @@ TENANT_APPS = [
     'django.contrib.flatpages',
     'oscar',
     'oscar.apps.analytics',
-    'oscar.apps.checkout',
     'oscar.apps.address',
     'oscar.apps.shipping',
     'oscar.apps.catalogue',
@@ -40,7 +39,8 @@ TENANT_APPS = [
     'sorl.thumbnail',
 ]+[
     # Primzel Apps
-    'apps.dashboard.configurable_menu'
+    'apps.dashboard.configurable_menu',
+    'apps.checkout',
 ]
 
 SHARED_APPS = [

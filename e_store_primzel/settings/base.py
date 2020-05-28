@@ -95,3 +95,5 @@ INTERNAL_IPS = [
     '172.19.0.8', # docker container ip from request is coming.
     # ...
 ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
