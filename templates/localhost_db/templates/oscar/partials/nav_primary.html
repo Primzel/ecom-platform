@@ -1,20 +1,20 @@
 {% extends 'oscar/partials/nav_primary.html' %}
 {% load currency_filters %}
-{% load category_tags %}
+{% load menu_tags %}
 {% load i18n %}
 
 {% block nav_dropdown %}
 <ul id="browse" class="nav navbar-nav">
-    {% category_tree depth=2 as tree_categories %}
+    {% menu_tree depth=3 as tree_categories %}
     <li><a tabindex="-1" href="{% url 'catalogue:index' %}">{% trans "All products" %}</a></li>
     {% if tree_categories %}
     {% for tree_category in tree_categories %}
     {% if tree_category.has_children %}
     <li class="dropdown {% if expand_dropdown %}open{% endif %}">
-        <a tabindex="-1" href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a>
+        <a tabindex="-1" href="{{ tree_category.included_categories.first.get_absolute_url }}">{{ tree_category.name }}</a>
         <ul class="dropdown-menu">
             {% else %}
-            <li><a tabindex="-1" href="{{ tree_category.get_absolute_url }}">{{ tree_category.name }}</a></li>
+            <li><a tabindex="-1" href="{{ tree_category.included_categories.first.get_absolute_url }}">{{ tree_category.name }}</a></li>
             {% endif %}
 
             {% for close in tree_category.num_to_close %}

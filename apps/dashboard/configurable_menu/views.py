@@ -53,7 +53,7 @@ class MenuItemListView(SingleTableView):
     context_table_name = 'menuitems'
 
     def get(self, request, *args, **kwargs):
-        self.object_list = self.get_queryset()
+        self.object_list = self.get_queryset().filter(patner_menu_id=kwargs.get('menu_id'))
         allow_empty = self.get_allow_empty()
 
         if not allow_empty:
