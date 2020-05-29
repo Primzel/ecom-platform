@@ -21,3 +21,4 @@ python-logstash==0.4.6
 elastic-apm==5.5.2
 woocommerce==2.1.1
 aws-xray-sdk==2.5.0
+Pillow==7.0.0
