@@ -3,9 +3,10 @@
 @theme-primary-text-color: rgba(255, 255, 255, .8);
 @theme-primary-text-hover-color: white;
 @theme-primary-background-color: white;
-body{
+body {
   background-color: @theme-primary-background-color;
 }
+
 .navbar-default {
   .navbar-nav > li {
     height: 30px;
@@ -35,6 +36,25 @@ body{
 
 .navbar {
   background-color: @theme-primary-color;
+
+  .navbar-nav {
+    li.dropdown:hover {
+      a:hover{
+        background-color: transparent;
+      }
+      & > ul.dropdown-menu {
+        background-color: @theme-primary-color;
+        display: block;
+        li.dropdown{
+          & > ul.dropdown-menu {
+            position: absolute;
+            top: -8px;
+            left: 98%;
+          }
+        }
+      }
+    }
+  }
 }
 
 .navbar.accounts {
@@ -63,15 +83,17 @@ body{
   flex: auto;
   align-self: center;
 }
-.navbar-inverse{
-  .container-fluid{
-    .collapse{
-      .nav{
-        li{
-          a{
+
+.navbar-inverse {
+  .container-fluid {
+    .collapse {
+      .nav {
+        li {
+          a {
             color: @theme-primary-text-color;
           }
         }
+
         a:hover {
           color: @theme-primary-text-hover-color;
         }

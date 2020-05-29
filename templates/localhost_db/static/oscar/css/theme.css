@@ -24,6 +24,18 @@ body {
 .navbar {
   background-color: #bc1470;
 }
+.navbar .navbar-nav li.dropdown:hover a:hover {
+  background-color: transparent;
+}
+.navbar .navbar-nav li.dropdown:hover > ul.dropdown-menu {
+  background-color: #bc1470;
+  display: block;
+}
+.navbar .navbar-nav li.dropdown:hover > ul.dropdown-menu li.dropdown > ul.dropdown-menu {
+  position: absolute;
+  top: -8px;
+  left: 98%;
+}
 .navbar.accounts {
   min-height: 30px;
 }
