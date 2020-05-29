@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 def get_tenant_specific_upload_folder(instance, filename):
     upload_folder = 'logo/{0}/{1}'.format(
-        connection.tenant,
+        connection.tenant.name,
         filename
     )
     return upload_folder
