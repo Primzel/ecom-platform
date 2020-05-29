@@ -5,7 +5,7 @@
 
 {% block nav_dropdown %}
 <ul id="browse" class="nav navbar-nav">
-    {% menu_tree depth=3 as tree_categories %}
+    {% menu_tree as tree_categories %}
     <li><a tabindex="-1" href="{% url 'catalogue:index' %}">{% trans "All products" %}</a></li>
     {% if tree_categories %}
     {% for tree_category in tree_categories %}
