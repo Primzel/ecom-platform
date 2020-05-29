@@ -94,13 +94,14 @@ class MenuItemListMixin(object):
 
 
 class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
-    template_name = 'oscar/dashboard/catalogue/category_form.html'
+    template_name = 'oscar/dashboad/configurable_menu/menuitem_form.html'
     model = PartnerConfigurableMenuItem
     form_class = PartnerMenuItemForm
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['title'] = _("Add a new menu item")
+        ctx['menu_id'] = self.kwargs.get('menu_id', None)
         return ctx
 
     def get_success_url(self):
