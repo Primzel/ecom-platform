@@ -18,6 +18,8 @@ class Setting(models.Model):
                                help_text=_('Please add store tagline not more then 255 characters.'), default=None,
                                blank=True, null=True)
     logo = models.ImageField(upload_to=get_tenant_specific_upload_folder, verbose_name=_('Store Logo'))
+    logo_size = models.CharField(max_length=255, verbose_name=_('Logo Dimension (height x width)'), default='100x100',
+                                 help_text=_('Please enter image dimensions not more then 255 characters.'))
     is_active = models.BooleanField(default=False)
 
     def __str__(self):

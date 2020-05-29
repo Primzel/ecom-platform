@@ -3,7 +3,7 @@
     {% block brand_title %}
     {% if setting %}
         {% with image=setting.logo %}
-        {% oscar_thumbnail image.url "100x100" crop='center' quality=99 as thumb %}
+        {% oscar_thumbnail image.url setting.logo_size crop='center' quality=99 as thumb %}
             <a href="{{ homepage_url }}">
                 <img src="{{ thumb.url }}" alt="{{ setting.store_name }}">
             </a>
