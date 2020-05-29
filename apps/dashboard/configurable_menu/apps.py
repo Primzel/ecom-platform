@@ -32,7 +32,7 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
         self.partner_configurable_menu_detail = get_class('dashboard.configurable_menu.views',
                                                                'MenuItemDetailListView')
         self.partner_configurable_menu_item_update = get_class('dashboard.configurable_menu.views',
-                                                               'CategoryUpdateView')
+                                                               'MenuItemUpdateView')
 
     def get_urls(self):
         urls = [

@@ -140,13 +140,14 @@ class MenuItemDetailListView(SingleTableMixin, generic.DetailView):
         return ctx
 
 
-class CategoryUpdateView(MenuItemListMixin, generic.UpdateView):
-    template_name = 'oscar/dashboard/catalogue/category_form.html'
+class MenuItemUpdateView(MenuItemListMixin, generic.UpdateView):
+    template_name = 'oscar/dashboad/configurable_menu/menuitem_form.html'
     model = PartnerConfigurableMenuItem
     form_class = PartnerMenuItemForm
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
+        ctx['menu_id'] = self.object.patner_menu.id
         ctx['title'] = _("Update menuitem '%s'") % self.object.name
         return ctx
 
