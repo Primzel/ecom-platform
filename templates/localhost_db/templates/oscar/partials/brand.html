@@ -1,8 +1,13 @@
-<div class="col-sm-7 h1">
+{% load image_tags %}
+<div class="brand-column">
     {% block brand_title %}
-<!--        <a href="{{ homepage_url }}">-->
-<!--            {{ shop_name }}-->
-<!--        </a>-->
-<!--        <small> {{ shop_tagline }}</small>-->
+    {% if setting %}
+        {% with image=setting.logo %}
+        {% oscar_thumbnail image.url "100x100" crop='center' quality=99 as thumb %}
+            <a href="{{ homepage_url }}">
+                <img src="{{ thumb.url }}" alt="{{ setting.store_name }}">
+            </a>
+        {% endwith %}
+    {% endif %}
     {% endblock %}
 </div>

@@ -41,6 +41,7 @@ TENANT_APPS = [
     # Primzel Apps
     'apps.dashboard.configurable_menu',
     'apps.checkout',
+    'apps.dashboard.settings'
 ]
 
 SHARED_APPS = [

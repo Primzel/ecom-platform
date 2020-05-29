@@ -6,7 +6,24 @@
 body {
   background-color: @theme-primary-background-color;
 }
+.header{
+  .page_inner {
+    padding: 0px 30px 30px 30px !important;
 
+    .row {
+      display: flex;
+
+      .brand-column {
+        flex: 1;
+      }
+
+      .primzel-basket-mini {
+        align-items: center;
+        display: flex;
+      }
+    }
+  }
+}
 .navbar-default {
   .navbar-nav > li {
     height: 30px;
@@ -39,13 +56,15 @@ body {
 
   .navbar-nav {
     li.dropdown:hover {
-      a:hover{
+      a:hover {
         background-color: transparent;
       }
+
       & > ul.dropdown-menu {
         background-color: @theme-primary-color;
         display: block;
-        li.dropdown{
+
+        li.dropdown {
           & > ul.dropdown-menu {
             position: absolute;
             top: -8px;

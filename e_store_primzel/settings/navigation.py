@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from oscar.defaults import *
+
 OSCAR_DASHBOARD_NAVIGATION += [
     {
         'label': _('Configurable Partner Menu'),
@@ -15,4 +16,9 @@ OSCAR_DASHBOARD_NAVIGATION += [
             }
         ]
     },
+    {
+        'label': _('Settings'),
+        'icon': 'glyphicon-tree-conifer',
+        'url_name': 'dashboard:reports-index',
+    }
 ]

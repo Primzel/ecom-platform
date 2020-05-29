@@ -1,6 +1,19 @@
 body {
   background-color: white;
 }
+.header .page_inner {
+  padding: 0px 30px 30px 30px !important;
+}
+.header .page_inner .row {
+  display: flex;
+}
+.header .page_inner .row .brand-column {
+  flex: 1;
+}
+.header .page_inner .row .primzel-basket-mini {
+  align-items: center;
+  display: flex;
+}
 .navbar-default .navbar-nav > li {
   height: 30px;
   height: 100%;

@@ -1,7 +1,7 @@
 {% load currency_filters %}
 {% load i18n %}
 
-<div class="basket-mini pull-right hidden-xs">
+<div class="primzel-basket-mini">
     <strong>{% trans "CART / " %}</strong>
     {% if request.basket.is_tax_known %}
     {{ request.basket.total_incl_tax|currency:request.basket.currency }}
