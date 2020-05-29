@@ -23,12 +23,11 @@ class PartnerConfigurableMenuCreateView(generic.CreateView):
 
     def get_form_kwargs(self):
         kwargs = super(PartnerConfigurableMenuCreateView, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
         return kwargs
 
     def get_context_data(self, **kwargs):
         ctx = super(PartnerConfigurableMenuCreateView, self).get_context_data(**kwargs)
-        ctx['title'] = _("Add a new partner menu")
+        ctx['title'] = _("Add a new menu")
         return ctx
 
 
@@ -40,10 +39,7 @@ class ConfigurableMenuListView(SingleTableView):
 
     def get_queryset(self, **kwargs):
         qs = super(ConfigurableMenuListView, self).get_queryset()
-        filters = dict()
-        if not self.request.user.is_superuser:
-            filters.update(dict(partner__in=self.request.user.partners.all()))
-        return qs.filter(**filters)
+        return qs
 
     def get_context_data(self, **kwargs):
         ctx = super(ConfigurableMenuListView, self).get_context_data(**kwargs)

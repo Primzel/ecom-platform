@@ -7,15 +7,13 @@ from oscar.apps.catalogue.abstract_models import AbstractCategory
 
 
 class PartnerConfigurableMenu(models.Model):
-    site = models.ForeignKey('sites.Site', related_name='menus', on_delete=models.CASCADE)
     title = models.CharField(max_length=250)
     is_primary = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    partner = models.ForeignKey('partner.Partner', related_name="partner_menus", on_delete=models.CASCADE)
 
     def __str__(self):
-        return "{patner_name} {status}".format(patner_name=self.partner.name,
+        return "{title} {status}".format(title=self.title,
                                                status=' (primary)' if self.is_primary else '')
 
     def get_absolute_url(self):
