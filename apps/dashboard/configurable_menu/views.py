@@ -105,7 +105,7 @@ class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, _("Category created successfully"))
+        messages.info(self.request, _("Menu item created successfully"))
         return super().get_success_url()
 
     def get_initial(self):
@@ -152,5 +152,5 @@ class MenuItemUpdateView(MenuItemListMixin, generic.UpdateView):
         return ctx
 
     def get_success_url(self):
-        messages.info(self.request, _("Category updated successfully"))
+        messages.info(self.request, _("Menu Item updated successfully"))
         return super().get_success_url()
