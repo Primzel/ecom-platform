@@ -1,0 +1,11 @@
+{% extends 'oscar/base.html'%}
+{% load image_tags %}
+
+{% block favicon %}
+{% if setting %}
+{% with image=setting.logo %}
+{% oscar_thumbnail image.url '40x40' crop='center' quality=99 as thumb %}
+    <link rel="shortcut icon" href="{{ thumb.url }}" />
+{% endwith %}
+{% endif %}
+{% endblock %}
