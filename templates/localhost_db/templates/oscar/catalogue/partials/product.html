@@ -1,0 +1,17 @@
+{% extends "oscar/catalogue/partials/product.html" %}
+{% load reviews_tags %}
+{% load image_tags %}
+{% load i18n %}
+{% load display_tags %}
+{% load staticfiles %}
+
+{% block product_image %}
+<div class="image_container">
+    {% with image=product.primary_image %}
+    {% oscar_thumbnail image.original "x155" upscale=False as thumb %}
+    <a href="{{ product.get_absolute_url }}">
+        <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
+    </a>
+    {% endwith %}
+</div>
+{% endblock %}

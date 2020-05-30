@@ -77,3 +77,7 @@ body {
 .navbar-inverse .container-fluid .collapse .nav a:hover {
   color: white;
 }
+.product_pod .image_container img {
+  max-height: none;
+  height: 200px;
+}
