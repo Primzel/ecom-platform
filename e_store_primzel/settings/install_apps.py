@@ -16,7 +16,6 @@ TENANT_APPS = [
     'oscar.apps.catalogue.reviews',
     'oscar.apps.partner',
     'oscar.apps.basket',
-    'oscar.apps.payment',
     'oscar.apps.offer',
     'oscar.apps.order',
     'oscar.apps.customer',
@@ -41,7 +40,8 @@ TENANT_APPS = [
     # Primzel Apps
     'apps.dashboard.configurable_menu',
     'apps.checkout',
-    'apps.dashboard.settings'
+    'apps.dashboard.settings',
+    'apps.payment',
 ]
 
 SHARED_APPS = [
@@ -57,6 +57,7 @@ SHARED_APPS = [
     'django_tables2',
     'storages',
     'elasticapm.contrib.django',
+    'primzel.payment_gateways'
 ]
 
 INSTALLED_APPS = list(SHARED_APPS) + [app for app in TENANT_APPS if app not in SHARED_APPS]

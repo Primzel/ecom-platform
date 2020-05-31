@@ -37,6 +37,7 @@ body {
 .navbar {
   background-color: #bc1470;
   position: initial;
+  border-color: transparent;
 }
 .navbar .navbar-nav li.dropdown:hover a:hover {
   background-color: transparent;

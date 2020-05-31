@@ -12,7 +12,14 @@
     </div>
     <div class="well well-success">
         <a href="{% url 'checkout:payment-method' %}" class="pull-right">{% trans "Change" %}</a>
-        <h4>{% trans "Cash on Delivery" %}</h4>
+        <h4>{{payment_method.title}}</h4>
+
     </div>
 </div>
 {% endblock payment_method %}
+{% block hiddenforms %}
+{% if stripe_token %}
+    <input type="hidden" name="stripe_token" value="{{stripe_token}}"/>
+    <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
+{% endif %}
+{% endblock %}
