@@ -4,7 +4,6 @@
 {% csrf_token %}
 <div class="form-row">
     <input name="payment_method" type="hidden" value="{{payment_method.id}}">
-    <input name="payment_method" type="hidden" value="{{payment_method.id}}">
     <label for="card-element">
         {{ payment_method.title }}
     </label>

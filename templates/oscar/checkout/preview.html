@@ -20,6 +20,6 @@
 {% block hiddenforms %}
 {% if stripe_token %}
     <input type="hidden" name="stripe_token" value="{{stripe_token}}"/>
-    <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
 {% endif %}
+    <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
 {% endblock %}
