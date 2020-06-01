@@ -1,8 +1,9 @@
+import importlib
+
 from django_tenants.utils import get_model
 from oscar.core.loading import get_class
 
 from apps.payment.models import PaymentMethod
-from primzel.payment_gateways.gateway.stripe.client import StripeClient
 
 BillingAddress = get_model("order", "BillingAddress")
 PaymentDetailsView = get_class("checkout.views", "PaymentDetailsView")
@@ -22,16 +23,12 @@ class PaymentDetailsView(PaymentDetailsView):
 
     def handle_payment(self, order_number, total, **kwargs):
         payment_method = PaymentMethod.objects.get(pk=self.get_payment_method(request=self.request))
-        source_type, is_created = SourceType.objects.get_or_create(
-            name=payment_method.title)
-        stripe_token = self.is_stripe_payment(self.request)
-        if stripe_token:
-            source_type, is_created = SourceType.objects.get_or_create(
-                name=payment_method.title)
-            stripe_client = StripeClient(api_key=payment_method.secret_key)
-            stripe_client.create_intent(stripe_token=stripe_token,
-                                        amount=total.incl_tax * payment_method.currency_factory,
-                                        currency=total.currency)
+
+        module = importlib.import_module(
+            'primzel.payment_gateways.gateway.{gateway}.client'.format(gateway=payment_method.payment_gateway.slug))
+        Client = getattr(module, 'Client')
+
+        source_type, is_created = Client.handle_payment(self.request, self, total, payment_method)
 
         source = Source(
             source_type=source_type,
