@@ -29,7 +29,8 @@ class PaymentDetailsView(PaymentDetailsView):
             source_type, is_created = SourceType.objects.get_or_create(
                 name=payment_method.title)
             stripe_client = StripeClient(api_key=payment_method.secret_key)
-            stripe_client.create_intent(stripe_token=stripe_token, amount=int(total.incl_tax * 1000),
+            stripe_client.create_intent(stripe_token=stripe_token,
+                                        amount=total.incl_tax * payment_method.currency_factory,
                                         currency=total.currency)
 
         source = Source(
