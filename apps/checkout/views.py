@@ -15,6 +15,7 @@ SourceType = get_model("payment", "SourceType")
 
 logger = logging.getLogger(__name__)
 
+
 class PaymentDetailsView(PaymentDetailsView):
 
     def get_context_data(self, **kwargs):
@@ -50,12 +51,17 @@ class PaymentDetailsView(PaymentDetailsView):
     def is_stripe_payment(self, request):
         return request.POST.get('stripe_token', False)
 
+    def is_paypal_payment(self, request):
+        return request.POST.get('paypal_transaction_detail_object', False)
+
     def render_preview(self, request, **kwargs):
         stripe_token = self.is_stripe_payment(request)
         payment_method = self.get_payment_method(request)
+        paypal_object_str = self.is_paypal_payment(request)
         try:
             payment_method_object = PaymentMethod.objects.get(pk=payment_method)
-            kwargs.update(dict(payment_method=payment_method_object, stripe_token=stripe_token))
+            kwargs.update(dict(payment_method=payment_method_object, stripe_token=stripe_token,
+                               paypal_object_str=paypal_object_str))
         except ValueError as e:
             messages.error(
                 self.request,

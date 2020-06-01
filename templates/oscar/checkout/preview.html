@@ -16,10 +16,19 @@
 
     </div>
 </div>
+
+
 {% endblock payment_method %}
+
 {% block hiddenforms %}
+    <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
 {% if stripe_token %}
     <input type="hidden" name="stripe_token" value="{{stripe_token}}"/>
+{% elif paypal_object_str %}
+    <input type="hidden" name="paypal_object_str" value="{{paypal_object_str}}"/>
+<script type="text/javascript">
+    document.getElementById('place_order_form').submit();
+</script>
 {% endif %}
-    <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
+
 {% endblock %}

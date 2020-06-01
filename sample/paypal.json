@@ -1,0 +1,102 @@
+{
+  "create_time": "2020-06-01T17:01:53Z",
+  "update_time": "2020-06-01T17:02:11Z",
+  "id": "9YM42709T8674271E",
+  "intent": "CAPTURE",
+  "status": "COMPLETED",
+  "payer": {
+    "email_address": "sb-qz543b1983771@personal.example.com",
+    "payer_id": "6KNE4Z2284MR4",
+    "address": {
+      "address_line_1": "Spitalfields Arts Market",
+      "admin_area_2": "London",
+      "admin_area_1": "London",
+      "postal_code": "E1 6RL",
+      "country_code": "GB"
+    },
+    "name": {
+      "given_name": "John",
+      "surname": "Doe"
+    },
+    "phone": {
+      "phone_number": {
+        "national_number": "0354784227"
+      }
+    }
+  },
+  "purchase_units": [
+    {
+      "reference_id": "default",
+      "amount": {
+        "value": "1.00",
+        "currency_code": "USD"
+      },
+      "payee": {
+        "email_address": "barco.03-facilitator@gmail.com",
+        "merchant_id": "YQZCHTGHUK5P8"
+      },
+      "shipping": {
+        "name": {
+          "full_name": "John Doe"
+        },
+        "address": {
+          "address_line_1": "Spitalfields Arts Market",
+          "admin_area_2": "London",
+          "admin_area_1": "London",
+          "postal_code": "E1 6RL",
+          "country_code": "GB"
+        }
+      },
+      "payments": {
+        "captures": [
+          {
+            "status": "COMPLETED",
+            "id": "94W84435AV892813V",
+            "final_capture": true,
+            "create_time": "2020-06-01T17:02:11Z",
+            "update_time": "2020-06-01T17:02:11Z",
+            "amount": {
+              "value": "1.00",
+              "currency_code": "USD"
+            },
+            "seller_protection": {
+              "status": "ELIGIBLE",
+              "dispute_categories": [
+                "ITEM_NOT_RECEIVED",
+                "UNAUTHORIZED_TRANSACTION"
+              ]
+            },
+            "links": [
+              {
+                "href": "https://api.sandbox.paypal.com/v2/payments/captures/94W84435AV892813V",
+                "rel": "self",
+                "method": "GET",
+                "title": "GET"
+              },
+              {
+                "href": "https://api.sandbox.paypal.com/v2/payments/captures/94W84435AV892813V/refund",
+                "rel": "refund",
+                "method": "POST",
+                "title": "POST"
+              },
+              {
+                "href": "https://api.sandbox.paypal.com/v2/checkout/orders/9YM42709T8674271E",
+                "rel": "up",
+                "method": "GET",
+                "title": "GET"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v2/checkout/orders/9YM42709T8674271E",
+      "rel": "self",
+      "method": "GET",
+      "title": "GET"
+    }
+  ]
+}
