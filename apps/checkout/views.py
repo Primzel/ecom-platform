@@ -1,5 +1,7 @@
 import importlib
 
+from django.contrib import messages
+from django.utils.translation import gettext_lazy as _
 from django_tenants.utils import get_model
 from oscar.core.loading import get_class
 
@@ -49,8 +51,12 @@ class PaymentDetailsView(PaymentDetailsView):
     def render_preview(self, request, **kwargs):
         stripe_token = self.is_stripe_payment(request)
         payment_method = self.get_payment_method(request)
-        payment_method_object = PaymentMethod.objects.get(pk=payment_method)
-        if stripe_token:
-            kwargs.update(dict(stripe_token=stripe_token))
-        kwargs.update(dict(payment_method=payment_method_object))
+        try:
+            payment_method_object = PaymentMethod.objects.get(pk=payment_method)
+            kwargs.update(dict(payment_method=payment_method_object, stripe_token=stripe_token))
+        except ValueError as e:
+            messages.error(
+                self.request,
+                _("Please select payment gateway "
+                  "back to the checkout process"))
         return super(PaymentDetailsView, self).render_preview(request, **kwargs)
