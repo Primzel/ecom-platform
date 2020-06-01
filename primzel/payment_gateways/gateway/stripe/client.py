@@ -1,6 +1,6 @@
 import stripe
 
-from apps.payment.models import PaymentMethod, SourceType
+from apps.payment.models import SourceType
 
 
 class Client():
