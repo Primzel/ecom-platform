@@ -1,4 +1,5 @@
 import importlib
+import logging
 
 from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +13,7 @@ PaymentDetailsView = get_class("checkout.views", "PaymentDetailsView")
 Source = get_model("payment", "Source")
 SourceType = get_model("payment", "SourceType")
 
+logger = logging.getLogger(__name__)
 
 class PaymentDetailsView(PaymentDetailsView):
 
@@ -59,4 +61,5 @@ class PaymentDetailsView(PaymentDetailsView):
                 self.request,
                 _("Please select payment gateway "
                   "back to the checkout process"))
+            logger.error(e)
         return super(PaymentDetailsView, self).render_preview(request, **kwargs)
