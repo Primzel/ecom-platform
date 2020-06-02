@@ -30,7 +30,7 @@ def ipn_callback(request, payment_method, *args, **kwargs):
         oscar_order = Order.objects.get(basket__id=metadata.basket_id)
         payment_event = PaymentEvent(
             order=oscar_order,
-            amount=payment_intent.amount,
+            amount=payment_intent.amount / payment_method.currency_factory,
             event_type=event_type,
             reference=event.id
         )
