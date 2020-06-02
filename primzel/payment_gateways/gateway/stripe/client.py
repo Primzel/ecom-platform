@@ -28,5 +28,5 @@ class Client():
         stripe_client = Client(**dict(api_key=payment_method.secret_key))
         stripe_client.create_intent(stripe_token=stripe_token,
                                     amount=int(total.incl_tax * payment_method.currency_factory),
-                                    currency=total.currency)
+                                    currency=total.currency, metadata=dict(basket_id=request.basket.id))
         return source_type, is_created

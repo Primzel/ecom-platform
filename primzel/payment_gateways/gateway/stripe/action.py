@@ -1,9 +1,11 @@
 import stripe
 from django.http import HttpResponse
-from oscar.apps.order.models import PaymentEvent, Order
+from oscar.apps.order.models import PaymentEvent, Order, PaymentEventType
+
+from primzel.payment_gateways.gateway.stripe.enums import PaymentEventTypeEnum
 
 
-def ipn_callback(request,payment_method, *args, **kwargs):
+def ipn_callback(request, payment_method, *args, **kwargs):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
 
@@ -21,12 +23,14 @@ def ipn_callback(request,payment_method, *args, **kwargs):
     # Handle the event
     if event.type == 'charge.succeeded':
         payment_intent = event.data.object  # contains a stripe.PaymentIntent
-        order = payment_intent.order
-        oscar_order = Order.objects.get(number=order.number)
+        metadata = payment_intent.metadata
+        event_type = PaymentEventType.objects.get_or_create(code=PaymentEventTypeEnum.PAYMENT_CONFIRMED.name,
+                                                            name=PaymentEventTypeEnum.PAYMENT_CONFIRMED.value)
+        oscar_order = Order.objects.get(basket__id=metadata.basket_id)
         payment_event = PaymentEvent(
             order=oscar_order,
             amount=payment_intent.amount,
-            event_type_id=kwargs.get('payment_event_type_id'),
+            event_type=event_type,
             reference=event.id
         )
         payment_event.save()
