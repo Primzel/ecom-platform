@@ -24,8 +24,9 @@ def ipn_callback(request, payment_method, *args, **kwargs):
     if event.type == 'charge.succeeded':
         payment_intent = event.data.object  # contains a stripe.PaymentIntent
         metadata = payment_intent.metadata
-        event_type = PaymentEventType.objects.get_or_create(code=PaymentEventTypeEnum.PAYMENT_CONFIRMED.name,
-                                                            name=PaymentEventTypeEnum.PAYMENT_CONFIRMED.value)
+        event_type, is_created = PaymentEventType.objects.get_or_create(
+            code=PaymentEventTypeEnum.PAYMENT_CONFIRMED.name,
+            name=PaymentEventTypeEnum.PAYMENT_CONFIRMED.value)
         oscar_order = Order.objects.get(basket__id=metadata.basket_id)
         payment_event = PaymentEvent(
             order=oscar_order,
