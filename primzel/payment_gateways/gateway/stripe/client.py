@@ -17,9 +17,9 @@ class Client():
             source=idempotency_key,
         )
 
-    def create_intent(self, stripe_token, amount, currency):
+    def create_intent(self, stripe_token, amount, currency, **kwargs):
         return stripe.Charge.create(source=stripe_token, api_key=self.api_key, stripe_version=self.stripe_version,
-                                    currency=currency, amount=amount)
+                                    currency=currency, amount=amount, **kwargs)
 
     @classmethod
     def handle_payment(cls, request, view, total, payment_method, *args, **kwargs):
