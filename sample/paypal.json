@@ -100,3 +100,179 @@
     }
   ]
 }
+
+{
+  "id": "WH-78P132864X709793X-8MD24418F65591433",
+  "event_version": "1.0",
+  "create_time": "2020-06-02T19:02:08.294Z",
+  "resource_type": "checkout-order",
+  "resource_version": "2.0",
+  "event_type": "CHECKOUT.ORDER.APPROVED",
+  "summary": "An order has been approved by buyer",
+  "resource": {
+    "update_time": "2020-06-02T19:02:07Z",
+    "create_time": "2020-06-02T19:01:52Z",
+    "purchase_units": [
+      {
+        "reference_id": "default",
+        "amount": {
+          "currency_code": "USD",
+          "value": "111.00"
+        },
+        "payee": {
+          "email_address": "sb-noufz1493490@business.example.com",
+          "merchant_id": "BQ4547A9NLSSL"
+        },
+        "shipping": {
+          "name": {
+            "full_name": "John Doe"
+          },
+          "address": {
+            "address_line_1": "Spitalfields Arts Market",
+            "admin_area_2": "London",
+            "admin_area_1": "London",
+            "postal_code": "E1 6RL",
+            "country_code": "GB"
+          }
+        },
+        "payments": {
+          "captures": [
+            {
+              "id": "0UF64074RS855251E",
+              "status": "COMPLETED",
+              "amount": {
+                "currency_code": "USD",
+                "value": "111.00"
+              },
+              "final_capture": true,
+              "seller_protection": {
+                "status": "ELIGIBLE",
+                "dispute_categories": [
+                  "ITEM_NOT_RECEIVED",
+                  "UNAUTHORIZED_TRANSACTION"
+                ]
+              },
+              "seller_receivable_breakdown": {
+                "gross_amount": {
+                  "currency_code": "USD",
+                  "value": "111.00"
+                },
+                "paypal_fee": {
+                  "currency_code": "USD",
+                  "value": "4.63"
+                },
+                "net_amount": {
+                  "currency_code": "USD",
+                  "value": "106.37"
+                }
+              },
+              "links": [
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/0UF64074RS855251E",
+                  "rel": "self",
+                  "method": "GET"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/payments/captures/0UF64074RS855251E/refund",
+                  "rel": "refund",
+                  "method": "POST"
+                },
+                {
+                  "href": "https://api.sandbox.paypal.com/v2/checkout/orders/63C90055YB103015C",
+                  "rel": "up",
+                  "method": "GET"
+                }
+              ],
+              "create_time": "2020-06-02T19:02:07Z",
+              "update_time": "2020-06-02T19:02:07Z"
+            }
+          ]
+        }
+      }
+    ],
+    "links": [
+      {
+        "href": "https://api.sandbox.paypal.com/v2/checkout/orders/63C90055YB103015C",
+        "rel": "self",
+        "method": "GET"
+      }
+    ],
+    "id": "63C90055YB103015C",
+    "intent": "CAPTURE",
+    "payer": {
+      "name": {
+        "given_name": "John",
+        "surname": "Doe"
+      },
+      "email_address": "sb-qz543b1983771@personal.example.com",
+      "payer_id": "6KNE4Z2284MR4",
+      "address": {
+        "country_code": "GB"
+      }
+    },
+    "status": "COMPLETED"
+  },
+  "links": [
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks-events/WH-78P132864X709793X-8MD24418F65591433",
+      "rel": "self",
+      "method": "GET"
+    },
+    {
+      "href": "https://api.sandbox.paypal.com/v1/notifications/webhooks-events/WH-78P132864X709793X-8MD24418F65591433/resend",
+      "rel": "resend",
+      "method": "POST"
+    }
+  ]
+}
+
+
+{
+  'amount': {
+    'value': '111.00',
+    'currency_code': 'USD'
+  },
+  'seller_protection': {
+    'dispute_categories': [
+      'ITEM_NOT_RECEIVED',
+      'UNAUTHORIZED_TRANSACTION'
+    ],
+    'status': 'ELIGIBLE'
+  },
+  'update_time': '2020-06-02T20:18:51Z',
+  'create_time': '2020-06-02T20:18:51Z',
+  'final_capture': True,
+  'seller_receivable_breakdown': {
+    'paypal_fee': {
+      'value': '4.63',
+      'currency_code': 'USD'
+    },
+    'gross_amount': {
+      'value': '111.00',
+      'currency_code': 'USD'
+    },
+    'net_amount': {
+      'value': '106.37',
+      'currency_code': 'USD'
+    }
+  },
+  'links': [
+    {
+      'method': 'GET',
+      'rel': 'self',
+      'href': 'https://api.sandbox.paypal.com/v2/payments/captures/6PD88532783567016'
+    },
+    {
+      'method': 'POST',
+      'rel': 'refund',
+      'href': 'https://api.sandbox.paypal.com/v2/payments/captures/6PD88532783567016/refund'
+    },
+    {
+      'method': 'GET',
+      'rel': 'up',
+      'href': 'https://api.sandbox.paypal.com/v2/checkout/orders/3A934921D1464864A'
+    }
+  ],
+  'id': '6PD88532783567016',
+  'status': 'COMPLETED'
+}

@@ -33,7 +33,7 @@ class PaymentDetailsView(PaymentDetailsView):
             'primzel.payment_gateways.gateway.{gateway}.client'.format(gateway=payment_method.payment_gateway.slug))
         Client = getattr(module, 'Client')
 
-        source_type, is_created = Client.handle_payment(self.request, self, total, payment_method)
+        source_type, is_created = Client.handle_payment(self.request, self, total, payment_method,order_number=order_number)
 
         source = Source(
             source_type=source_type,
@@ -69,3 +69,7 @@ class PaymentDetailsView(PaymentDetailsView):
                   "back to the checkout process"))
             logger.error(e)
         return super(PaymentDetailsView, self).render_preview(request, **kwargs)
+
+    def handle_place_order_submission(self, request):
+
+        return super(PaymentDetailsView, self).handle_place_order_submission(request)

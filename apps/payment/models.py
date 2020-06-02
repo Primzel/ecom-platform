@@ -21,3 +21,9 @@ class PaymentMethod(models.Model):
 
     def __str__(self):
         return self.title
+
+class PaypalTransaction(models.Model):
+    reference = models.CharField(max_length=255)
+    status = models.CharField(max_length=255)
+    number = models.CharField(
+        _("Order number"), max_length=128, db_index=True, unique=True)
