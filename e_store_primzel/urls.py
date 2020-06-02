@@ -18,6 +18,9 @@ from django.conf import settings
 # from django.conf.urls import include, url  # < Django-2.0
 from django.urls import include, path  # > Django-2.0
 from django.contrib import admin
+from django.views.decorators.csrf import csrf_exempt
+
+from primzel.payment_gateways.views import IPNActionView
 
 urlpatterns = [
     # url(r'^i18n/', include('django.conf.urls.i18n')),
@@ -32,6 +35,7 @@ urlpatterns = [
     # url(r'^', include(apps.get_app_config('oscar').urls[0])),
     path('', include(apps.get_app_config('oscar').urls[0])),  # > Django-2.0
     path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
+    path('ipn/<str:gateway>/<int:payment_event_type_id>/<str:payment_method>/', csrf_exempt(IPNActionView.as_view())),
 ]
 
 

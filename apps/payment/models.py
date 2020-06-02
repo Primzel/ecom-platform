@@ -11,6 +11,7 @@ class PaymentMethod(models.Model):
                                         related_name='integrations')
     publishable_key = models.CharField(max_length=1024, blank=False, null=False, help_text=_('Publishable key'))
     secret_key = models.CharField(max_length=1024, blank=False, null=False, help_text=_('Secret key'))
+    signing_secret_key = models.CharField(max_length=1024, help_text=_('Signing secret key'), blank=True, null=True)
     price_currency = models.CharField(
         _("Currency"), max_length=12, default=get_default_currency)
     currency_factory = models.IntegerField(default=1,
