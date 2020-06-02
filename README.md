@@ -17,3 +17,9 @@
 #How to create superuser.
 
 1. `python manage.py createsuperuser`
+
+#Stripe Cli.
+
+1. docker run --rm -it stripe/stripe-cli listen --load-from-webhooks-api --forward-to 192.168.1.4:8000 --api-key <paste-api-key-here>
+2. docker run --rm -it stripe/stripe-cli logs tail --api-key <paste-api-key-here>
+3. docker run --rm -it stripe/stripe-cli trigger charge.succeeded --api-key <paste-api-key-here>
