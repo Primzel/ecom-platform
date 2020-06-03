@@ -23,3 +23,4 @@ woocommerce==2.1.1
 aws-xray-sdk==2.5.0
 Pillow==7.0.0
 stripe
+django_compressor
