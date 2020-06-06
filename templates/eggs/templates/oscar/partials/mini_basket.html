@@ -63,8 +63,10 @@
                     <a class="btn btn-outline-secondary btn-sm" href="shop-cart.html">Expand cart<i
                             class="czi-arrow-right ml-1 mr-n1"></i></a>
                 </div>
-                <a class="btn btn-primary btn-sm btn-block" href="checkout-details.html"><i
-                        class="czi-card mr-2 font-size-base align-middle"></i>Checkout</a>
+                <a class="btn btn-primary btn-sm btn-block" href="{% url 'checkout:index' %}">
+                    <i class="czi-card mr-2 font-size-base align-middle"></i>
+                    Checkout
+                </a>
             </div>
         </div>
     </div>
