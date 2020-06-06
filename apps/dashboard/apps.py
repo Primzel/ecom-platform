@@ -9,6 +9,7 @@ class DashboardConfig(apps.DashboardConfig):
     def ready(self):
         super(DashboardConfig, self).ready()
         self.configurable_menu_app = django_apps.get_app_config('configurable_menu')
+        self.payment_app = django_apps.get_app_config('payment')
 
     def get_urls(self):
         from django.contrib.auth import views as auth_views
@@ -34,6 +35,7 @@ class DashboardConfig(apps.DashboardConfig):
                                              authentication_form=AuthenticationForm),
                 name='login'),
             url(r'^logout/$', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+            url(r'^payment/', include((self.payment_app.urls[0], 'payment'), namespace='payment')),
 
         ]
         return self.post_process_urls(urls)
