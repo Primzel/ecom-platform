@@ -3,7 +3,7 @@
 {% load i18n %}
 {% load display_tags %}
 {% load staticfiles %}
-
+{% load purchase_info_tags %}
 {% block product %}
 <div class="card product-card">
     <button class="btn-wishlist btn-sm" type="button" data-toggle="tooltip" data-placement="left"
@@ -37,24 +37,23 @@
         </div>
     </div>
     <div class="card-body card-body-hidden">
+        {% if product.is_parent %}
         <div class="text-center pb-2">
+        {% for child in product.children.all %}
+        {% purchase_info_for_product request child as child_session %}
+        {% if child_session.availability.is_available_to_buy %}
+<!--        <a href="{{ child.get_absolute_url }}">{{ child.get_title }}</a><br>-->
+
             <div class="custom-control custom-option custom-control-inline mb-2">
-                <input class="custom-control-input" type="radio" name="size1" id="s-75">
-                <label class="custom-option-label" for="s-75">7.5</label>
+                <input class="custom-control-input" type="radio" name="size1" id="s-{{ child.get_title }}">
+                <label class="custom-option-label" for="s-{{ child.get_title }}">{{ child.get_title }}</label>
             </div>
-            <div class="custom-control custom-option custom-control-inline mb-2">
-                <input class="custom-control-input" type="radio" name="size1" id="s-80" checked>
-                <label class="custom-option-label" for="s-80">8</label>
-            </div>
-            <div class="custom-control custom-option custom-control-inline mb-2">
-                <input class="custom-control-input" type="radio" name="size1" id="s-85">
-                <label class="custom-option-label" for="s-85">8.5</label>
-            </div>
-            <div class="custom-control custom-option custom-control-inline mb-2">
-                <input class="custom-control-input" type="radio" name="size1" id="s-90">
-                <label class="custom-option-label" for="s-90">9</label>
-            </div>
+
+        {% endif %}
+        {% endfor %}
         </div>
+        {% endif %}
+
 
         {% if not product.is_parent and not product.has_options %}
         {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}

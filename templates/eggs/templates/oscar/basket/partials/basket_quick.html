@@ -1,0 +1,33 @@
+{% load history_tags %}
+{% load basket_tags %}
+{% load currency_filters %}
+{% load image_tags %}
+{% load i18n %}
+{% load staticfiles %}
+{% if request.basket.num_lines %}
+{% for line in request.basket.all_lines %}
+<div class="widget-cart-item pb-2 border-bottom">
+    <button class="close text-danger" type="button" aria-label="Remove"><span
+            aria-hidden="true">&times;</span></button>
+    <div class="media align-items-center">
+        {% with image=line.product.primary_image %}
+        {% oscar_thumbnail image.original "64x64" upscale=False as thumb %}
+        <a href="{{ line.product.get_absolute_url }}" class="d-block mr-2">
+            <img class="thumbnail" src="{{ thumb.url }}" alt="{{ line.product.get_title }}">
+        </a>
+        {% endwith %}
+        <div class="media-body">
+            <h6 class="widget-product-title">
+                <a href="shop-single-v1.html">Women Colorblock Sneakers</a>
+            </h6>
+            <div class="widget-product-meta">
+                <span class="text-accent mr-2">
+                    {{ line.unit_price_excl_tax|currency:request.basket.currency }}
+                </span>
+                <span class="text-muted">x {{ line.quantity }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endif %}

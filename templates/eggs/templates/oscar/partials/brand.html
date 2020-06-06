@@ -1,12 +1,28 @@
-<a class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" href="index.html" style="min-width: 7rem;">
-    <img width="142" src="/static/oscar/img/logo-dark.png" alt="Cartzilla"/></a>
-<a class="navbar-brand d-sm-none mr-2" href="index.html" style="min-width: 4.625rem;">
-    <img width="74"
-         src="/static/oscar/img/logo-icon.png"
-         alt="Cartzilla"/>
+{% load i18n %}
+{% load image_tags %}
+{% block brand_title %}
+{% if setting %}
+{% with image=setting.logo %}
+{% oscar_thumbnail image.url setting.logo_size crop='center' quality=99 as thumb %}
+<a href="{{ homepage_url }}" class="navbar-brand d-none d-sm-block mr-3 flex-shrink-0" style="min-width: 7rem;">
+    <img src="{{ thumb.url }}" alt="{{ setting.store_name }}">
 </a>
-<div class="input-group-overlay d-none d-lg-flex mx-4">
-    <input class="form-control appended-form-control" type="text" placeholder="Search for products">
-    <div class="input-group-append-overlay"><span class="input-group-text"><i
-            class="czi-search"></i></span></div>
-</div>
+{% endwith %}
+{% endif %}
+
+
+{% if setting %}
+{% with image=setting.logo %}
+{% oscar_thumbnail image.url setting.logo_size crop='center' quality=99 as thumb %}
+<a href="{{ homepage_url }}" class="navbar-brand d-sm-none mr-2" style="min-width: 4.625rem;">
+    <img src="{{ thumb.url }}" alt="{{ setting.store_name }}" width="74"/>
+</a>
+{% endwith %}
+{% endif %}
+{% endblock %}
+<form class="input-group-overlay d-none d-lg-flex mx-4" method="get" action="{% url 'search:search' %}">
+
+        <input class="form-control appended-form-control" name="q" type="text" placeholder="{% trans " Search for products" %}">
+        <div class="input-group-append-overlay"><span class="input-group-text"><i
+                class="czi-search"></i></span></div>
+</form>
