@@ -1,0 +1,42 @@
+<div class="steps steps-light pt-2 pb-3 mb-5">
+    <a class="step-item active {% if step == 'CART' %} current {% endif %}" href="shop-cart.html">
+        <div class="step-progress">
+            <span class="step-count">1</span>
+        </div>
+        <div class="step-label">
+            <i class="czi-cart"></i>Cart
+        </div>
+    </a>
+    <a class="step-item {% if step == 'ADDRESS' %} active current {% endif %}" href="checkout-details.html">
+        <div class="step-progress">
+            <span class="step-count">2</span>
+        </div>
+        <div class="step-label">
+            <i class="czi-user-circle"></i>Your details
+        </div>
+    </a>
+    <a class="step-item {% if step == 'SHIPPING' %} active current {% endif %}" href="checkout-shipping.html">
+        <div class="step-progress">
+            <span class="step-count">3</span>
+        </div>
+        <div class="step-label">
+            <i class="czi-package"></i>Shipping
+        </div>
+    </a>
+    <a class="step-item {% if step == 'PAYMENT' %} active current {% endif %}" href="checkout-payment.html">
+        <div class="step-progress">
+            <span class="step-count">4</span>
+        </div>
+        <div class="step-label">
+            <i class="czi-card"></i>Payment
+        </div>
+    </a>
+    <a class="step-item {% if step  == 'REVIEW' %} active current {% endif %}" href="checkout-review.html">
+        <div class="step-progress">
+            <span class="step-count">5</span>
+        </div>
+        <div class="step-label">
+            <i class="czi-check-circle"></i>Review
+        </div>
+    </a>
+</div>

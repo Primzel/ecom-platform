@@ -1,0 +1,16 @@
+<div class="d-none d-lg-flex pt-4 mt-3">
+    <div class="w-50 pr-3">
+        <a class="btn btn-secondary btn-block" href="{{ previous_step_url }}">
+            <i class="czi-arrow-left mt-sm-0 mr-1"></i>
+            <span class="d-none d-sm-inline">Back to {{ previous_step }}</span>
+            <span class="d-inline d-sm-none">Back</span>
+        </a>
+    </div>
+    <div class="w-50 pl-2">
+        <button class="btn btn-primary btn-block" href="{{ next_step_url }}" type="submit">
+            <span class="d-none d-sm-inline">Proceed to {{next_step}}</span>
+            <span class="d-inline d-sm-none">Next</span>
+            <i class="czi-arrow-right mt-sm-0 ml-1"></i>
+        </button>
+    </div>
+</div>
