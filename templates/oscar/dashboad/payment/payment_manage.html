@@ -1,0 +1,34 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load sorting_tags %}
+{% load i18n %}
+
+{% block body_class %}{{ block.super }} create-page bank cards{% endblock %}
+{% block title %}
+    {{ bankcard.name }} | {% trans "Bank Cards" %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        </li>
+        <li>
+            <a href="{% url 'dashboard:dashboard_payment:bankcards-list' %}">{% trans "Bank Cards" %}</a>
+        </li>
+        <li class="active">{{ bankcard.name }}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}{{ bankcard.name }}{% endblock %}
+
+{% block dashboard_content %}
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-header">
+                <h2>{{ title }}</h2>
+            </div>
+            {% include "oscar/dashboard/partials/form.html" with form=form class="well" %}
+        </div>
+    </div>
+{% endblock dashboard_content %}

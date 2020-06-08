@@ -22,7 +22,7 @@ OSCAR_DASHBOARD_NAVIGATION += [
         'children': [
             {
                 'label': _('Bankcards'),
-                'url_name': 'dashboard:dashboard_payment:bankcard-create',
+                'url_name': 'dashboard:dashboard_payment:bankcards-list',
             },
             {
                 'label': _('Payment methods'),

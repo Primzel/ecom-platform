@@ -15,10 +15,15 @@ class PaymentDashboardConfig(OscarDashboardConfig):
 
     def ready(self):
         self.bankcard_create_view = get_class('dashboard.dashboard_payment.views', 'BankCardCreateView')
+        self.bankcard_list_view = get_class('dashboard.dashboard_payment.views', 'BankCardListView')
+        self.bankcard_delete_view = get_class('dashboard.dashboard_payment.views', 'BankCardDeleteView')
+        self.bankcard_manage_view = get_class('dashboard.dashboard_payment.views', 'BankCardManageView')
 
     def get_urls(self):
         urls = [
-            # url(r'^$', self.list_view.as_view(), name='partner-list'),
+            url(r'^$', self.bankcard_list_view.as_view(), name='bankcards-list'),
             url(r'^bankcard/create/$', self.bankcard_create_view.as_view(), name='bankcard-create'),
+            url(r'^bankcard/(?P<pk>\d+)/delete/$', self.bankcard_delete_view.as_view(), name='bankcard-delete'),
+            url(r'^bankcard/(?P<pk>\d+)/manage/$', self.bankcard_manage_view.as_view(), name='bankcard-manage'),
         ]
         return self.post_process_urls(urls)
