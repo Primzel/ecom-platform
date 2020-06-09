@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load staticfiles %}
+{% load image_tags %}
 <html lang="{{ LANGUAGE_CODE|default:"en-gb" }}" class="{% block html_class %}no-js{% endblock %}">
 
 <!-- Mirrored from demo.createx.studio/cartzilla/home-fashion-store-v1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 25 May 2020 09:13:27 GMT -->
@@ -190,7 +191,16 @@
             <hr class="hr-light pb-4 mb-3">
             <div class="row pb-2">
                 <div class="col-md-6 text-center text-md-left mb-4">
-                    <div class="text-nowrap mb-4"><a class="d-inline-block align-middle mt-n1 mr-3" href="#"><img class="d-block" width="117" src="/static/oscar/img/footer-logo-light.png" alt="Cartzilla"/></a>
+                    <div class="text-nowrap mb-4">
+
+                        {% if setting %}
+                        {% with image=setting.logo %}
+                        {% oscar_thumbnail image.url 'x100' crop='center' quality=99 as thumb %}
+                        <a href="{{ homepage_url }}" class="d-inline-block align-middle mt-n1 mr-3" style="min-width: 7rem;">
+                            <img src="{{ thumb.url }}" class="d-block" width="117"  alt="{{ setting.store_name }}">
+                        </a>
+                        {% endwith %}
+                        {% endif %}
                         <div class="btn-group dropdown disable-autohide">
                             <button class="btn btn-outline-light border-light btn-sm dropdown-toggle px-2" type="button" data-toggle="dropdown"><img class="mr-2" width="20" src="/static/oscar/img/flags/en.png" alt="English"/>Eng / $
                             </button>
