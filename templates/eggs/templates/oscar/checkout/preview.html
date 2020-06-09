@@ -12,7 +12,6 @@
     <div class="row">
         <section class="col-lg-8">
             <!-- Steps-->
-            <!-- Steps-->
             {% include 'oscar/checkout/partials/steps.html' with step='REVIEW' %}
             {% if not basket.is_empty %}
 
@@ -40,8 +39,7 @@
                 </div>
                 <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-right" style="max-width: 9rem;">
                     <p class="mb-0"><span class="text-muted font-size-sm">Quantity:</span><span>&nbsp;{{ line.quantity }}</span></p>
-                    <button class="btn btn-link px-0" type="button"><i class="czi-edit mr-2"></i><span
-                            class="font-size-sm">Edit</span></button>
+
                 </div>
             </div>
             {% endfor %}
@@ -52,31 +50,39 @@
                     <div class="col-sm-6">
                         <h4 class="h6">Shipping to:</h4>
                         <ul class="list-unstyled font-size-sm">
-                            <li><span class="text-muted">Client:&nbsp;</span>Susan Gardner</li>
-                            <li><span class="text-muted">Address:&nbsp;</span>44 Shirley Ave. West Chicago, IL 60185,
-                                USA
+                            <li>
+                                <span class="text-muted">Address:&nbsp;</span>
+                                {{shipping_address.summary}}
                             </li>
-                            <li><span class="text-muted">Phone:&nbsp;</span>+1 (808) 764 554 330</li>
+                            <li>
+                                <span class="text-muted">Phone:&nbsp;</span>{{shipping_address.phone_number}}
+                            </li>
                         </ul>
                     </div>
                     <div class="col-sm-6">
                         <h4 class="h6">Payment method:</h4>
                         <ul class="list-unstyled font-size-sm">
-                            <li><span class="text-muted">Credit Card:&nbsp;</span>**** **** **** 5300</li>
+                            <li><span class="text-muted">Payment Method:&nbsp;</span>{{payment_method.title}}</li>
                         </ul>
                     </div>
                 </div>
             </div>
-            <!-- Navigation (desktop)-->
-            <div class="d-none d-lg-flex pt-4">
-                <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" href="checkout-payment.html"><i
-                        class="czi-arrow-left mt-sm-0 mr-1"></i><span
-                        class="d-none d-sm-inline">Back to Payment</span><span
-                        class="d-inline d-sm-none">Back</span></a></div>
-                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="checkout-complete.html"><span
-                        class="d-none d-sm-inline">Complete order</span><span class="d-inline d-sm-none">Complete</span><i
-                        class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
-            </div>
+            <form method="post" action="{% url 'checkout:preview' %}" id="place_order_form">
+                {% csrf_token %}
+                <input type="hidden" name="action" value="place_order" />
+                <input type="hidden" name="payment_method" value="{{payment_method.id}}"/>
+                {% if stripe_token %}
+                <input type="hidden" name="stripe_token" value="{{stripe_token}}"/>
+                {% elif paypal_object_str %}
+                <input type="hidden" name="paypal_object_str" value="{{paypal_object_str}}"/>
+                <script type="text/javascript">
+                    document.getElementById('place_order_form').submit();
+                </script>
+                {% endif %}
+                <!-- Navigation (desktop)-->
+                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='Payment' next_step='Submission' %}
+            </form>
+
         </section>
 
         <!-- Sidebar-->

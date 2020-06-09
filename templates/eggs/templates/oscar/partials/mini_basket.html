@@ -29,13 +29,13 @@
         </div>
     </a>
     <div class="navbar-tool dropdown ml-3">
-        <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="shop-cart.html">
+        <a class="navbar-tool-icon-box bg-secondary dropdown-toggle" href="{% url 'basket:summary' %}">
         <span class="navbar-tool-label">
             {{request.basket.num_lines}}
         </span>
             <i class="navbar-tool-icon czi-cart"></i>
         </a>
-        <a class="navbar-tool-text" href="shop-cart.html">
+        <a class="navbar-tool-text" href="{% url 'basket:summary' %}">
             <small>My Cart</small>
             {% if request.basket.is_tax_known %}
             {{ request.basket.total_incl_tax|currency:request.basket.currency }}
@@ -60,7 +60,7 @@
                         {% endif %}
                     </span>
                     </div>
-                    <a class="btn btn-outline-secondary btn-sm" href="shop-cart.html">Expand cart<i
+                    <a class="btn btn-outline-secondary btn-sm" href="{% url 'basket:summary' %}">Expand cart<i
                             class="czi-arrow-right ml-1 mr-n1"></i></a>
                 </div>
                 <a class="btn btn-primary btn-sm btn-block" href="{% url 'checkout:index' %}">
