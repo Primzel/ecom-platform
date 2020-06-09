@@ -1,0 +1,86 @@
+{% extends "oscar/layout.html" %}
+{% load i18n %}
+{% load image_tags %}
+{% load currency_filters %}
+{% load purchase_info_tags %}
+{% load widget_tweaks %}
+
+{% block content_wrapper %}
+
+{% include 'oscar/checkout/partials/checkout_page_header.html'%}
+<div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+        <section class="col-lg-8">
+            <!-- Steps-->
+            <!-- Steps-->
+            {% include 'oscar/checkout/partials/steps.html' with step='REVIEW' %}
+            {% if not basket.is_empty %}
+
+
+            <!-- Order details-->
+            <h2 class="h6 pt-1 pb-3 mb-3 border-bottom">Review your order</h2>
+            {% for line in request.basket.all_lines %}
+            <!-- Item-->
+            <div class="d-sm-flex justify-content-between my-4 pb-3 border-bottom">
+                <div class="media media-ie-fix d-block d-sm-flex text-center text-sm-left">
+                    {% with image=line.product.primary_image %}
+                    {% oscar_thumbnail image.original "240x240" upscale=False as thumb %}
+                    <a href="{{ line.product.get_absolute_url }}" class="d-block mr-2">
+                        <img class="thumbnail" src="{{ thumb.url }}" alt="{{ line.product.get_title }}">
+                    </a>
+                    {% endwith %}
+                    <div class="media-body pt-2">
+                        <h3 class="product-title font-size-base mb-2"><a href="shop-single-v1.html">{{ line.product.title }}</a></h3>
+                        {% for av in line.product.attribute_values.all %}
+                        <div class="font-size-sm"><span class="text-muted mr-2">{{ av.attribute.name }}:</span>{{ av.value_as_html }}</div>
+                        {% endfor %}
+
+                        <div class="font-size-lg text-accent pt-2">{{ line.unit_price_excl_tax|currency:request.basket.currency }}</div>
+                    </div>
+                </div>
+                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-right" style="max-width: 9rem;">
+                    <p class="mb-0"><span class="text-muted font-size-sm">Quantity:</span><span>&nbsp;{{ line.quantity }}</span></p>
+                    <button class="btn btn-link px-0" type="button"><i class="czi-edit mr-2"></i><span
+                            class="font-size-sm">Edit</span></button>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <!-- Client details-->
+            <div class="bg-secondary rounded-lg px-4 pt-4 pb-2">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4 class="h6">Shipping to:</h4>
+                        <ul class="list-unstyled font-size-sm">
+                            <li><span class="text-muted">Client:&nbsp;</span>Susan Gardner</li>
+                            <li><span class="text-muted">Address:&nbsp;</span>44 Shirley Ave. West Chicago, IL 60185,
+                                USA
+                            </li>
+                            <li><span class="text-muted">Phone:&nbsp;</span>+1 (808) 764 554 330</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6">
+                        <h4 class="h6">Payment method:</h4>
+                        <ul class="list-unstyled font-size-sm">
+                            <li><span class="text-muted">Credit Card:&nbsp;</span>**** **** **** 5300</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation (desktop)-->
+            <div class="d-none d-lg-flex pt-4">
+                <div class="w-50 pr-3"><a class="btn btn-secondary btn-block" href="checkout-payment.html"><i
+                        class="czi-arrow-left mt-sm-0 mr-1"></i><span
+                        class="d-none d-sm-inline">Back to Payment</span><span
+                        class="d-inline d-sm-none">Back</span></a></div>
+                <div class="w-50 pl-2"><a class="btn btn-primary btn-block" href="checkout-complete.html"><span
+                        class="d-none d-sm-inline">Complete order</span><span class="d-inline d-sm-none">Complete</span><i
+                        class="czi-arrow-right mt-sm-0 ml-1"></i></a></div>
+            </div>
+        </section>
+
+        <!-- Sidebar-->
+        {% include "oscar/checkout/partials/order_summery.html"%}
+    </div>
+</div>
+{% endblock %}

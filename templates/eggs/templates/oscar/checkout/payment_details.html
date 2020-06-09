@@ -1,0 +1,32 @@
+{% extends "oscar/layout.html" %}
+{% load i18n %}
+{% load staticfiles %}
+
+{% block content_wrapper %}
+
+{% include 'oscar/checkout/partials/checkout_page_header.html'%}
+<div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+        <section class="col-lg-8">
+            <!-- Steps-->
+            {% include 'oscar/checkout/partials/steps.html' with step='PAYMENT' %}
+
+            <h2 class="h6 pb-3 mb-2">Choose payment method</h2>
+
+            <div class="accordion mb-2" id="payment-method" role="tablist">
+                {% for p_method in payment_methods %}
+                {% with template='oscar/checkout/partials/'|add:p_method.payment_gateway.slug|add:'.html' %}
+                {% include template with payment_method=p_method %}
+                {% endwith %}
+                {% endfor %}
+            </div>
+
+        </section>
+        <!-- Sidebar-->
+        {% include "oscar/checkout/partials/order_summery.html"%}
+    </div>
+</div>
+{% endblock %}
+{% block extrascripts %}
+<script src='{% static "oscar/js/card.min.js" %}'></script>
+{% endblock %}
