@@ -26,23 +26,23 @@ OSCAR_DASHBOARD_NAVIGATION += [
             },
             {
                 'label': _('Payment methods'),
-                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
+                'url_name': 'dashboard:dashboard_payment:payment_methods-list',
             },
             {
                 'label': _('Source Types'),
-                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
+                'url_name': 'dashboard:dashboard_payment:source_types-list',
             },
             {
                 'label': _('Sources'),
-                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
+                'url_name': 'dashboard:dashboard_payment:sources-list',
             },
             {
                 'label': _('Transactions'),
-                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
+                'url_name': 'dashboard:dashboard_payment:transactions-list',
             },
             {
                 'label': _('Available payment gateways'),
-                'url_name': 'dashboard:configurable_menu:partner-configurable-menu-listing',
+                'url_name': 'dashboard:dashboard_payment:payment_gateways-list',
             },
         ]
     },

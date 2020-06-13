@@ -1,0 +1,53 @@
+{% extends 'oscar/dashboad/payment/payment_list.html' %}
+{% load sorting_tags %}
+{% load i18n %}
+
+{% block dashboard_content %}
+
+    <form method="post" class="order_table">
+        {% csrf_token %}
+        <table class="table table-striped table-bordered">
+            <caption>
+                <i class="icon-briefcase icon-large"></i>{{ queryset_description }}
+            </caption>
+            {% if payment_gateways %}
+                <tr>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Slug' %}</th>
+                    <th>{% trans 'Active' %}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                {% for payment_gateway in payment_gateways %}
+                    <tr>
+                        <td>
+                            {{ payment_gateway.name }}
+                        </td>
+                        <td>
+                            {{ payment_gateway.slug }}
+                        </td>
+                         <td>
+                            {{ payment_gateway.is_active }}
+                        </td>
+                        <td>
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                                        {% trans "Actions" %}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-manage' pk=payment_gateway.pk %}">{% trans "Edit Payment Method" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-delete' pk=payment_gateway.pk %}">{% trans "Delete Payment Method" %}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td>{% blocktrans %} "No {{ title }} found. {% endblocktrans %}</td></tr>
+            {% endif %}
+        </table>
+        {% include "oscar/dashboard/partials/pagination.html" %}
+    </form>
+{% endblock dashboard_content %}
