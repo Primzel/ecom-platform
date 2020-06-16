@@ -9,6 +9,7 @@ class DashboardConfig(apps.DashboardConfig):
     def ready(self):
         super(DashboardConfig, self).ready()
         self.configurable_menu_app = django_apps.get_app_config('configurable_menu')
+        self.dashboard_payment_app = django_apps.get_app_config('dashboard_payment')
 
     def get_urls(self):
         from django.contrib.auth import views as auth_views
@@ -29,11 +30,12 @@ class DashboardConfig(apps.DashboardConfig):
             url(r'^shipping/', include(self.shipping_app.urls[0])),
             url(r'^partner-configurable-menu/',
                 include((self.configurable_menu_app.urls[0], 'configurable_menu'), namespace='configurable_menu')),
+            url(r'^payment/',
+                include((self.dashboard_payment_app.urls[0], 'dashboard_payment'), namespace='dashboard_payment')),
             url(r'^login/$',
                 auth_views.LoginView.as_view(template_name='oscar/dashboard/login.html',
                                              authentication_form=AuthenticationForm),
                 name='login'),
             url(r'^logout/$', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
-
         ]
         return self.post_process_urls(urls)

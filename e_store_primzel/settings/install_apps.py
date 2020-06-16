@@ -42,6 +42,7 @@ TENANT_APPS = [
     'apps.checkout',
     'apps.dashboard.settings',
     'apps.payment',
+    'apps.dashboard.dashboard_payment',
 ]
 
 SHARED_APPS = [

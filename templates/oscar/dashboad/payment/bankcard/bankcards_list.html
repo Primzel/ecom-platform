@@ -1,0 +1,85 @@
+{% extends 'oscar/dashboad/payment/payment_list.html' %}
+{% load sorting_tags %}
+{% load i18n %}
+
+{% block dashboard_content %}
+
+    <form method="post" class="order_table">
+        {% csrf_token %}
+        <table class="table table-striped table-bordered">
+            <caption>
+                <i class="icon-briefcase icon-large"></i>{{ queryset_description }}
+            </caption>
+            {% if bankcards %}
+                <tr>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Users' %}</th>
+                    <th>{% trans 'Card Type' %}</th>
+                    <th>{% trans 'Number' %}</th>
+                    <th>{% trans 'Expiry Date' %}</th>
+                    <th>{% trans 'Partner Reference' %}</th>
+                    <th>&nbsp;</th>
+                </tr>
+                {% for bankcard in bankcards %}
+                    <tr>
+                        <td>
+                            <a href="">{{ bankcard.name }}</a>
+                        </td>
+                        <td>
+                            {% if bankcard.user %}
+                                {{ bankcard.user.get_full_name|default:user.email }}
+                            {% else %}
+                                {% trans 'No users associated.' %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bankcard.card_type %}
+                               {{ bankcard.card_type }}
+                            {% else %}
+                                {% trans 'No card type found.' %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bankcard.number %}
+                                {{ bankcard.number }}
+                            {% else %}
+                                {% trans 'No number associated.' %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bankcard.expiry_date %}
+                               {{ bankcard.expiry_date }}
+                            {% else %}
+                                {% trans 'No expiry data associated.' %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if bankcard.partner_reference %}
+                               {{ bankcard.partner_reference }}
+                            {% else %}
+                                {% trans 'No partner reference associated.' %}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                                        {% trans "Actions" %}
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu pull-right">
+                                        <li><a href="{% url 'dashboard:dashboard_payment:bankcard-manage' pk=bankcard.pk %}">{% trans "Edit bank card" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:bankcard-delete' pk=bankcard.pk %}">{% trans "Delete bank card" %}</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr><td>{% blocktrans %} "No {{ title }} found. {% endblocktrans %}</td></tr>
+            {% endif %}
+        </table>
+        {% include "oscar/dashboard/partials/pagination.html" %}
+    </form>
+{% endblock dashboard_content %}

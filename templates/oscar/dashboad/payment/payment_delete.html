@@ -1,0 +1,38 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load i18n %}
+
+{% block body_class %}{{ block.super }} create-page{% endblock %}
+
+{% block title %}
+    {% blocktrans %} Delete {{ title }} {% endblocktrans %} | {% blocktrans %} {{ title }} {% endblocktrans %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        </li>
+        <li>
+            <a href="{{ object_listing_url }}">{% blocktrans %} {{ title }}s {% endblocktrans %}</a>
+        </li>
+        <li>
+            <a href="{{ object_manage_url }}">{{ object_name }}</a>
+        </li>
+        <li class="active">{% trans "Delete?" %}</li>
+    </ul>
+{% endblock %}
+
+{% block headertext %}
+    {{ object_name }}<br>
+{% endblock %}
+
+{% block dashboard_content %}
+    <form method="post">
+        {% csrf_token %}
+        <p>{% blocktrans %} Are you sure you want to delete this {{ title }}? {% endblocktrans %}</p>
+        <div class="form-actions">
+            <button class="btn btn-lg btn-danger" type="submit" data-loading-text="{% trans 'Deleting...' %}">{% trans "Delete" %}</button> {% trans "or" %}
+            <a href="{{ object_listing_url }}">{% trans "cancel" %}</a>
+        </div>
+    </form>
+{% endblock dashboard_content %}

@@ -1,0 +1,4 @@
+make dev.import.wordpress --schema=loachost_db host="hoko.pk" consumer_key="ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2" consumer_secret="cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e"
+
+# Import data from wordpress
+python3 manage.py tenant_command import_from_woocommerce --schema=localhost_db "http://www.hoko.pk" "ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2" "cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e"

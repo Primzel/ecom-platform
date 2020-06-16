@@ -1,0 +1,25 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load sorting_tags %}
+{% load i18n %}
+
+{% block title %}
+    {% blocktrans %} {{ title }} {% endblocktrans %} | {{ block.super }}
+{% endblock %}
+
+{% block breadcrumbs %}
+    <ul class="breadcrumb">
+        <li>
+            <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
+        </li>
+        <li class="active">{% blocktrans %} {{ title }} {% endblocktrans %}</li>
+    </ul>
+{% endblock %}
+
+{% block header %}
+    <div class="page-header">
+        <a href="{{ create_new_object_url }}" class="btn btn-lg btn-primary pull-right"><i class="icon-plus"></i>{% blocktrans %} Add {{ title }} {% endblocktrans %}</a>
+        <h1>{% blocktrans %} {{ title }} {% endblocktrans %}</h1>
+    </div>
+{% endblock header %}
+
+{% block dashboard_content %}{% endblock dashboard_content %}
