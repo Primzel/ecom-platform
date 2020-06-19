@@ -1,3 +1,7 @@
+{% load currency_filters %}
+{% load menu_tags %}
+{% load image_tags %}
+
 <div class="navbar navbar-expand-lg navbar-light navbar-stuck-menu mt-n2 pt-0 pb-2">
     <div class="container">
         <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -8,73 +12,39 @@
             </div>
             <!-- Departments menu-->
             <ul class="navbar-nav mega-nav pr-lg-2 mr-lg-2">
-                <li class="nav-item dropdown"><a class="nav-link dropdown-toggle pl-0" href="#" data-toggle="dropdown"><i class="czi-view-grid mr-2"></i>Departments</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle pl-0" href="#" data-toggle="dropdown"><i class="czi-view-grid mr-2"></i>Departments</a>
+                    {% menu_tree depth=1 as menu_rows %}
+                    {% if menu_rows %}
                     <div class="dropdown-menu px-2 pl-0 pb-4">
+                        {% for menu_row in menu_rows %}
                         <div class="d-flex flex-wrap flex-md-nowrap">
+                        {% for menu_item in menu_row %}
                             <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/01.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Clothing</h6>
+                                <div class="widget widget-links">
+                                    {% with image=menu_item.image %}
+                                    {% oscar_thumbnail image "400x225" upscale=False as thumb %}
+                                    <a class="d-block overflow-hidden rounded-lg mb-3" href="{{ menu_item.get_absolute_url }}" alt="menu item">
+                                        <img src="{{ thumb.url }}" alt="{{ menu_item.name }}">
+                                    </a>
+                                    {% endwith %}
+                                    <h6 class="font-size-base mb-2">{{ menu_item.name }}</h6>
                                     <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Women's clothing</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Men's clothing</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Kid's clothing</a></li>
+
+                                        {% for child in menu_item.get_descendants %}
+                                        <li class="widget-list-item">
+                                            <a class="widget-list-link" href="#">{{ child.name }}</a>
+                                        </li>
+                                        {% endfor %}
                                     </ul>
                                 </div>
                             </div>
-                            <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/02.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Shoes</h6>
-                                    <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Women's shoes</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Men's shoes</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Kid's shoes</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/03.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Gadgets</h6>
-                                    <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Smartphones &amp; Tablets</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Wearable gadgets</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">E-book readers</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                        {% endfor %}
                         </div>
-                        <div class="d-flex flex-wrap flex-md-nowrap">
-                            <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/04.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Furniture &amp; Decor</h6>
-                                    <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Home furniture</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Office furniture</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Lighting and decoration</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/05.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Accessories</h6>
-                                    <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Hats</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Sunglasses</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Bags</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="mega-dropdown-column pt-4 px-3">
-                                <div class="widget widget-links"><a class="d-block overflow-hidden rounded-lg mb-3" href="#"><img src="/static/oscar/img/shop/departments/06.jpg" alt="Shoes"/></a>
-                                    <h6 class="font-size-base mb-2">Entertainment</h6>
-                                    <ul class="widget-list">
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Kid's toys</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Video games</a></li>
-                                        <li class="widget-list-item"><a class="widget-list-link" href="#">Outdoor / Camping</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
+
                     </div>
+                    {% endif %}
                 </li>
             </ul>
             <!-- Primary menu-->

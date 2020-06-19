@@ -78,57 +78,23 @@ def get_annotated_list(depth=None, parent=None):
     # 'max_depth' is the better variable name.
     max_depth = depth
 
-    annotated_categories = []
-    tree_slug = ""
-
-    start_depth, prev_depth = (None, None)
     if parent:
-        categories = parent.get_descendants()
-        tree_slug = parent.get_full_slug()
+        menu_items = parent.get_descendants()
         if max_depth is not None:
             max_depth += parent.get_depth()
     else:
-        categories = PartnerConfigurableMenuItem.get_tree().prefetch_related('included_categories').filter(
+        menu_items = PartnerConfigurableMenuItem.get_tree().prefetch_related('included_categories').filter(
             patner_menu__is_primary=True)
 
     if max_depth is not None:
-        categories = categories.filter(depth__lte=max_depth)
+        menu_items = menu_items.filter(depth__lte=max_depth)
 
-    info = CheapMenuItemInfo(parent, url="")
+    menu_row = []
+    menu_rows = [menu_row, ]
+    for menu_item in menu_items:
+        menu_row.append(menu_item)
+        if len(menu_row) % 3 == 0:
+            menu_row = []
+            menu_rows.append(menu_row)
 
-    for node in categories:
-        node_depth = node.get_depth()
-        if start_depth is None:
-            start_depth = node_depth
-
-        # Update previous node's info
-        if prev_depth is None or node_depth > prev_depth:
-            info["has_children"] = True
-            if info.category is not None:
-                tree_slug = info.category.get_full_slug(tree_slug)
-
-        if prev_depth is not None and node_depth < prev_depth:
-            depth_difference = prev_depth - node_depth
-            info["num_to_close"] = list(range(0, depth_difference))
-            tree_slugs = tree_slug.rsplit(node._slug_separator, depth_difference)
-            if tree_slugs:
-                tree_slug = tree_slugs[0]
-            else:
-                tree_slug = node.slug
-
-        info = CheapMenuItemInfo(
-            node,
-            url=node._get_absolute_url(tree_slug),
-            num_to_close=[],
-            level=node_depth - start_depth,
-        )
-        annotated_categories.append(info)
-
-        prev_depth = node_depth
-
-    if prev_depth is not None:
-        # close last leaf
-        info['num_to_close'] = list(range(0, prev_depth - start_depth))
-        info['has_children'] = prev_depth > prev_depth
-
-    return annotated_categories
+    return menu_rows
