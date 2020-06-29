@@ -65,8 +65,11 @@
 
                         </div>
 
-                        <a href="#"  class="btn btn-link px-0 text-danger inline" type="button" ><i
-                                class="czi-close-circle mr-2"></i><span class="font-size-sm">Remove</span></a>
+                        <a class="btn btn-link px-0 text-danger inline" type="button" href="#"
+                           data-id="{{ forloop.counter0 }}" data-behaviours="remove" class="inline">
+                            <i class="czi-close-circle mr-2"></i>
+                            <span class="font-size-sm">Remove</span>
+                        </a>
                         {% if user.is_authenticated %}
 <!--                        <a href="#"  class="inline">{% trans "Save for later" %}</a>-->
                         {% endif %}
