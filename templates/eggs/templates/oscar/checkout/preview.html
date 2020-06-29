@@ -80,7 +80,8 @@
                 </script>
                 {% endif %}
                 <!-- Navigation (desktop)-->
-                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='Payment' next_step='Submission' %}
+                {% url 'checkout:payment-details' as payment_details_url %}
+                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='Payment' next_step='Submission' previous_step_url=payment_details_url %}
             </form>
 
         </section>
