@@ -9,7 +9,7 @@
     <div class="row">
         <section class="col-lg-8">
             <!-- Steps-->
-            {% include 'oscar/checkout/partials/steps.html' with step='ADDRESS' %}
+            {% include 'oscar/checkout/partials/steps.html' with step=3 %}
             <!-- Autor info-->
             {% if user.is_authenticated %}
             {% if addresses %}
