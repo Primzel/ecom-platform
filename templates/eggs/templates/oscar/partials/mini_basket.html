@@ -17,6 +17,14 @@
             <i class="navbar-tool-icon czi-heart"></i>
         </div>
     </a>
+    {% if user.is_authenticated %}
+    <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" {% if user.is_authenticated %} href="{% url 'customer:logout' %}" {% endif %}>
+        <span class="navbar-tool-tooltip">Logout</span>
+        <div class="navbar-tool-icon-box">
+            <i class="navbar-tool-icon czi-sign-out"></i>
+        </div>
+    </a>
+    {% endif %}
     <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" {% if user.is_authenticated %} href="{% url 'customer:notifications-inbox' %}" {% else %} href="#signin-modal" data-toggle="modal" {% endif %}>
         <div class="navbar-tool-icon-box">
             <i class="navbar-tool-icon czi-user"></i>
@@ -24,6 +32,8 @@
         <div class="navbar-tool-text ml-n3">
             {% if not user.is_authenticated %}
             <small>{% trans "Hello, Sign in" %}</small>
+            {% else %}
+            <small>{% trans "Hello, " %}{{user.first_name}}</small>
             {% endif %}
             {% trans "My Account" %}
         </div>
