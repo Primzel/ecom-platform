@@ -27,7 +27,7 @@
                 <!-- Item-->
                 {{ form.id }}
                 <div class="d-sm-flex justify-content-between align-items-center my-4 pb-3 border-bottom">
-                    <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left">
+                    <div class="media media-ie-fix d-block d-sm-flex align-items-center text-center text-sm-left col-sm-10">
                         {% with image=product.primary_image %}
                         {% oscar_thumbnail image.original "240x240" upscale=False as thumb %}
                         <a href="{{ product.get_absolute_url }}" class="d-inline-block mx-auto mr-sm-4" style="width: 10rem;">
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 9rem;">
+                    <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left col-sm-2" style="max-width: 9rem;">
                         <div class="form-group mb-0">
                             <label class="font-weight-medium" for="{{ form.quantity.id_for_label }}">Quantity</label>
                             <div class="input-group form-group">
