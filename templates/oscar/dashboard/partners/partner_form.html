@@ -1,0 +1,9 @@
+{% extends 'oscar/dashboard/partners/partner_form.html' %}
+{% load category_tags %}
+{% load i18n %}
+
+{% block dashboard_content %}
+<div class="well">
+    {% include 'oscar/dashboard/partials/form.html' with form=form includes_files=True %}
+</div>
+{% endblock dashboard_content %}

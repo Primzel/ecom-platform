@@ -24,7 +24,7 @@
                                 <div class="widget widget-links">
                                     {% with image=menu_item.image %}
                                     {% oscar_thumbnail image "400x225" upscale=False as thumb %}
-                                    <a class="d-block overflow-hidden rounded-lg mb-3" href="{{ menu_item.get_absolute_url }}" alt="menu item">
+                                    <a class="d-block overflow-hidden rounded-lg mb-3" href="{{ menu_item.included_categories.first.get_absolute_url }}" alt="menu item">
                                         <img src="{{ thumb.url }}" alt="{{ menu_item.name }}">
                                     </a>
                                     {% endwith %}

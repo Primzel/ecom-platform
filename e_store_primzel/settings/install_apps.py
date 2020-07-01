@@ -12,9 +12,7 @@ TENANT_APPS = [
     'oscar.apps.analytics',
     'oscar.apps.address',
     'oscar.apps.shipping',
-    'oscar.apps.catalogue',
     'oscar.apps.catalogue.reviews',
-    'oscar.apps.partner',
     'oscar.apps.basket',
     'oscar.apps.offer',
     'oscar.apps.order',
@@ -28,7 +26,6 @@ TENANT_APPS = [
     'oscar.apps.dashboard.orders',
     'apps.dashboard.catalogue',
     'oscar.apps.dashboard.offers',
-    'oscar.apps.dashboard.partners',
     'oscar.apps.dashboard.pages',
     'oscar.apps.dashboard.ranges',
     'oscar.apps.dashboard.reviews',
@@ -43,6 +40,9 @@ TENANT_APPS = [
     'apps.dashboard.settings',
     'apps.payment',
     'apps.dashboard.dashboard_payment',
+    'apps.dashboard.partners',
+    'apps.partner',
+    'apps.catalogue',
 ]
 
 SHARED_APPS = [
