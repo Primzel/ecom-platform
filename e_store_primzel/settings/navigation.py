@@ -49,6 +49,15 @@ OSCAR_DASHBOARD_NAVIGATION += [
     {
         'label': _('Settings'),
         'icon': 'glyphicon-tree-conifer',
-        'url_name': 'dashboard:reports-index',
-    },
+        'children': [
+            {
+                'label': _('Banners'),
+                'url_name': 'dashboard:dashboard_banners:banners-listing',
+            },
+            {
+                'label': _('New Banner'),
+                'url_name': 'dashboard:dashboard_banners:banners-create',
+            }
+        ]
+    }
 ]
