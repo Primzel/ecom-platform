@@ -1,5 +1,5 @@
-from django.apps import apps as django_apps
 import oscar.apps.dashboard.apps as apps
+from django.apps import apps as django_apps
 from django.conf.urls import include, url
 
 
@@ -10,6 +10,7 @@ class DashboardConfig(apps.DashboardConfig):
         super(DashboardConfig, self).ready()
         self.configurable_menu_app = django_apps.get_app_config('configurable_menu')
         self.dashboard_payment_app = django_apps.get_app_config('dashboard_payment')
+        self.dashboard_banners_app = django_apps.get_app_config('banners')
 
     def get_urls(self):
         from django.contrib.auth import views as auth_views
@@ -37,5 +38,7 @@ class DashboardConfig(apps.DashboardConfig):
                                              authentication_form=AuthenticationForm),
                 name='login'),
             url(r'^logout/$', auth_views.LogoutView.as_view(next_page='/'), name='logout'),
+            url(r'^banners/',
+                include((self.dashboard_banners_app.urls[0], 'dashboard_banners'), namespace='dashboard_banners')),
         ]
         return self.post_process_urls(urls)

@@ -1,0 +1,16 @@
+<!-- Hero page Slider-->
+<section class="cz-carousel cz-controls-lg">
+    <div class="cz-carousel-inner" data-carousel-options="{&quot;mode&quot;: &quot;gallery&quot;, &quot;responsive&quot;: {&quot;0&quot;:{&quot;nav&quot;:true, &quot;controls&quot;: false},&quot;992&quot;:{&quot;nav&quot;:false, &quot;controls&quot;: true}}}">
+        {% for banner_image in banner.images.all %}
+        <!-- Item-->
+        <div class="px-lg-5" style="background-color: #3aafd2;">
+            <div class="d-lg-flex justify-content-between align-items-center pl-lg-4">
+                <img class="d-block order-lg-2 mr-lg-n5 flex-shrink-0" src="{{ banner_image.image.url }}" alt="Summer Collection">
+                <div class="position-relative mx-auto mr-lg-n5 py-5 px-4 mb-lg-5 order-lg-1" style="max-width: 42rem; z-index: 10;">
+                    {{ banner_image.content|safe }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>

@@ -43,6 +43,7 @@ TENANT_APPS = [
     'apps.dashboard.partners',
     'apps.partner',
     'apps.catalogue',
+    'apps.dashboard.banners'
 ]
 
 SHARED_APPS = [
