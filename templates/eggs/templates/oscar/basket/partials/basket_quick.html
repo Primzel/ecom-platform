@@ -7,8 +7,6 @@
 {% if request.basket.num_lines %}
 {% for line in request.basket.all_lines %}
 <div class="widget-cart-item pb-2 border-bottom">
-    <button class="close text-danger" type="button" aria-label="Remove"><span
-            aria-hidden="true">&times;</span></button>
     <div class="media align-items-center">
         {% with image=line.product.primary_image %}
         {% oscar_thumbnail image.original "64x64" upscale=False as thumb %}
