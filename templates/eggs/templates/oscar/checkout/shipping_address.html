@@ -80,7 +80,8 @@
                 {% csrf_token %}
                 {% include "oscar/partials/form_fields.html" with form=form style='horizontal' %}
                 <!-- Navigation (desktop)-->
-                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='' next_step='' %}
+                {% url "basket:summary" as basket_url %}
+                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='Cart' next_step='Payment' previous_step_url=basket_url %}
             </form>
         </section>
         <!-- Sidebar-->
