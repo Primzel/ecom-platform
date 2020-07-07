@@ -53,6 +53,7 @@
             {{ request.basket.total_excl_tax|currency:request.basket.currency }}
             {% endif %}
         </a>
+        {% if request.basket.num_lines %}
         <!-- Cart dropdown-->
         <div class="dropdown-menu dropdown-menu-right" style="width: 20rem;">
             <div class="widget widget-cart px-3 pt-2 pb-3">
@@ -79,5 +80,6 @@
                 </a>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>

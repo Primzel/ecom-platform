@@ -177,7 +177,7 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-shadow btn-block mt-4" href="{% url 'checkout:index' %}"><i
+                <a class="btn btn-primary btn-shadow btn-block mt-4 {% if not request.basket.num_lines %} disabled {% endif %}" href="{% url 'checkout:index' %}"><i
                         class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</a>
             </div>
         </aside>
