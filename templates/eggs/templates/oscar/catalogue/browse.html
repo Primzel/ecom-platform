@@ -296,10 +296,10 @@
         {% for partner in all_partners %}
         {% with image=partner.image %}
         {% if image %}
-        {% oscar_thumbnail image "x150" as thumb %}
+        {% oscar_thumbnail image "150x80" as thumb %}
         <div class="col-md-3 col-sm-4 col-6">
             <a class="d-block bg-white box-shadow-sm rounded-lg py-3 py-sm-4 mb-grid-gutter" href="{{ homepage_url }}?partner={{ partner.name }}">
-                <img class="d-block mx-auto" src="{{ thumb.url }}" style="width: 150px;" alt="Brand">
+                <img class="d-block mx-auto" src="{{ thumb.url }}" style="width: 150px; height: 80px" alt="{{ partner.name }}">
             </a>
         </div>
         {% endif %}
