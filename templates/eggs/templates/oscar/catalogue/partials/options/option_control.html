@@ -22,6 +22,9 @@
 
 <form class="mb-grid-gutter" method="post" id="quick-view-add-to-basket-form" onsubmit="return addToBasketFormHandler(this)">
     {% csrf_token %}
+    {% if not product.is_parent %}
+    <input type="hidden" name="product" value="{{product.id}}" />
+    {% endif %}
     <div class="form-group">
 
         {% render_variant_descriptors product %}
