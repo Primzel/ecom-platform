@@ -1,0 +1,9 @@
+{% if product.is_parent and product.has_options %}
+    {% for attribute, value_map in descriptors %}
+        {% if 'color' == attribute %}
+            {% include "oscar/catalogue/partials/options/color.html" with key=attribute options=value_map %}
+        {% else %}
+            {% include "oscar/catalogue/partials/options/option.html" with key=attribute options=value_map %}
+        {% endif %}
+    {% endfor %}
+{% endif %}

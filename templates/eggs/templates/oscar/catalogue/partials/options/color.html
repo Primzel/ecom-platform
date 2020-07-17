@@ -1,0 +1,16 @@
+
+
+<div class="font-size-sm mb-4">
+    <span class="text-heading font-weight-medium mr-1">{{ key }}:</span>
+<!--    <span class="text-muted" id="colorOption">Red/Dark blue/White</span>-->
+</div>
+<div class="position-relative mr-n4 mb-3">
+    {% for label, ids in options %}
+        <div class="custom-control custom-option custom-control-inline mb-2">
+            <input class="variant custom-control-input" type="radio" name="{{key}}" id="{{ key }}-{{ label }}" data-label="colorOption" value="{{ ids|join:',' }}" >
+            <label class="custom-option-label rounded-circle" for="{{ key }}-{{ label }}"><span class="custom-option-color rounded-circle" style="background-color: {{ label }}"></span></label>
+        </div>
+    {% endfor %}
+
+    <div class="product-badge product-available mt-n1"><i class="czi-security-check"></i>Product available</div>
+</div>

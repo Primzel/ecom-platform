@@ -58,8 +58,12 @@
         {% if not product.is_parent and not product.has_options %}
         {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
         {% endif %}
-        <div class="text-center"><a class="nav-link-style font-size-ms" href="#quick-view" data-toggle="modal"><i
-                class="czi-eye align-middle mr-1"></i>Quick view</a></div>
+        <div class="text-center">
+            <a class="nav-link-style font-size-ms eggs-quick-view" href="#quick-view" data-toggle="modal"
+               data-product-detail-url="{% url 'catalogue:quick_detail' product_slug=product.slug pk=product.pk %}">
+                <i class="czi-eye align-middle mr-1" ></i>Quick view
+            </a>
+        </div>
     </div>
 </div>
 <hr class="d-sm-none">

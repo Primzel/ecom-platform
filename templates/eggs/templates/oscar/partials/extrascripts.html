@@ -2,5 +2,8 @@
     $(document).ready(function () {
         var modal_selector = window.location.hash;
         $(modal_selector).modal('show');
+        $('.eggs-quick-view').click(function () {
+            $('#quick-view').find('#modal-body').load($(this).data('product-detail-url'))
+        });
     });
 </script>

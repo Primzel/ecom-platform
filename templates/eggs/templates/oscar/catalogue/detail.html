@@ -39,7 +39,7 @@
                     <div class="cz-product-gallery">
                         <div class="cz-preview order-sm-2">
                             {% with all_images=product.get_all_images %}
-                            {% if all_images|length > 1 %}
+                            {% if all_images|length > 0 %}
                             {% for image in all_images %}
 
                             <div class="cz-preview-item {% if forloop.first %}active{% endif %}" id="image-{{ image.id }}">
@@ -54,7 +54,7 @@
                         </div>
                         <div class="cz-thumblist order-sm-1">
                             {% with all_images=product.get_all_images %}
-                            {% if all_images|length > 1 %}
+                            {% if all_images|length > 0 %}
                             {% for image in all_images %}
                             {% oscar_thumbnail image.original "440x400" upscale=False as thumb %}
                             <a class="cz-thumblist-item {% if forloop.first %}active{% endif %}" href="#image-{{ image.id }}">

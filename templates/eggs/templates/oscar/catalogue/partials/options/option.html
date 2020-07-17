@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-between align-items-center pb-1">
+    <label class="font-weight-medium" for="product-{{ key }}">{{ key }}:</label>
+    <a class="nav-link-style font-size-sm" href="#size-chart" data-toggle="modal">
+    <i class="czi-ruler lead align-middle mr-1 mt-n1"></i>Size guide
+    </a>
+</div>
+<select class="custom-select" required="" name="{{ key }}" id="product-{{ key }}">
+    <option value="">Select {{ key }}</option>
+    {% for label, ids in options %}
+        <option value="{{ ids|join:',' }}">{{ label }}</option>
+    {% endfor %}
+</select>
