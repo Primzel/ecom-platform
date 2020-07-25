@@ -53,7 +53,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-2"><a href="#reviews" data-scroll="">
                     <div class="star-rating"><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star-filled active"></i><i class="sr-star czi-star"></i>
                     </div><span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">74 Reviews</span></a>
-                    <button class="btn-wishlist mr-0 mr-lg-n3" type="button" data-toggle="tooltip" title="" data-original-title="Add to wishlist"><i class="czi-heart"></i></button>
+                    {% include 'oscar/catalogue/partials/wishlist-button.html' with btn_class='btn-wishlist mr-0 mr-lg-n3' %}
                 </div>
                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">
                     {% include "oscar/catalogue/partials/stock_record.html" %}

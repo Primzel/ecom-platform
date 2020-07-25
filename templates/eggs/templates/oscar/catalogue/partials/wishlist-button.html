@@ -1,0 +1,27 @@
+{% load i18n %}
+{% load wishlist_tags %}
+{% if user.is_authenticated %}
+{% with wishlists=user.wishlists.all %}
+{# Select wishlists that contains product #}
+{% wishlists_containing_product wishlists product as product_wishlists %}
+{% firstof btn_class 'btn-wishlist btn-sm' as btn_class %}
+<button class="{{ btn_class }}" type="button" data-toggle="dropdown" data-placement="left" aria-haspopup="true"
+        aria-expanded="false" title="Add to wishlist">
+    <i class="czi-heart"></i>
+</button>
+<div class="dropdown-menu">
+    {% if wishlists %}
+    {% for wishlist in wishlists %}
+    {% if wishlist not in product_wishlists %}
+    <a href="{% url 'customer:wishlists-add-product' key=wishlist.key product_pk=product.pk %}" class="dropdown-item">
+        {% blocktrans with name=wishlist.name %}
+        Add to '{{ name }}' wish list
+        {% endblocktrans %}
+    </a>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+    <a href="{% url 'customer:wishlists-create-with-product' product_pk=product.pk %}" class="dropdown-item">{% trans 'Create a new wishlist' %}</a>
+</div>
+{% endwith %}
+{% endif %}

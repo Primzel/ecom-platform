@@ -6,10 +6,7 @@
 {% load purchase_info_tags %}
 {% block product %}
 <div class="card product-card">
-    <button class="btn-wishlist btn-sm" type="button" data-toggle="tooltip" data-placement="left"
-            title="Add to wishlist">
-        <i class="czi-heart"></i>
-    </button>
+    {% include 'oscar/catalogue/partials/wishlist-button.html' %}
     {% with image=product.primary_image %}
     {% oscar_thumbnail image.original "296x276" upscale=False as thumb %}
     <a class="card-img-top d-block overflow-hidden" href="{{ product.get_absolute_url }}" alt="Product">
