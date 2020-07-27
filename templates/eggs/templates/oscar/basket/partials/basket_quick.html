@@ -16,7 +16,7 @@
         {% endwith %}
         <div class="media-body">
             <h6 class="widget-product-title">
-                <a href="shop-single-v1.html">{{ line.product.title }}</a>
+                <a href="{{ line.product.get_absolute_url }}">{{ line.product.title }}</a>
             </h6>
             <div class="widget-product-meta">
                 <span class="text-accent mr-2">
