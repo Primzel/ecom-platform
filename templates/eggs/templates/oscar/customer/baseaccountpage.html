@@ -2,6 +2,10 @@
 {% block breadcrumbs %}{%endblock%}
 {% block headertext %}{{ page_title }}{% endblock %}
 
-{% block navigation %}
-{% include "oscar/partials/nav_primary.html" %}
+{% block column_left %}
+<ul class="list-unstyled mb-0">
+    {% block standard_tabs %}
+    {% include 'oscar/customer/partials/standard_tabs.html' %}
+    {% endblock %}
+</ul>
 {% endblock %}
