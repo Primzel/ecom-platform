@@ -1,0 +1,26 @@
+{% load i18n %}
+{% load display_tags %}
+
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:profile-view' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Profile" %}</a>
+</li>
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:order-list' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Order History" %}</a>
+</li>
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:address-list' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Address Book" %}</a>
+</li>
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:email-list' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Email History" %}</a>
+</li>
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:alerts-list' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Product Alerts" %}</a>
+</li>
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:notifications-inbox' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Notifications" %}</a>
+</li>
+{% iffeature 'wishlists' %}
+<li class="border-bottom mb-0">
+<a href="{% url 'customer:wishlists-list' %}" class="nav-link-style d-flex align-items-center px-4 py-3 {% if active_tab == 'profile' %}active{% endif %}">{% trans "Wish Lists" %}</a>
+</li>
+{% endiffeature %}
