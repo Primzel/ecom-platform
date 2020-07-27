@@ -1,0 +1,39 @@
+{% load i18n %}
+{% load display_tags %}
+
+{% if paginator.num_pages > 1 %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination ">
+        <li class="page-item">
+            {% if page_obj.has_previous %}
+            <a href="?{% get_parameters page %}page={{ page_obj.previous_page_number }}" class="page-link" aria-label="Previous">
+                {% else %}
+                <a class="page-link" aria-label="Previous">
+                    {% endif %}
+                    <i class="czi-arrow-left"></i>
+                    Prev
+                </a>
+        </li>
+        {% for page_num in paginator.page_range %}
+        {% if page_obj.number == page_num %}
+        <li class="page-item active d-none d-sm-block" aria-current="page">
+            <span class="page-link">{{page_num}}</span>
+        </li>
+        {% else %}
+        <li class="page-item d-none d-sm-block" >
+            <a href="?{% get_parameters page %}page={{ page_num }}" class="page-link">{{page_num}}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+        <li class="page-item">
+            {% if page_obj.has_next %}
+            <a href="?{% get_parameters page %}page={{ page_obj.next_page_number }}" class="page-link" aria-label="Next">Next
+                {% else %}
+                <a class="page-link" aria-label="Next">Next
+                    {% endif %}
+                    <i class="czi-arrow-right"></i>
+                </a>
+        </li>
+    </ul>
+</nav>
+{% endif %}

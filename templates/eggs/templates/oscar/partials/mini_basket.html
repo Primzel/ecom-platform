@@ -25,7 +25,7 @@
         </div>
     </a>
     {% endif %}
-    <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" {% if user.is_authenticated %} href="{% url 'customer:notifications-inbox' %}" {% else %} href="#signin-signup" data-toggle="modal" {% endif %}>
+    <a class="navbar-tool ml-1 ml-lg-0 mr-n1 mr-lg-2" {% if user.is_authenticated %} href="{% url 'customer:profile-view' %}" {% else %} href="#signin-signup" data-toggle="modal" {% endif %}>
         <div class="navbar-tool-icon-box">
             <i class="navbar-tool-icon czi-user"></i>
         </div>
