@@ -77,8 +77,11 @@
                             </div><span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">74 Reviews</span></a>
                             {% include 'oscar/catalogue/partials/wishlist-button.html' with btn_class='btn-wishlist mr-0 mr-lg-n3' %}
                         </div>
-                        <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">$18.<small>99</small></span>
-                            <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del><span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>
+                        <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">
+                            {% include "oscar/catalogue/partials/stock_record.html" %}
+                        </span>
+                            <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del>
+                            <span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>
                         </div>
                         <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Red/Dark blue/White</span></div>
                         <div class="position-relative mr-n4 mb-3">
@@ -129,16 +132,7 @@
                                 </div>
                                 <div class="collapse show" id="productInfo" data-parent="#productPanels">
                                     <div class="card-body">
-                                        <h6 class="font-size-sm mb-2">Composition</h6>
-                                        <ul class="font-size-sm pl-4">
-                                            <li>Elastic rib: Cotton 95%, Elastane 5%</li>
-                                            <li>Lining: Cotton 100%</li>
-                                            <li>Cotton 80%, Polyester 20%</li>
-                                        </ul>
-                                        <h6 class="font-size-sm mb-2">Art. No.</h6>
-                                        <ul class="font-size-sm pl-4 mb-0">
-                                            <li>183260098</li>
-                                        </ul>
+                                        {{ product.description | safe }}
                                     </div>
                                 </div>
                             </div>
