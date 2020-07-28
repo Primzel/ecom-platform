@@ -1,5 +1,6 @@
+{% load i18n %}
 <div class="steps steps-light pt-2 pb-3 mb-5">
-    <a class="step-item {% if step >= 1 %} active current {% endif %}" href="shop-cart.html">
+    <a class="step-item {% if step >= 1 %} active current {% endif %}" href="{% url 'basket:summary' %}">
         <div class="step-progress">
             <span class="step-count">1</span>
         </div>
@@ -7,7 +8,7 @@
             <i class="czi-cart"></i>Cart
         </div>
     </a>
-    <a class="step-item {% if step >= 2 %} active current {% endif %}" href="checkout-details.html">
+    <a class="step-item {% if step >= 2 %} active current {% endif %}" href="{% url 'checkout:shipping-address' %}">
         <div class="step-progress">
             <span class="step-count">2</span>
         </div>
@@ -15,7 +16,7 @@
             <i class="czi-user-circle"></i>Your details
         </div>
     </a>
-    <a class="step-item {% if step >= 3 %} active current {% endif %}" href="checkout-shipping.html">
+    <a class="step-item {% if step >= 3 %} active current {% endif %}" href="{% url 'checkout:shipping-address' %}">
         <div class="step-progress">
             <span class="step-count">3</span>
         </div>
@@ -23,7 +24,7 @@
             <i class="czi-package"></i>Shipping
         </div>
     </a>
-    <a class="step-item {% if step >= 4 %} active current {% endif %}" href="checkout-payment.html">
+    <a class="step-item {% if step >= 4 %} active current {% endif %}" href="{% url 'checkout:payment-details' %}">
         <div class="step-progress">
             <span class="step-count">4</span>
         </div>
