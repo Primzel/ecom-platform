@@ -24,13 +24,9 @@
                 </span>
             </div>
             {% endblock %}
-            <div class="star-rating">
-                <i class="sr-star czi-star-filled active"></i>
-                <i class="sr-star czi-star-filled active"></i>
-                <i class="sr-star czi-star-filled active"></i>
-                <i class="sr-star czi-star-filled active"></i>
-                <i class="sr-star czi-star"></i>
-            </div>
+            {% iffeature "reviews" %}
+            {% include "oscar/catalogue/reviews/partials/review_stars.html" with yellow_stars=True total_reviews=product.reviews.count hide_review_count=True %}
+            {% endiffeature %}
         </div>
     </div>
     <div class="card-body card-body-hidden">

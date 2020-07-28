@@ -1,0 +1,40 @@
+{% load reviews_tags %}
+{% load i18n %}
+<div class="product-review pb-4 mb-4 border-bottom">
+    <div class="d-flex mb-3">
+        <div class="media media-ie-fix align-items-center mr-4 pr-2"><img class="rounded-circle" width="50" src="img/shop/reviews/01.jpg" alt="{{ review.reviewer_name }}">
+            <div class="media-body pl-3">
+                <h6 class="font-size-sm mb-0">{{ review.reviewer_name }}</h6>
+                <span class="font-size-ms text-muted">{{review.date_created|date:'F d, Y'}} | <small><a href="{% url 'catalogue:reviews-detail' product_slug=product.slug product_pk=product.pk pk=review.pk %}">{% trans 'Permalink' %}</a></small></span>
+            </div>
+        </div>
+        <div>
+            <div class="star-rating {{ review.score|as_stars }}">
+                <i class="sr-star {% if review.score >= 0 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+                <i class="sr-star {% if review.score >= 2 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+                <i class="sr-star {% if review.score >= 3 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+                <i class="sr-star {% if review.score >= 4 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+                <i class="sr-star {% if review.score >= 5 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+            </div>
+        </div>
+    </div>
+    <p class="font-size-md mb-2">
+        {{ review.body|striptags }}
+    </p>
+    <small>{% trans "Is this review helpful?" %}</small>
+    <div class="text-nowrap">
+        <form action="{% url 'catalogue:reviews-vote' product_slug=product.slug product_pk=product.pk pk=review.pk %}" method="post" class="vote_agree" style="width: auto;display: inline-block;" >
+            {% csrf_token %}
+            <input type="hidden" name="delta" value="1"/>
+            <button class="btn-like" type="submit" {% if not review|may_vote:user %} disabled {% endif %}>{{ review.num_up_votes }}</button>
+        </form>
+
+        <form  action="{% url 'catalogue:reviews-vote' product_slug=product.slug product_pk=product.pk pk=review.pk %}" method="post" style="width: auto;display: inline-block;" >
+            {% csrf_token %}
+            <input type="hidden" name="delta" value="-1"/>
+            <button class="btn-dislike" type="submit" {% if not review|may_vote:user %} disabled {% endif %}>{{ review.delta_votes }}</button>
+        </form>
+
+    </div>
+
+</div>

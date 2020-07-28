@@ -1,0 +1,30 @@
+{% load reviews_tags %}
+{% load i18n %}
+
+{% if yellow_stars %}
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <a href="#reviews" data-scroll="">
+        <div class="star-rating {{ product.rating|as_stars }}">
+            <i class="sr-star {% if product.rating >= 0 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+            <i class="sr-star {% if product.rating >= 2 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+            <i class="sr-star {% if product.rating >= 3 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+            <i class="sr-star {% if product.rating >= 4 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+            <i class="sr-star {% if product.rating >= 5 %} czi-star-filled active {% else %} czi-star {% endif %}"></i>
+        </div>
+        {% if not hide_review_count %}
+        <span class="d-inline-block font-size-sm text-body align-middle mt-1 ml-1">{{ total_reviews }} Reviews</span></a>
+        {% include 'oscar/catalogue/partials/wishlist-button.html' with btn_class='btn-wishlist mr-0 mr-lg-n3' %}
+        {% endif %}
+</div>
+{% else %}
+<div class="star-rating mr-2 {{ product.rating|as_stars }}">
+    <i class="{% if product.rating >= 1 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-accent mr-1"></i>
+    <i class="{% if product.rating >= 2 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-accent mr-1"></i>
+    <i class="{% if product.rating >= 3 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-accent mr-1"></i>
+    <i class="{% if product.rating >= 4 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-accent mr-1"></i>
+    <i class="{% if product.rating >= 5 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-muted mr-1"></i>
+</div>
+<span class="d-inline-block align-middle">{{ product.rating }} Overall rating</span>
+<p class="pt-3 font-size-sm text-muted">58 out of {{total_reviews}} (77%)<br>Customers recommended this product</p>
+{% endif %}
+
