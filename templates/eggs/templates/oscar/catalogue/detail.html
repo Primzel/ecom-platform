@@ -314,7 +314,7 @@
                             <textarea name="body" cols="40" rows="10" class="form-control" required="" id="id_body" spellcheck="false"></textarea>
                             <div class="invalid-feedback">Please write a review!</div><small class="form-text text-muted">Your review must be at least 50 characters.</small>
                         </div>
-                        <button class="btn btn-primary btn-shadow btn-block" type="submit">Submit a Review</button>
+                        <button class="btn btn-primary btn-shadow btn-block" type="submit" {% if not user.is_authenticated %} disabled {% endif %}>Submit a Review</button>
                     </form>
                 </div>
             </div>
