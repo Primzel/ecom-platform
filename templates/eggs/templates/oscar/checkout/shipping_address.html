@@ -13,20 +13,6 @@
             <!-- Autor info-->
             {% if user.is_authenticated %}
             {% if addresses %}
-<!--            <div class="d-sm-flex justify-content-between align-items-center bg-secondary p-4 rounded-lg mb-grid-gutter">-->
-<!--                <div class="media align-items-center">-->
-<!--                    <div class="img-thumbnail rounded-circle position-relative" style="width: 6.375rem;"><span-->
-<!--                            class="badge badge-warning" data-toggle="tooltip" title=""-->
-<!--                            data-original-title="Reward points">384</span><img class="rounded-circle"-->
-<!--                                                                               src="img/shop/account/avatar.jpg"-->
-<!--                                                                               alt="Susan Gardner"></div>-->
-<!--                    <div class="media-body pl-3">-->
-<!--                        <h3 class="font-size-base mb-0">Susan Gardner</h3><span class="text-accent font-size-sm">s.gardner@example.com</span>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <a class="btn btn-light btn-sm btn-shadow mt-3 mt-sm-0" href="account-profile.html"><i-->
-<!--                        class="czi-edit mr-2"></i>Edit profile</a>-->
-<!--            </div>-->
             <h3>{% trans "An address from your address book?" %}</h3>
             <div class="choose-block">
                 <div class="row">
@@ -45,20 +31,19 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="action" value="ship_to" />
                                 <input type="hidden" name="address_id" value="{{ address.id }}" />
-                                {% if address.is_default_for_shipping %}
-                                <button type="submit" class="btn btn-success btn-large ship-address" data-loading-text="{% trans 'Saving...' %}"><i class="icon-ok"></i> {% trans "Ship to your default shipping address" %}</button>
-                                {% else %}
-                                <button type="submit" class="btn btn-primary btn-large ship-address" data-loading-text="{% trans 'Saving...' %}">{% trans "Ship to this address" %}</button>
-                                {% endif %}
-
-                                <div class="btn-group address-controls">
-                                    <a href="{% url 'checkout:user-address-update' pk=address.id %}" class="btn btn-default btn-sm">{% trans "Edit address" %}</a>
-                                    <button class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="{% url 'checkout:user-address-delete' pk=address.id %}" class="btn-remove-address">{% trans "Delete" %}</a></li>
-                                    </ul>
+                                <div class="btn-group mr-2 mb-3">
+                                    {% if address.is_default_for_shipping %}
+                                    <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Saving...' %}"><i class="icon-ok"></i> {% trans "Ship to your default shipping address" %}</button>
+                                    {% else %}
+                                    <button type="submit" class="btn btn-primary" data-loading-text="{% trans 'Saving...' %}">{% trans "Ship to this address" %}</button>
+                                    {% endif %}
+                                    <button class="btn btn-primary dropdown-toggle dropdown-toggle-split" type="button"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span
+                                            class="sr-only">Toggle dropdown</span></button>
+                                    <div class="dropdown-menu" style="">
+                                        <a href="{% url 'checkout:user-address-update' pk=address.id %}" class="dropdown-item">{% trans "Edit address" %}</a>
+                                        <a href="{% url 'checkout:user-address-delete' pk=address.id %}" class="dropdown-item">{% trans "Delete" %}</a>
+                                    </div>
                                 </div>
                             </form>
                         </div>
