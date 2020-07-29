@@ -27,6 +27,7 @@
     </div>
 </div>
 
+{% include "oscar/partials/alert_messages.html" %}
 
 <div class="container">
     <!-- Gallery + details-->
@@ -290,13 +291,31 @@
             <div class="col-md-5 mt-2 pt-4 mt-md-0 pt-md-0">
                 <div class="bg-secondary py-grid-gutter px-grid-gutter rounded-lg">
                     <h3 class="h4 pb-2">Write a review</h3>
-                    <form id="add_review_form" class="needs-validation" method="post" action="#addreview">
+                    <form id="add_review_form" class="needs-validation" method="post" action="{% url 'catalogue:reviews-add' product_slug=product.slug product_pk=product.pk %}#addreview">
+                        {% if login_form.errors %}
+                        <div class="alert alert-primary" role="alert" style="font-size: 10px">
+                            {{ form.non_field_errors.as_text }}
+                        </div>
+                        {% endif %}
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="id_title">Title<span class="text-danger">*</span></label>
                             <input type="text" name="title" maxlength="255" class="form-control" required="" id="id_title">
+                            <div class="invalid-feedback">Please enter review title!</div><small class="form-text text-muted">Will be displayed on the comment.</small>
+                        </div>
+                        {% if not user.is_authenticated %}
+                        <div class="form-group">
+                            <label for="id_title">Name<span class="text-danger">*</span></label>
+                            <input type="text" name="name" class="form-control" required="" id="id_name" maxlength="255">
                             <div class="invalid-feedback">Please enter your name!</div><small class="form-text text-muted">Will be displayed on the comment.</small>
                         </div>
+
+                        <div class="form-group">
+                            <label for="id_title">Email<span class="text-danger">*</span></label>
+                            <input type="email" name="email" class="form-control" required="" id="id_email">
+                            <div class="invalid-feedback">Please enter your email!</div><small class="form-text text-muted">Will be displayed on the comment.</small>
+                        </div>
+                        {% endif %}
                         <div class="form-group">
                             <label for="id_score">Rating<span class="text-danger">*</span></label>
                             <select name="score" class="custom-select" required="" id="id_score">
