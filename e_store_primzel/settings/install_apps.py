@@ -11,7 +11,6 @@ TENANT_APPS = [
     'oscar',
     'oscar.apps.analytics',
     'oscar.apps.address',
-    'oscar.apps.shipping',
     'oscar.apps.catalogue.reviews',
     'oscar.apps.basket',
     'oscar.apps.offer',
@@ -37,6 +36,7 @@ TENANT_APPS = [
     # Primzel Apps
     'apps.dashboard.configurable_menu',
     'apps.checkout',
+    'apps.shipping',
     'apps.dashboard.settings',
     'apps.payment',
     'apps.dashboard.dashboard_payment',
