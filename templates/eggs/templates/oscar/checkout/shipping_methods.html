@@ -1,0 +1,81 @@
+{% extends "oscar/layout.html" %}
+{% load currency_filters %}
+{% load i18n %}
+{% load shipping_tags %}
+
+{% block title %}
+{% trans "Shipping method" %} | {{ block.super }}
+{% endblock %}
+
+{% block content_wrapper %}
+
+{% include 'oscar/checkout/partials/checkout_page_header.html'%}
+
+<div class="container pb-5 mb-2 mb-md-4">
+    <div class="row">
+        <section class="col-lg-8">
+            <!-- Steps-->
+            {% include 'oscar/checkout/partials/steps.html' with step=3 %}
+            <!-- Shipping methods table-->
+            <h2 class="h6 pb-3 mb-2">Choose shipping method</h2>
+            <form method="post" action="{% url 'checkout:shipping-method' %}">
+                {% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-hover font-size-sm border-bottom">
+                    <thead>
+                    <tr>
+                        <th class="align-middle"></th>
+                        <th class="align-middle">Shipping method</th>
+                        <th class="align-middle">Handling fee</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for method in methods %}
+                    <tr>
+                        <td>
+                            <div class="custom-control custom-radio mb-4">
+                                <input class="custom-control-input" type="radio" id="{{ method.code }}" value="{{ method.code }}" name="method_code">
+                                <label class="custom-control-label" for="{{ method.code }}"></label>
+                            </div>
+                        </td>
+                        <td class="align-middle">
+                            <span class="text-dark font-weight-medium">{{ method.name }}</span>
+                            <br>
+                            <span class="text-muted">
+                                {% if method.description %}
+                                    <p>{{ method.description|safe }}</p>
+                                {% endif %}
+                                {% if method.is_discounted %}
+                                    <small>
+                                        {% shipping_charge_discount method basket as discount %}
+                                        {% blocktrans with amount=discount|currency:basket.currency name=method.discount_name %}
+                                            This includes a discount of <strong>{{ amount }}</strong> as
+                                            your basket qualifies for the <strong>{{ name }}</strong> offer.
+                                        {% endblocktrans %}
+                                    </small>
+                                {% endif %}
+                            </span></td>
+
+                        <td class="align-middle">
+                            {% shipping_charge method basket as charge %}
+                            {% if charge.is_tax_known %}
+                            {{ charge.incl_tax|currency:basket.currency }}
+                            {% else %}
+                            {{ charge.excl_tax|currency:basket.currency }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                {% url "checkout:shipping-address" as shipping_address_url %}
+                {% include "oscar/checkout/partials/checkout_form_navigation.html" with previous_step='Your details' next_step='Payment' previous_step_url=shipping_address_url %}
+            </form>
+        </section>
+        <!-- Sidebar-->
+        {% include "oscar/checkout/partials/order_summery.html"%}
+    </div>
+</div>
+
+{% endblock %}
