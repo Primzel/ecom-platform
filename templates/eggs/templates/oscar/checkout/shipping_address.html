@@ -10,6 +10,7 @@
         <section class="col-lg-8">
             <!-- Steps-->
             {% include 'oscar/checkout/partials/steps.html' with step=2 %}
+            {% include "oscar/partials/alert_messages.html" %}
             <!-- Autor info-->
             {% if user.is_authenticated %}
             {% if addresses %}

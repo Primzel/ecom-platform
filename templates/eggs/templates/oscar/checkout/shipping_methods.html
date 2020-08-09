@@ -16,6 +16,7 @@
         <section class="col-lg-8">
             <!-- Steps-->
             {% include 'oscar/checkout/partials/steps.html' with step=3 %}
+            {% include "oscar/partials/alert_messages.html" %}
             <!-- Shipping methods table-->
             <h2 class="h6 pb-3 mb-2">Choose shipping method</h2>
             <form method="post" action="{% url 'checkout:shipping-method' %}">
