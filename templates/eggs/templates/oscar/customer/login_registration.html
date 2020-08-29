@@ -71,52 +71,9 @@
             <h2 class="h4 mb-3">No account? Sign up</h2>
             <p class="font-size-sm text-muted mb-4">Registration takes less than a minute but gives you full control
                 over your orders.</p>
-            <form id="register_form" action="{{ request.get_full_path }}" method="post" class="needs-validation" novalidate="">
+            <form id="register_form" action="{{ request.get_full_path }}" method="post" class="needs-validation {% if registration_form.email.errors %} was-validated {% endif %}" novalidate="">
                 {% csrf_token %}
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-fn">First Name</label>
-                            <input class="form-control" type="text" required="" id="reg-fn">
-                            <div class="invalid-feedback">Please enter your first name!</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-ln">Last Name</label>
-                            <input class="form-control" type="text" required="" id="reg-ln">
-                            <div class="invalid-feedback">Please enter your last name!</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-email">E-mail Address</label>
-                            <input class="form-control" type="email" required="" id="reg-email" name="registration-email">
-                            <div class="invalid-feedback">Please enter valid email address!</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-phone">Phone Number</label>
-                            <input class="form-control" type="text" required="" id="reg-phone">
-                            <div class="invalid-feedback">Please enter your phone number!</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-password">Password</label>
-                            <input class="form-control" type="password" required="" id="reg-password" name="registration-password1">
-                            <div class="invalid-feedback">Please enter password!</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label for="reg-password-confirm">Confirm Password</label>
-                            <input class="form-control" type="password" required="" id="reg-password-confirm" name="registration-password2">
-                            <div class="invalid-feedback">Passwords do not match!</div>
-                        </div>
-                    </div>
-                </div>
+                {% include "oscar/partials/form_fields.html" with form=registration_form %}
                 <div class="text-right">
                     <button name="registration_submit" class="btn btn-primary" type="submit" data-loading-text="{% trans 'Registering...' %}"><i class="czi-user mr-2 ml-n1"></i>Sign Up</button>
                 </div>
