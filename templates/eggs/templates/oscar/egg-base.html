@@ -104,17 +104,19 @@
                 </div>
             </div>
             <div class="col-md-4 col-sm-6">
+                {% if user.is_authenticated %}
                 <div class="widget widget-links widget-light pb-2 mb-4">
                     <h3 class="widget-title text-light">Account &amp; shipping info</h3>
                     <ul class="widget-list">
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Your account</a></li>
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Shipping rates &amp; policies</a></li>
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Refunds &amp; replacements</a></li>
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Order tracking</a></li>
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Delivery info</a></li>
-                        <li class="widget-list-item"><a class="widget-list-link" href="#">Taxes &amp; fees</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:profile-view' %}">{% trans "Your account" %}</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:address-list' %}">{% trans "Address Book" %}</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:email-list' %}">{% trans "Email History" %}</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:order-list' %}">{% trans "Order tracking" %}</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:alerts-list' %}">{% trans "Product Alerts" %}</a></li>
+                        <li class="widget-list-item"><a class="widget-list-link" href="{% url 'customer:notifications-inbox' %}">{% trans "Notifications" %}</a></li>
                     </ul>
                 </div>
+                {% endif %}
                 <div class="widget widget-links widget-light pb-2 mb-4">
                     <h3 class="widget-title text-light">About us</h3>
                     <ul class="widget-list">

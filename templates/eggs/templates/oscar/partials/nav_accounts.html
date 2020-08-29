@@ -6,7 +6,7 @@
             <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="tel:03244609898"><i class="czi-support text-muted mr-2"></i>(92) 324 460 9898</a></li>
                 {% if user.is_authenticated %}
-                <li><a class="dropdown-item" href="order-tracking.html"><i class="czi-location text-muted mr-2"></i>Order tracking</a></li>
+                <li><a class="dropdown-item" href="{% url 'customer:order-list' %}"><i class="czi-location text-muted mr-2"></i>Order tracking</a></li>
                 {% endif %}
             </ul>
         </div>
@@ -20,9 +20,11 @@
         </div>
         <div class="ml-3 text-nowrap">
             {% if user.is_authenticated %}
-            <a class="topbar-link mr-4 d-none d-md-inline-block" href="order-tracking.html"><i class="czi-location"></i>Order tracking</a>
+            <a class="topbar-link mr-4 d-none d-md-inline-block" href="{% url 'customer:order-list' %}"><i class="czi-location"></i>Order tracking</a>
             {% endif %}
-            <div class="topbar-text dropdown disable-autohide"><a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown"><img class="mr-2" width="20" src="/static/oscar/img/flags/en.png" alt="English"/>Eng / $</a>
+            <div class="topbar-text dropdown disable-autohide">
+                <a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown">
+                    <img class="mr-2" width="20" src="/static/oscar/img/flags/en.png" alt="English"/>Eng / $</a>
                 <ul class="dropdown-menu dropdown-menu-right">
                     <li class="dropdown-item">
                         <select class="custom-select custom-select-sm">
