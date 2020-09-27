@@ -63,8 +63,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-SITE_ID = 1
-DEFAULT_SITE_ID = SITE_ID
 AUTHENTICATION_BACKENDS = (
     'oscar.apps.customer.auth_backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
@@ -96,4 +94,4 @@ INTERNAL_IPS = [
     # ...
 ]
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

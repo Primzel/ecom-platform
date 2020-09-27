@@ -130,9 +130,12 @@ services:
       - '4563-4599:4563-4599'
       - '8055:8080'
     environment:
-      - SERVICES=s3,route53
+      - SERVICES=s3,route53,ses,iam
       - DEBUG=1
       - DATA_DIR=/tmp/localstack/data
+      - AWS_ACCESS_KEY_ID=123
+      - AWS_SECRET_ACCESS_KEY=xyz
+      - AWS_DEFAULT_REGION=us-east-2
     volumes:
       - './.localstack:/tmp/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
