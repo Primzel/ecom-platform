@@ -2,6 +2,8 @@ import importlib
 import logging
 
 from django.contrib import messages
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse, NoReverseMatch
 from django.utils.translation import gettext_lazy as _
 from django_tenants.utils import get_model
 from oscar.core.loading import get_class
@@ -33,7 +35,8 @@ class PaymentDetailsView(PaymentDetailsView):
             'primzel.payment_gateways.gateway.{gateway}.client'.format(gateway=payment_method.payment_gateway.slug))
         Client = getattr(module, 'Client')
 
-        source_type, is_created = Client.handle_payment(self.request, self, total, payment_method,order_number=order_number)
+        source_type, is_created = Client.handle_payment(self.request, self, total, payment_method,
+                                                        order_number=order_number)
 
         source = Source(
             source_type=source_type,
@@ -73,3 +76,28 @@ class PaymentDetailsView(PaymentDetailsView):
     def handle_place_order_submission(self, request):
 
         return super(PaymentDetailsView, self).handle_place_order_submission(request)
+
+    def get_message_context(self, order, code=None):
+        site=get_current_site(self.request)
+        ctx = {
+            'user': self.request.user,
+            'order': order,
+            'site': site,
+            'lines': order.lines.all()
+        }
+
+        # Attempt to add the order status URL to the email template ctx.
+        try:
+            if self.request.user.is_authenticated:
+                path = reverse('customer:order',
+                               kwargs={'order_number': order.number})
+            else:
+                path = reverse('customer:anon-order',
+                               kwargs={'order_number': order.number,
+                                       'hash': order.verification_hash()})
+        except NoReverseMatch:
+            # We don't care that much if we can't resolve the URL
+            pass
+        else:
+            ctx['status_url'] = 'http://%s%s' % (site.domain, path)
+        return ctx
