@@ -10,7 +10,7 @@ TEMPLATES = [
         ],
         'OPTIONS': {
             'loaders': [
-                "django_tenants.template.loaders.filesystem.Loader",  # Must be first
+                "multitenancy.template_loaders.PrimzelTemplateLoader",  # Must be first
                 "django.template.loaders.filesystem.Loader",
                 "django.template.loaders.app_directories.Loader",
             ],
