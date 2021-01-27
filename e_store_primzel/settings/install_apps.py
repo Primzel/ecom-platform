@@ -43,7 +43,8 @@ TENANT_APPS = [
     'apps.dashboard.partners',
     'apps.partner',
     'apps.catalogue',
-    'apps.dashboard.banners'
+    'apps.dashboard.banners',
+    'primzel.global_signal_handler',
 ]
 
 SHARED_APPS = [

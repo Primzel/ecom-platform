@@ -105,29 +105,35 @@
                         {% endif %}
                     </h3>
                 </div>
+                <form id="to-checkout-form" action="{% url 'checkout:index' %}" method="get"></form>
                 <div class="form-group mb-4">
                     <label class="mb-3" for="order-comments"><span
                             class="badge badge-info font-size-xs mr-2">Note</span><span class="font-weight-medium">Additional comments</span></label>
-                    <textarea class="form-control" rows="6" id="order-comments"></textarea>
+                    <textarea form="to-checkout-form" class="form-control" rows="6" id="order-comments" name="order_notes"></textarea>
                 </div>
                 <div class="accordion" id="order-options">
+                    {% block vouchers %}
+                    {# Hide the entire section if a custom BasketView doesn't pass in a voucher form #}
+                    {% if voucher_form %}
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="accordion-heading"><a href="#promo-code" role="button" data-toggle="collapse"
-                                                             aria-expanded="true" aria-controls="promo-code">Apply promo
-                                code<span class="accordion-indicator"></span></a></h3>
+                            <h3 class="accordion-heading">
+                                <a href="#promo-code" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="promo-code">Apply promo code<span class="accordion-indicator"></span></a>
+                            </h3>
                         </div>
                         <div class="collapse show" id="promo-code" data-parent="#order-options">
-                            <form class="card-body needs-validation" method="post" novalidate="">
+                            <form class="card-body needs-validation" novalidate="" id="voucher_form" action="{% url 'basket:vouchers-add' %}" method="post">
+                                {% csrf_token %}
                                 <div class="form-group">
-                                    <input class="form-control" type="text" placeholder="Promo code" required="">
+                                    <input class="form-control" name="code" maxlength="128"  type="text" placeholder="Promo code" required="" id="id_code">
                                     <div class="invalid-feedback">Please provide promo code.</div>
                                 </div>
-                                <button class="btn btn-outline-primary btn-block" type="submit">Apply promo code
-                                </button>
+                                <button class="btn btn-outline-primary btn-block" type="submit"  data-loading-text="{% trans 'Adding...' %}">{% trans "Apply promo code" %}</button>
                             </form>
                         </div>
                     </div>
+                    {% endif %}
+                    {% endblock vouchers %}
                     <div class="card">
                         <div class="card-header">
                             <h3 class="accordion-heading"><a class="collapsed" href="#shipping-estimates" role="button"
@@ -178,8 +184,8 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-primary btn-shadow btn-block mt-4 {% if not request.basket.num_lines %} disabled {% endif %}" href="{% url 'checkout:index' %}"><i
-                        class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</a>
+                <button form="to-checkout-form" type="submit" class="btn btn-primary btn-shadow btn-block mt-4 {% if not request.basket.num_lines %} disabled {% endif %}"><i
+                        class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</button>
             </div>
         </aside>
     </div>
@@ -302,30 +308,6 @@
 {% endblock %}
 
 <div class="row">
-    {% block vouchers %}
-    {# Hide the entire section if a custom BasketView doesn't pass in a voucher form #}
-    {% if voucher_form %}
-    <div class="col-sm-6">
-        <div class="sub-header">
-            <h2>{% trans "Voucher/promo code" %}</h2>
-        </div>
-        <p id="voucher_form_link"><a href="#voucher" class="btn btn-default btn-full">{% trans "I have a voucher
-            code..." %}</a></p>
-
-        <div id="voucher_form_container" style="display:none">
-            <form id="voucher_form" action="{% url 'basket:vouchers-add' %}" method="post">
-                {% csrf_token %}
-                {% include "oscar/partials/form_fields.html" with form=voucher_form %}
-                <button type="submit" class="btn btn-info" data-loading-text="{% trans 'Adding...' %}">{% trans "Add
-                    voucher" %}
-                </button>
-                {% trans "or" %} <a href="#" id="voucher_form_cancel">{% trans "cancel" %}</a>
-            </form>
-        </div>
-    </div>
-    {% endif %}
-    {% endblock vouchers %}
-
     {% block baskettotals %}
     <div class="col-sm-6">
         <div class="sub-header">
