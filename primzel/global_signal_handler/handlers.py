@@ -3,7 +3,7 @@ from oscar.core.loading import get_model
 
 
 def order_placed_handler(sender, order, user, *args, **kwargs):
-    key = 'user__order_notes'
+    key = 'user__order_notes_%s' % user.id
     message = cache.get(key, None)
     if message:
         OrderNote = get_model('order', 'OrderNote')
@@ -12,7 +12,7 @@ def order_placed_handler(sender, order, user, *args, **kwargs):
 
 
 def start_checkout_handler(sender, request, *args, **kwargs):
-    key = 'user__order_notes'
+    key = 'user__order_notes_%s' % request.user.id
     order_notes = request.GET.get('order_notes', None)
     if order_notes:
         cache.set(key, order_notes)
