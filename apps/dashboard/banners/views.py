@@ -62,3 +62,14 @@ class SlideCreateView(generic.CreateView):
         initial = super().get_initial()
         initial['banner'] = self.kwargs.get('banner_id', None)
         return initial
+
+class SlideUpdateView(generic.edit.UpdateView):
+    template_name = 'banners/dashboard/slide-form.html'
+    model = BannerImage
+    form_class = SlideForm
+
+    def get_context_data(self, **kwargs):
+        ctx = super(SlideUpdateView, self).get_context_data(**kwargs)
+        ctx['title'] = _("Add a new slide")
+        ctx['banner'] = Banner.objects.get(pk=self.kwargs.get('banner_id', None))
+        return ctx

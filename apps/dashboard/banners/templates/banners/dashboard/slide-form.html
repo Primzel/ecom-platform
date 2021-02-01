@@ -36,6 +36,7 @@
 </div>
 <div class="well">
     {% for slide_image in banner.images.all %}
+    <a name="edit" href="{% url 'dashboard:dashboard_banners:slide-update' banner_id=banner.id pk=slide_image.id %}" class="btn btn-primary scale-up delay-4">Edit</a>
     {% with image=slide_image.image %}
     {% oscar_thumbnail image "100x100" upscale=True as thumb %}
     <div class="thumbnail">

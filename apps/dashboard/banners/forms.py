@@ -1,3 +1,4 @@
+from colorfield.widgets import ColorWidget
 from django import forms
 from oscar.core.loading import get_model
 from treebeard.forms import movenodeform_factory

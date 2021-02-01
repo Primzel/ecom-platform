@@ -25,3 +25,4 @@ Pillow==7.0.0
 stripe
 django_compressor
 django-ses==1.0.2
+django-colorfield

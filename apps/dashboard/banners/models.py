@@ -1,3 +1,4 @@
+from colorfield.fields import ColorField
 from django.db import models, connection
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -27,6 +28,7 @@ class BannerImage(models.Model):
     banner = models.ForeignKey(Banner, on_delete=models.CASCADE, related_name='images')
     image = models.ImageField(upload_to=get_tenant_specific_upload_folder, verbose_name=_('Banner Image'))
     content = models.TextField(verbose_name='Content')
+    color = ColorField(format='hex')
 
     def __str__(self):
         return "{banner}".format(banner=self.banner.title)
