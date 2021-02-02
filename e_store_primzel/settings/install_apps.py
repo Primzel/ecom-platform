@@ -15,7 +15,6 @@ TENANT_APPS = [
     'oscar.apps.basket',
     'oscar.apps.offer',
     'oscar.apps.order',
-    'oscar.apps.customer',
     'oscar.apps.search',
     'oscar.apps.voucher',
     'oscar.apps.wishlists',
@@ -45,6 +44,7 @@ TENANT_APPS = [
     'apps.partner',
     'apps.catalogue',
     'apps.dashboard.banners',
+    'apps.customer',
     'primzel.global_signal_handler',
 ]
 

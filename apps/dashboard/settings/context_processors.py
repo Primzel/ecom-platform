@@ -5,7 +5,7 @@ from apps.payment.models import PaymentMethod
 
 
 def store(request):
-    setting = Setting.objects.filter(is_active=True).order_by('id').first()
+    setting = Setting.effective_settings.get()
     payment_methods = PaymentMethod.objects.filter(is_active=True)
     kwargs = {
         'setting': setting,
