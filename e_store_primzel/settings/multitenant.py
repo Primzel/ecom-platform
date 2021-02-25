@@ -6,7 +6,7 @@ from .base import BASE_DIR
 TENANT_MODEL = "multitenancy.Tenant"
 TENANT_DOMAIN_MODEL = "multitenancy.Domain"
 
-STATICFILES_FINDERS.insert(0, "django_tenants.staticfiles.finders.TenantFileSystemFinder")
+STATICFILES_FINDERS.insert(0, "multitenancy.template_loaders.PrimzelStaticFileLoader")
 
 MULTITENANT_STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "templates/%s/static"),

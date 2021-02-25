@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection
 from django_tenants.template.loaders.filesystem import Loader
+from django_tenants.staticfiles.finders import TenantFileSystemFinder
 
 from multitenancy.models import Tenant
 
@@ -29,6 +30,7 @@ def parse_tenant_config_path(config_path, template_dir_name):
     except (TypeError, ValueError):
         # No %s in string; append schema name at the end
         return os.path.join(config_path, template_dir_name)
+
 
 class PrimzelTemplateLoader(Loader):
     @property
@@ -62,3 +64,37 @@ class PrimzelTemplateLoader(Loader):
     @property
     def template_dir(self):
         return Tenant.objects.get(schema_name=connection.schema_name).template_dir_name
+
+
+class PrimzelStaticFileLoader(TenantFileSystemFinder):
+
+    @property
+    def locations(self):
+        """
+        Lazy retrieval of list of locations with static files based on current tenant schema.
+        :return: The list of static file dirs that have been configured for this tenant.
+        """
+        if self._locations.get(connection.schema_name, None) is None:
+            schema_locations = []
+            for root in settings.MULTITENANT_STATICFILES_DIRS:
+                root = parse_tenant_config_path(root, self.template_dir)
+
+                if isinstance(root, (list, tuple)):
+                    prefix, root = root
+                else:
+                    prefix = ""
+
+                if (prefix, root) not in schema_locations:
+                    schema_locations.append((prefix, root))
+
+            self._locations[connection.schema_name] = schema_locations
+
+        return self._locations[connection.schema_name]
+
+    @property
+    def template_dir(self):
+        try:
+            template_dir = Tenant.objects.get(schema_name=connection.schema_name).template_dir_name
+        except Exception as ex:
+            template_dir = ''
+        return template_dir
