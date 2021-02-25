@@ -30,7 +30,7 @@ def add_default_tenant(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('multitenancy', '0001_initial'),
+        ('multitenancy', '0003_tenant_template_dir_name'),
     ]
 
     operations = [
