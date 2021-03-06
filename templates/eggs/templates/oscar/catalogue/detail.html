@@ -81,47 +81,9 @@
                             <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del>
                             <span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>
                         </div>
-                        <div class="font-size-sm mb-4"><span class="text-heading font-weight-medium mr-1">Color:</span><span class="text-muted" id="colorOption">Red/Dark blue/White</span></div>
-                        <div class="position-relative mr-n4 mb-3">
-                            <div class="custom-control custom-option custom-control-inline mb-2">
-                                <input class="custom-control-input" type="radio" name="color" id="color1" data-label="colorOption" value="Red/Dark blue/White" checked="">
-                                <label class="custom-option-label rounded-circle" for="color1"><span class="custom-option-color rounded-circle" style="background-image: url(img/shop/single/color-opt-1.png)"></span></label>
-                            </div>
-                            <div class="custom-control custom-option custom-control-inline mb-2">
-                                <input class="custom-control-input" type="radio" name="color" id="color2" data-label="colorOption" value="Beige/White/Dark grey">
-                                <label class="custom-option-label rounded-circle" for="color2"><span class="custom-option-color rounded-circle" style="background-image: url(img/shop/single/color-opt-2.png)"></span></label>
-                            </div>
-                            <div class="custom-control custom-option custom-control-inline mb-2">
-                                <input class="custom-control-input" type="radio" name="color" id="color3" data-label="colorOption" value="Dark grey/White/Orange">
-                                <label class="custom-option-label rounded-circle" for="color3"><span class="custom-option-color rounded-circle" style="background-image: url(img/shop/single/color-opt-3.png)"></span></label>
-                            </div>
-                            <div class="product-badge product-available mt-n1"><i class="czi-security-check"></i>Product available</div>
-                        </div>
-                        <form class="mb-grid-gutter" method="post">
-                            <div class="form-group">
-                                <div class="d-flex justify-content-between align-items-center pb-1">
-                                    <label class="font-weight-medium" for="product-size">Size:</label><a class="nav-link-style font-size-sm" href="#size-chart" data-toggle="modal"><i class="czi-ruler lead align-middle mr-1 mt-n1"></i>Size guide</a>
-                                </div>
-                                <select class="custom-select" required="" id="product-size">
-                                    <option value="">Select size</option>
-                                    <option value="xs">XS</option>
-                                    <option value="s">S</option>
-                                    <option value="m">M</option>
-                                    <option value="l">L</option>
-                                    <option value="xl">XL</option>
-                                </select>
-                            </div>
-                            <div class="form-group d-flex align-items-center">
-                                <select class="custom-select mr-3" style="width: 5rem;">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                                <button class="btn btn-primary btn-shadow btn-block" type="submit"><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
-                            </div>
-                        </form>
+
+                        {% include "oscar/catalogue/partials/options/option_control.html" %}
+
                     </div>
                 </div>
             </div>

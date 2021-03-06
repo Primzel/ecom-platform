@@ -1,25 +1,6 @@
 {% load primzel_tags %}
 {% load i18n %}
 
-<script type="text/javascript">
-    function addToBasketFormHandler(form) {
-        var selected = [];
-        $($(form).serializeArray()).each(function (index, field) {
-            if (['quantity', 'csrfmiddlewaretoken'].indexOf(field['name']) == -1) {
-                selected.push(field['value'].split(','));
-            }
-        });
-
-        var selected_child = _.intersection.apply(_, selected);
-        if (selected_child) {
-            selected_child = selected_child[0];
-            $(form).attr('action', '/basket/add/' + selected_child + '/');
-            return true;
-        }
-        return false;
-    }
-</script>
-
 <form class="mb-grid-gutter" method="post" id="quick-view-add-to-basket-form" onsubmit="return addToBasketFormHandler(this)">
     {% csrf_token %}
     {% if not product.is_parent %}
@@ -31,13 +12,8 @@
 
     </div>
     <div class="form-group d-flex align-items-center">
-        <select class="custom-select mr-3" style="width: 5rem;" name="quantity">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
+        <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="number" min="1" value="1"/>
+
         <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..."><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
     </div>
 </form>

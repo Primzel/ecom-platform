@@ -1,6 +1,6 @@
 {% if product.is_parent %}
     {% for attribute, value_map in descriptors %}
-        {% if 'color' == attribute %}
+        {% if 'color' == attribute.lower %}
             {% include "oscar/catalogue/partials/options/color.html" with key=attribute options=value_map %}
         {% else %}
             {% include "oscar/catalogue/partials/options/option.html" with key=attribute options=value_map %}

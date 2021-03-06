@@ -4,6 +4,8 @@
 {% load display_tags %}
 {% load staticfiles %}
 {% load purchase_info_tags %}
+{% load primzel_tags %}
+
 {% block product %}
 <div class="card product-card">
     {% include 'oscar/catalogue/partials/wishlist-button.html' %}
@@ -29,35 +31,35 @@
             {% endiffeature %}
         </div>
     </div>
-    <div class="card-body card-body-hidden">
-        {% if product.is_parent %}
-        <div class="text-center pb-2">
-        {% for child in product.children.all %}
-        {% purchase_info_for_product request child as child_session %}
-        {% if child_session.availability.is_available_to_buy %}
-<!--        <a href="{{ child.get_absolute_url }}">{{ child.get_title }}</a><br>-->
-
-            <div class="custom-control custom-option custom-control-inline mb-2">
-                <input class="custom-control-input" type="radio" name="size1" id="s-{{ child.get_title }}">
-                <label class="custom-option-label" for="s-{{ child.get_title }}">{{ child.get_title }}</label>
+        <div class="card-body card-body-hidden">
+            <form class="mb-grid-gutter" id="basket-form-product-{{ product.id }}" method="post" onsubmit="return addToBasketFormHandler(this)">
+                {% csrf_token %}
+                {{ basket_form.as_p }}
+            {% if product.is_parent %}
+            <div class="text-center pb-2">
+                {% render_variant_descriptors product %}
             </div>
+            </form>
 
-        {% endif %}
-        {% endfor %}
+            <div class="form-group d-flex align-items-center">
+                <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="hidden" min="1" value="1" form="basket-form-product-{{ product.id }}"/>
+
+                <button form="basket-form-product-{{ product.id }}" class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="{% trans "Adding..." %}"><i class="czi-cart font-size-lg mr-2"></i>{% trans "Add to Cart" %}</button>
+            </div>
+            {% endif %}
+
+
+            {% if not product.is_parent and not product.has_options %}
+            {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
+            {% endif %}
+
+            <div class="text-center">
+                <a class="nav-link-style font-size-ms eggs-quick-view" href="#quick-view" data-toggle="modal"
+                   data-product-detail-url="{% url 'catalogue:quick_detail' product_slug=product.slug pk=product.pk %}">
+                    <i class="czi-eye align-middle mr-1" ></i>{% trans "Quick view" %}
+                </a>
+            </div>
         </div>
-        {% endif %}
-
-
-        {% if not product.is_parent and not product.has_options %}
-        {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
-        {% endif %}
-        <div class="text-center">
-            <a class="nav-link-style font-size-ms eggs-quick-view" href="#quick-view" data-toggle="modal"
-               data-product-detail-url="{% url 'catalogue:quick_detail' product_slug=product.slug pk=product.pk %}">
-                <i class="czi-eye align-middle mr-1" ></i>Quick view
-            </a>
-        </div>
-    </div>
 </div>
 <hr class="d-sm-none">
 {% endblock %}
