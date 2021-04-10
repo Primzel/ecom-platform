@@ -13,32 +13,15 @@
         <div class="topbar-text text-nowrap d-none d-md-inline-block"><i class="czi-support"></i><span class="text-muted mr-1">Support</span><a class="topbar-link" href="tel:03244609898">(92) 324 460 9898</a></div>
         <div class="cz-carousel cz-controls-static d-none d-md-block">
             <div class="cz-carousel-inner" data-carousel-options="{&quot;mode&quot;: &quot;gallery&quot;, &quot;nav&quot;: false}">
-                <div class="topbar-text">Free shipping for order over $200</div>
-                <div class="topbar-text">We return money within 30 days</div>
-                <div class="topbar-text">Friendly 24/7 customer support</div>
+<!--                <div class="topbar-text">Free shipping for order over $200</div>-->
+<!--                <div class="topbar-text">We return money within 30 days</div>-->
+<!--                <div class="topbar-text">Friendly 24/7 customer support</div>-->
             </div>
         </div>
         <div class="ml-3 text-nowrap">
             {% if user.is_authenticated %}
             <a class="topbar-link mr-4 d-none d-md-inline-block" href="{% url 'customer:order-list' %}"><i class="czi-location"></i>Order tracking</a>
             {% endif %}
-            <div class="topbar-text dropdown disable-autohide">
-                <a class="topbar-link dropdown-toggle" href="#" data-toggle="dropdown">
-                    <img class="mr-2" width="20" src="/static/oscar/img/flags/en.png" alt="English"/>Eng / $</a>
-                <ul class="dropdown-menu dropdown-menu-right">
-                    <li class="dropdown-item">
-                        <select class="custom-select custom-select-sm">
-                            <option value="usd">$ USD</option>
-                            <option value="eur">€ EUR</option>
-                            <option value="ukp">£ UKP</option>
-                            <option value="jpy">¥ JPY</option>
-                        </select>
-                    </li>
-                    <li><a class="dropdown-item pb-1" href="#"><img class="mr-2" width="20" src="/static/oscar/img/flags/fr.png" alt="Français"/>Français</a></li>
-                    <li><a class="dropdown-item pb-1" href="#"><img class="mr-2" width="20" src="/static/oscar/img/flags/de.png" alt="Deutsch"/>Deutsch</a></li>
-                    <li><a class="dropdown-item" href="#"><img class="mr-2" width="20" src="/static/oscar/img/flags/it.png" alt="Italiano"/>Italiano</a></li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>

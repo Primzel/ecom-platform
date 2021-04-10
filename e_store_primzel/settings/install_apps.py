@@ -24,7 +24,6 @@ TENANT_APPS = [
     'oscar.apps.dashboard.orders',
     'apps.dashboard.catalogue',
     'oscar.apps.dashboard.offers',
-    'oscar.apps.dashboard.pages',
     'oscar.apps.dashboard.ranges',
     'oscar.apps.dashboard.reviews',
     'oscar.apps.dashboard.vouchers',
@@ -34,6 +33,7 @@ TENANT_APPS = [
     'colorfield',
 ]+[
     # Primzel Apps
+    'apps.dashboard.pages',
     'apps.dashboard.configurable_menu',
     'apps.checkout',
     'apps.shipping',
