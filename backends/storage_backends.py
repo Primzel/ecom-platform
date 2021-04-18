@@ -11,6 +11,7 @@ log = logging.getLogger(__name__)
 class MediaStorage(S3Boto3Storage):
     location = 'media'
     file_overwrite = False
+    tenants = {}
 
     def __init__(self, **settings):
         super().__init__(**settings)
@@ -22,9 +23,10 @@ class MediaStorage(S3Boto3Storage):
 
     @property
     def tenant(self):
-        tenant = None
+        tenant = self.tenants.get(connection.schema_name, None)
         try:
-            tenant = Tenant.objects.get(schema_name=connection.schema_name)
+            if not tenant:
+                self.tenants[connection.schema_name] = tenant = Tenant.objects.get(schema_name=connection.schema_name)
         except Exception as ex:
             log.exception('Unable to get tenant', ex)
         return tenant
