@@ -13,10 +13,10 @@ MIDDLEWARE = [
     'oscar.apps.basket.middleware.BasketMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'crequest.middleware.CrequestMiddleware',
-    'middlewares.logging.HeadersLoggingMiddleware',
 ]
 
 if settings.DEBUG:
     MIDDLEWARE = MIDDLEWARE + [
         'debug_toolbar.middleware.DebugToolbarMiddleware',
+        'middlewares.logging.HeadersLoggingMiddleware',
     ]
