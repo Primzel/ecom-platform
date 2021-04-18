@@ -5,7 +5,7 @@ from storages.backends.s3boto3 import S3Boto3Storage
 from storages.utils import setting
 from multitenancy.models import Tenant
 
-log = logging.getLogger(__name__)
+log = logging.getLogger('primzel.logger')
 
 
 class MediaStorage(S3Boto3Storage):

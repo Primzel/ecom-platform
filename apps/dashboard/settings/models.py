@@ -32,6 +32,8 @@ class Setting(models.Model):
         verbose_name=_('From e-mail address.'), null=True, blank=True,
         help_text=_('Please enter email address from you want to send email messages to your customers.')
     )
+    store_phone_number = models.CharField(max_length=50, verbose_name=_('Store support contact number.'), null=True,
+                                          blank=True, help_text=_('Please enter support contact number.'))
     is_active = models.BooleanField(default=False)
 
     effective_settings = EffectiveSettingManager()
