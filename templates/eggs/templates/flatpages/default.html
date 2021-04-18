@@ -16,6 +16,10 @@
         </div>
         <div class="order-lg-1 pr-lg-4 text-center text-lg-left">
             <h1 class="h3 mb-0">{{ flatpage.title}}</h1>
+            {% if user.is_staff %}
+            <a class="pull-right hidden-xs" href="{% url 'dashboard:page-update' pk=flatpage.id %}"><small><i
+                    class="icon-edit"></i> {% trans "Edit this page" %}</small></a>
+            {% endif %}
         </div>
     </div>
 </div>
