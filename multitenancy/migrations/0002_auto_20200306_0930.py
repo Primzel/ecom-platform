@@ -31,6 +31,7 @@ def add_default_tenant(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ('multitenancy', '0003_tenant_template_dir_name'),
+        ('multitenancy', '0003_tenant_s3_bucket_name'),
     ]
 
     operations = [
