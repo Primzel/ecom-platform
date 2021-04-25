@@ -9,7 +9,6 @@ log = logging.getLogger('primzel.logger')
 
 
 class MediaStorage(S3Boto3Storage):
-    location = 'media'
     file_overwrite = False
     tenants = {}
 
@@ -18,7 +17,7 @@ class MediaStorage(S3Boto3Storage):
 
     def get_default_settings(self):
         settings = super(MediaStorage, self).get_default_settings()
-        settings.update([{'bucket_name', self.tenant_bucket_name}])
+        settings.update({'bucket_name': self.tenant_bucket_name})
         return settings
 
     @property
@@ -40,3 +39,7 @@ class MediaStorage(S3Boto3Storage):
     @property
     def bucket(self):
         return self.connection.Bucket(self.tenant_bucket_name)
+
+    @property
+    def location(self):
+        return self.tenant.name
