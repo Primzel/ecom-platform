@@ -11,7 +11,7 @@ PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurabl
 class MenuTable(DashboardTable):
     caption = ungettext_lazy("%d Menu", "%d Menus")
     actions = TemplateColumn(
-        template_name='oscar/dashboad/configurable_menu/menu_row_actions.html',
+        template_name='oscar/dashboard/configurable_menu/menu_row_actions.html',
         orderable=False)
 
     class Meta(DashboardTable.Meta):
@@ -32,7 +32,7 @@ class MenuItemTable(DashboardTable):
         accessor='get_num_children',
         orderable=False)
     actions = TemplateColumn(
-        template_name='oscar/dashboad/configurable_menu/menuitem_row_actions.html',
+        template_name='oscar/dashboard/configurable_menu/menuitem_row_actions.html',
         orderable=False)
 
     icon = "sitemap"

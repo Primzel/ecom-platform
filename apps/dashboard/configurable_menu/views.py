@@ -17,7 +17,7 @@ PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurabl
 
 
 class PartnerConfigurableMenuCreateView(generic.CreateView):
-    template_name = 'oscar/dashboad/configurable_menu/partner_configurable_menu_form.html'
+    template_name = 'oscar/dashboard/configurable_menu/partner_configurable_menu_form.html'
     model = PartnerConfigurableMenu
     form_class = PartnerConfigurableMenuForm
 
@@ -34,7 +34,7 @@ class PartnerConfigurableMenuCreateView(generic.CreateView):
 class ConfigurableMenuListView(SingleTableView):
     table_class = MenuTable
     context_object_name = 'table'
-    template_name = 'oscar/dashboad/configurable_menu/partner_configurable_menu_listing.html'
+    template_name = 'oscar/dashboard/configurable_menu/partner_configurable_menu_listing.html'
     queryset = PartnerConfigurableMenu.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -48,7 +48,7 @@ class ConfigurableMenuListView(SingleTableView):
 
 
 class MenuItemListView(SingleTableView):
-    template_name = 'oscar/dashboad/configurable_menu/menuitems_listing.html'
+    template_name = 'oscar/dashboard/configurable_menu/menuitems_listing.html'
     table_class = MenuItemTable
     context_table_name = 'menuitems'
 
@@ -94,7 +94,7 @@ class MenuItemListMixin(object):
 
 
 class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
-    template_name = 'oscar/dashboad/configurable_menu/menuitem_form.html'
+    template_name = 'oscar/dashboard/configurable_menu/menuitem_form.html'
     model = PartnerConfigurableMenuItem
     form_class = PartnerMenuItemForm
 
@@ -118,7 +118,7 @@ class MenuItemCreateView(MenuItemListMixin, generic.CreateView):
 
 
 class MenuItemDetailListView(SingleTableMixin, generic.DetailView):
-    template_name = 'oscar/dashboad/configurable_menu/menuitems_listing.html'
+    template_name = 'oscar/dashboard/configurable_menu/menuitems_listing.html'
     model = PartnerConfigurableMenuItem
     context_object_name = 'menuitem'
     table_class = MenuItemTable
@@ -141,7 +141,7 @@ class MenuItemDetailListView(SingleTableMixin, generic.DetailView):
 
 
 class MenuItemUpdateView(MenuItemListMixin, generic.UpdateView):
-    template_name = 'oscar/dashboad/configurable_menu/menuitem_form.html'
+    template_name = 'oscar/dashboard/configurable_menu/menuitem_form.html'
     model = PartnerConfigurableMenuItem
     form_class = PartnerMenuItemForm
 

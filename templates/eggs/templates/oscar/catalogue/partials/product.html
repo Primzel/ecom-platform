@@ -33,21 +33,20 @@
     </div>
         <div class="card-body card-body-hidden">
             <form class="mb-grid-gutter" id="basket-form-product-{{ product.id }}" method="post" onsubmit="return addToBasketFormHandler(this)">
-                {% csrf_token %}
                 {{ basket_form.as_p }}
             {% if product.is_parent %}
             <div class="text-center pb-2">
                 {% render_variant_descriptors product %}
             </div>
-            </form>
-
-            <div class="form-group d-flex align-items-center">
-                <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="hidden" min="1" value="1" form="basket-form-product-{{ product.id }}"/>
-
-                <button form="basket-form-product-{{ product.id }}" class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="{% trans "Adding..." %}"><i class="czi-cart font-size-lg mr-2"></i>{% trans "Add to Cart" %}</button>
-            </div>
             {% endif %}
+            </form>
+            {% if product.is_parent %}
+                <div class="form-group d-flex align-items-center">
+                    <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="hidden" min="1" value="1" form="basket-form-product-{{ product.id }}"/>
 
+                    <button form="basket-form-product-{{ product.id }}" class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="{% trans "Adding..." %}"><i class="czi-cart font-size-lg mr-2"></i>{% trans "Add to Cart" %}</button>
+                </div>
+            {% endif %}
 
             {% if not product.is_parent and not product.has_options %}
             {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}

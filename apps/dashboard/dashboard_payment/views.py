@@ -26,7 +26,7 @@ AvailablePaymentGatewayForm = get_class('dashboard.dashboard_payment.forms', 'Av
 
 class BankCardCreateView(generic.CreateView):
     model = Bankcard
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = BankCardForm
 
     def get_context_data(self, **kwargs):
@@ -42,7 +42,7 @@ class BankCardCreateView(generic.CreateView):
 class BankCardListView(generic.ListView):
     model = Bankcard
     context_object_name = 'bankcards'
-    template_name = 'oscar/dashboad/payment/bankcard/bankcards_list.html'
+    template_name = 'oscar/dashboard/payment/bankcard/bankcards_list.html'
     queryset = Bankcard.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -59,7 +59,7 @@ class BankCardListView(generic.ListView):
 class BankCardDeleteView(generic.DeleteView):
     model = Bankcard
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Bank card '%s' was deleted successfully.") % self.object.name)
@@ -77,7 +77,7 @@ class BankCardDeleteView(generic.DeleteView):
 class BankCardManageView(generic.UpdateView):
     model = Bankcard
     context_object_name = 'bankcard'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = BankCardForm
     success_url = reverse_lazy('dashboard:dashboard_payment:bankcards-list')
 
@@ -96,7 +96,7 @@ class BankCardManageView(generic.UpdateView):
 
 class SourceCreateView(generic.CreateView):
     model = Source
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = SourceForm
 
     def get_context_data(self, **kwargs):
@@ -112,7 +112,7 @@ class SourceCreateView(generic.CreateView):
 class SourceListView(generic.ListView):
     model = Source
     context_object_name = 'sources'
-    template_name = 'oscar/dashboad/payment/source/sources_list.html'
+    template_name = 'oscar/dashboard/payment/source/sources_list.html'
     queryset = Source.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -129,7 +129,7 @@ class SourceListView(generic.ListView):
 class SourceDeleteView(generic.DeleteView):
     model = Source
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Source '%s' was deleted successfully.") % self.object.order.number)
@@ -147,7 +147,7 @@ class SourceDeleteView(generic.DeleteView):
 class SourceManageView(generic.UpdateView):
     model = Source
     context_object_name = 'source'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = SourceForm
     success_url = reverse_lazy('dashboard:dashboard_payment:sources-list')
 
@@ -166,7 +166,7 @@ class SourceManageView(generic.UpdateView):
 
 class SourceTypeCreateView(generic.CreateView):
     model = SourceType
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = SourceTypeForm
 
     def get_context_data(self, **kwargs):
@@ -182,7 +182,7 @@ class SourceTypeCreateView(generic.CreateView):
 class SourceTypeListView(generic.ListView):
     model = SourceType
     context_object_name = 'source_types'
-    template_name = 'oscar/dashboad/payment/source_types/source_types_list.html'
+    template_name = 'oscar/dashboard/payment/source_types/source_types_list.html'
     queryset = SourceType.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -199,7 +199,7 @@ class SourceTypeListView(generic.ListView):
 class SourceTypeDeleteView(generic.DeleteView):
     model = SourceType
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Source type '%s' was deleted successfully.") % self.object.name)
@@ -217,7 +217,7 @@ class SourceTypeDeleteView(generic.DeleteView):
 class SourceTypeManageView(generic.UpdateView):
     model = SourceType
     context_object_name = 'source_type'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = SourceTypeForm
     success_url = reverse_lazy('dashboard:dashboard_payment:source_types-list')
 
@@ -236,7 +236,7 @@ class SourceTypeManageView(generic.UpdateView):
 
 class TransactionCreateView(generic.CreateView):
     model = Transaction
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = TransactionForm
 
     def get_context_data(self, **kwargs):
@@ -252,7 +252,7 @@ class TransactionCreateView(generic.CreateView):
 class TransactionsListView(generic.ListView):
     model = Transaction
     context_object_name = 'transactions'
-    template_name = 'oscar/dashboad/payment/transactions/transactions_list.html'
+    template_name = 'oscar/dashboard/payment/transactions/transactions_list.html'
     queryset = Transaction.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -269,7 +269,7 @@ class TransactionsListView(generic.ListView):
 class TransactionDeleteView(generic.DeleteView):
     model = Transaction
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Transaction was deleted successfully."))
@@ -287,7 +287,7 @@ class TransactionDeleteView(generic.DeleteView):
 class TransactionManageView(generic.UpdateView):
     model = Transaction
     context_object_name = 'transaction'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = TransactionForm
     success_url = reverse_lazy('dashboard:dashboard_payment:transactions-list')
 
@@ -306,7 +306,7 @@ class TransactionManageView(generic.UpdateView):
 
 class PaymentMethodCreateView(generic.CreateView):
     model = PaymentMethod
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = PaymentMethodForm
 
     def get_context_data(self, **kwargs):
@@ -322,7 +322,7 @@ class PaymentMethodCreateView(generic.CreateView):
 class PaymentMethodListView(generic.ListView):
     model = PaymentMethod
     context_object_name = 'payment_methods'
-    template_name = 'oscar/dashboad/payment/payment_methods/payment_methods_list.html'
+    template_name = 'oscar/dashboard/payment/payment_methods/payment_methods_list.html'
     queryset = PaymentMethod.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -339,7 +339,7 @@ class PaymentMethodListView(generic.ListView):
 class PaymentMethodDeleteView(generic.DeleteView):
     model = PaymentMethod
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Transaction %s was deleted successfully.") % self.object.title)
@@ -357,7 +357,7 @@ class PaymentMethodDeleteView(generic.DeleteView):
 class PaymentMethodManageView(generic.UpdateView):
     model = PaymentMethod
     context_object_name = 'payment_method'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = PaymentMethodForm
     success_url = reverse_lazy('dashboard:dashboard_payment:payment_methods-list')
 
@@ -376,7 +376,7 @@ class PaymentMethodManageView(generic.UpdateView):
 
 class AvailablePaymentGatewayCreateView(generic.CreateView):
     model = AvailablePaymentGateway
-    template_name = 'oscar/dashboad/payment/payment_form.html'
+    template_name = 'oscar/dashboard/payment/payment_form.html'
     form_class = AvailablePaymentGatewayForm
 
     def get_context_data(self, **kwargs):
@@ -392,7 +392,7 @@ class AvailablePaymentGatewayCreateView(generic.CreateView):
 class AvailablePaymentGatewayListView(generic.ListView):
     model = AvailablePaymentGateway
     context_object_name = 'payment_gateways'
-    template_name = 'oscar/dashboad/payment/payment_gateways/payment_gateways_list.html'
+    template_name = 'oscar/dashboard/payment/payment_gateways/payment_gateways_list.html'
     queryset = AvailablePaymentGateway.objects.all()
 
     def get_queryset(self, **kwargs):
@@ -409,7 +409,7 @@ class AvailablePaymentGatewayListView(generic.ListView):
 class AvailablePaymentGatewayDeleteView(generic.DeleteView):
     model = AvailablePaymentGateway
     context_object_name = 'object'
-    template_name = 'oscar/dashboad/payment/payment_delete.html'
+    template_name = 'oscar/dashboard/payment/payment_delete.html'
 
     def get_success_url(self):
         messages.success(self.request, _("Payment gateway %s was deleted successfully.") % self.object.name)
@@ -427,7 +427,7 @@ class AvailablePaymentGatewayDeleteView(generic.DeleteView):
 class AvailablePaymentGatewayManageView(generic.UpdateView):
     model = AvailablePaymentGateway
     context_object_name = 'payment_gateway'
-    template_name = 'oscar/dashboad/payment/payment_manage.html'
+    template_name = 'oscar/dashboard/payment/payment_manage.html'
     form_class = AvailablePaymentGatewayForm
     success_url = reverse_lazy('dashboard:dashboard_payment:payment_gateways-list')
 

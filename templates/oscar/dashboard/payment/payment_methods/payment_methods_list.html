@@ -1,4 +1,4 @@
-{% extends 'oscar/dashboad/payment/payment_list.html' %}
+{% extends 'oscar/dashboard/payment/payment_list.html' %}
 {% load sorting_tags %}
 {% load i18n %}
 
@@ -10,51 +10,48 @@
             <caption>
                 <i class="icon-briefcase icon-large"></i>{{ queryset_description }}
             </caption>
-            {% if sources %}
+            {% if payment_methods %}
                 <tr>
-                    <th>{% trans 'Order' %}</th>
-                    <th>{% trans 'Source Type' %}</th>
+                    <th>{% trans 'Title' %}</th>
+                    <th>{% trans 'Payment Gateway' %}</th>
                     <th>{% trans 'Currency' %}</th>
-                    <th>{% trans 'Amount Allocated' %}</th>
-                    <th>{% trans 'Amount Debited' %}</th>
-                    <th>{% trans 'Amount Refunded' %}</th>
-                    <th>{% trans 'Amount Reference' %}</th>
-                    <th>{% trans 'Amount Label' %}</th>
+                    <th>{% trans 'Publishable key' %}</th>
+                    <th>{% trans 'Secret key' %}</th>
+                    <th>{% trans 'Signing Secret Key' %}</th>
+                    <th>{% trans 'Currency' %}</th>
+                    <th>{% trans 'Currency Factor' %}</th>
+                    <th>{% trans 'Active' %}</th>
                     <th>&nbsp;</th>
                 </tr>
-                {% for source in sources %}
+                {% for payment_method in payment_methods %}
                     <tr>
                         <td>
-                            {% if source.order %}
-                                 {{ source.order.number }}
+                            {{ payment_method.title }}
+                        </td>
+                        <td>
+                            {% if payment_method.payment_gateway %}
+                                {{ payment_method.payment_gateway.name }}
                             {% else %}
-                                {% trans 'No order associated.' %}
+                                {% trans 'No payment gateway associated.' %}
                             {% endif %}
                         </td>
                         <td>
-                            {% if source.source_type %}
-                                {{ source.source_type }}
-                            {% else %}
-                                {% trans 'No order associated.' %}
-                            {% endif %}
+                            {{ payment_method.publishable_key }}
                         </td>
                         <td>
-                            {{ source.currency }}
+                            {{ payment_method.secret_key }}
                         </td>
                         <td>
-                            {{ source.amount_allocated }}
+                            {{ payment_method.signing_secret_key }}
                         </td>
                         <td>
-                            {{ source.amount_debited }}
+                            {{ payment_method.price_currency }}
                         </td>
                         <td>
-                            {{ source.amount_refunded }}
+                            {{ payment_method.currency_factory }}
                         </td>
                         <td>
-                            {{ source.reference }}
-                        </td>
-                        <td>
-                            {{ source.label }}
+                            {{ payment_method.is_active }}
                         </td>
                         <td>
                             <div class="btn-toolbar">
@@ -64,8 +61,8 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right">
-                                        <li><a href="{% url 'dashboard:dashboard_payment:source-manage' pk=source.pk %}">{% trans "Edit source" %}</a></li>
-                                        <li><a href="{% url 'dashboard:dashboard_payment:source-delete' pk=source.pk %}">{% trans "Delete source" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_method-manage' pk=payment_method.pk %}">{% trans "Edit Payment Method" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_method-delete' pk=payment_method.pk %}">{% trans "Delete Payment Method" %}</a></li>
                                     </ul>
                                 </div>
                             </div>

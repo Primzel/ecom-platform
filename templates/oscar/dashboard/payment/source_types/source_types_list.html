@@ -1,4 +1,4 @@
-{% extends 'oscar/dashboad/payment/payment_list.html' %}
+{% extends 'oscar/dashboard/payment/payment_list.html' %}
 {% load sorting_tags %}
 {% load i18n %}
 
@@ -10,23 +10,15 @@
             <caption>
                 <i class="icon-briefcase icon-large"></i>{{ queryset_description }}
             </caption>
-            {% if payment_gateways %}
+            {% if source_types %}
                 <tr>
                     <th>{% trans 'Name' %}</th>
-                    <th>{% trans 'Slug' %}</th>
-                    <th>{% trans 'Active' %}</th>
                     <th>&nbsp;</th>
                 </tr>
-                {% for payment_gateway in payment_gateways %}
+                {% for source_type in source_types %}
                     <tr>
                         <td>
-                            {{ payment_gateway.name }}
-                        </td>
-                        <td>
-                            {{ payment_gateway.slug }}
-                        </td>
-                         <td>
-                            {{ payment_gateway.is_active }}
+                            {{ source_type.name }}
                         </td>
                         <td>
                             <div class="btn-toolbar">
@@ -36,8 +28,8 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right">
-                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-manage' pk=payment_gateway.pk %}">{% trans "Edit Payment Method" %}</a></li>
-                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-delete' pk=payment_gateway.pk %}">{% trans "Delete Payment Method" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:source_type-manage' pk=source_type.pk %}">{% trans "Edit source type" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:source_type-delete' pk=source_type.pk %}">{% trans "Delete source type" %}</a></li>
                                     </ul>
                                 </div>
                             </div>

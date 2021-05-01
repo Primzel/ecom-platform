@@ -1,4 +1,4 @@
-{% extends 'oscar/dashboad/payment/payment_list.html' %}
+{% extends 'oscar/dashboard/payment/payment_list.html' %}
 {% load sorting_tags %}
 {% load i18n %}
 
@@ -10,36 +10,23 @@
             <caption>
                 <i class="icon-briefcase icon-large"></i>{{ queryset_description }}
             </caption>
-            {% if transactions %}
+            {% if payment_gateways %}
                 <tr>
-                    <th>{% trans 'Source' %}</th>
-                    <th>{% trans 'Transaction Type' %}</th>
-                    <th>{% trans 'Amount' %}</th>
-                    <th>{% trans 'Status' %}</th>
+                    <th>{% trans 'Name' %}</th>
+                    <th>{% trans 'Slug' %}</th>
+                    <th>{% trans 'Active' %}</th>
                     <th>&nbsp;</th>
                 </tr>
-                {% for transaction in transactions %}
+                {% for payment_gateway in payment_gateways %}
                     <tr>
                         <td>
-                            {% if transaction.source %}
-                                 Order: {{ transaction.source.order.number}}
-                                 <br>
-                                 Source Type: {{ transaction.source.source_type }}
-                            {% else %}
-                                {% trans 'No transaction associated.' %}
-                            {% endif %}
+                            {{ payment_gateway.name }}
                         </td>
                         <td>
-                            {{ transaction.txn_type }}
+                            {{ payment_gateway.slug }}
                         </td>
-                        <td>
-                            {{ transaction.amount }}
-                        </td>
-                        <td>
-                            {{ transaction.reference }}
-                        </td>
-                        <td>
-                            {{ transaction.status }}
+                         <td>
+                            {{ payment_gateway.is_active }}
                         </td>
                         <td>
                             <div class="btn-toolbar">
@@ -49,8 +36,8 @@
                                         <span class="caret"></span>
                                     </button>
                                     <ul class="dropdown-menu pull-right">
-                                        <li><a href="{% url 'dashboard:dashboard_payment:transaction-manage' pk=transaction.pk %}">{% trans "Edit transaction" %}</a></li>
-                                        <li><a href="{% url 'dashboard:dashboard_payment:transaction-delete' pk=transaction.pk %}">{% trans "Delete transaction" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-manage' pk=payment_gateway.pk %}">{% trans "Edit Payment Method" %}</a></li>
+                                        <li><a href="{% url 'dashboard:dashboard_payment:payment_gateway-delete' pk=payment_gateway.pk %}">{% trans "Delete Payment Method" %}</a></li>
                                     </ul>
                                 </div>
                             </div>
