@@ -60,7 +60,7 @@ SHARED_APPS = [
     'treebeard',
     'django_tables2',
     'storages',
-    'elasticapm.contrib.django',
+    # 'elasticsearchapm.contrib.django',
     'primzel.payment_gateways'
 ]
 
