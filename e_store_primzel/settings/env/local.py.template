@@ -13,3 +13,5 @@ DATABASES = {
     }
 }
 DEBUG = OSCAR_USE_LESS = USE_LESS = True
+AWS_QUERYSTRING_AUTH = False
+STATICFILES_STORAGE = "django_tenants.staticfiles.storage.TenantStaticFilesStorage"

@@ -1,8 +1,10 @@
 import logging
 
+from django.contrib.staticfiles.storage import ManifestFilesMixin
 from django.db import connection
 from storages.backends.s3boto3 import S3Boto3Storage
 from storages.utils import setting
+
 from multitenancy.models import Tenant
 
 log = logging.getLogger('primzel.logger')
@@ -33,7 +35,6 @@ class MediaStorage(S3Boto3Storage):
     @property
     def tenant_bucket_name(self):
         bucket_name = self.tenant.s3_bucket_name if self.tenant else setting('AWS_STORAGE_BUCKET_NAME')
-        log.debug(f'Using {bucket_name} for tenant {self.tenant.schema_name}')
         return bucket_name
 
     @property
@@ -43,3 +44,12 @@ class MediaStorage(S3Boto3Storage):
     @property
     def location(self):
         return self.tenant.name
+
+
+class StaticFileStorage(ManifestFilesMixin, MediaStorage):
+    file_overwrite = True
+    manifest_strict = False
+
+    def get_default_settings(self):
+        settings = super(StaticFileStorage, self).get_default_settings()
+        return settings

@@ -17,3 +17,5 @@ AWS_S3_REGION_NAME = os.getenv('AWS_S3_REGION_NAME', 'us-east-2')
 
 AWS_SES_REGION_NAME = os.getenv('AWS_SES_REGION_NAME', 'us-east-2')
 AWS_SES_REGION_ENDPOINT = os.getenv('AWS_SES_REGION_ENDPOINT', 'email.us-east-2.amazonaws.com')
+STATICFILES_STORAGE = "backends.storage_backends.StaticFileStorage"
+AWS_QUERYSTRING_AUTH = os.getenv('AWS_QUERYSTRING_AUTH', True)

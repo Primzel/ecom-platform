@@ -38,7 +38,7 @@ services:
       POSTGRES_HOST: psql.primzel.com
       POSTGRES_PORT: 5432
       PRIMZEL_DEBUG: 'True'
-      AWS_S3_ENDPOINT_URL: http://com.localstack.s3:4572/
+      AWS_S3_ENDPOINT_URL: http://com.localstack.s3:4566/
     links:
       - redis
       - postgres
