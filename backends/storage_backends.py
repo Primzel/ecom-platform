@@ -12,6 +12,7 @@ log = logging.getLogger('primzel.logger')
 
 class MediaStorage(S3Boto3Storage):
     file_overwrite = False
+    secure_urls = False
     tenants = {}
 
     def __init__(self, **settings):
@@ -49,6 +50,7 @@ class MediaStorage(S3Boto3Storage):
 class StaticFileStorage(ManifestFilesMixin, MediaStorage):
     file_overwrite = True
     manifest_strict = False
+    secure_urls = False
 
     def get_default_settings(self):
         settings = super(StaticFileStorage, self).get_default_settings()
