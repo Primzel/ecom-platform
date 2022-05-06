@@ -7,6 +7,7 @@ AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID', '123')
 AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY', 'xyz')
 AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME', 'demo-bucket')
 AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL', 'http://localhost:4572/')
+AWS_S3_USE_SSL = os.getenv('AWS_S3_USE_SSL', False)
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
