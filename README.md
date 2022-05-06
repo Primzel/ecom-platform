@@ -1,3 +1,6 @@
+#How to setup ssl
+Please follow instructions [here](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal) to setup ssl.
+
 #How to setup environment.
 
 1. `virtualenv -p <python-path> .env`
