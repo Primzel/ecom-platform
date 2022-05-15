@@ -54,7 +54,6 @@ SHARED_APPS = [
     'django.contrib.sites',
 
     # everything below here is optional
-    'jet',
     'widget_tweaks',
     'haystack',
     'treebeard',
