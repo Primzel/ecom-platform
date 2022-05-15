@@ -34,7 +34,6 @@ urlpatterns = [
 
     # url(r'^', include(apps.get_app_config('oscar').urls[0])),
     path('', include(apps.get_app_config('oscar').urls[0])),  # > Django-2.0
-    path('jet/', include('jet.urls', 'jet')),  # Django JET URLS
     path('ipn/<str:gateway>/<int:payment_event_type_id>/<str:payment_method>/', csrf_exempt(IPNActionView.as_view())),
 ]
 
