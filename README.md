@@ -50,6 +50,7 @@ aws --endpoint-url=http://localhost:4566 s3 mb s3://demo-bucket
 
 Import data to local S3
 ./manage.py tenant_command import_from_woocommerce --schema=eggs "http://www.hoko.pk" "ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2" "cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e"
+make dev.import.wordpress schema=localhost_db host="http://www.hoko.pk" consumer_key="ck_5370bb23c2327f912da64abf4ced3e0c5c8363d2" consumer_secret="cs_cbdd51bafd47fa9356401f09fa321e0f95080f7e"
 
 # How to create service on server.
 1. add `store.oscar.com` in `/etc/hosts`

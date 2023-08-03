@@ -1,3 +1,5 @@
+dev.create_superuser:
+	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py tenant_command createsuperuser --email=$(email) --schema=$(schema)
 dev.makemigrations:
 	docker exec -it -w /src/backend/ com.oscar.store python3 manage.py makemigrations
 dev.collectstatic:

@@ -137,7 +137,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=xyz
       - AWS_DEFAULT_REGION=us-east-2
     volumes:
-      - './.localstack:/tmp/localstack'
+      - './.localstack:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       primzel-docker-network:
