@@ -57,7 +57,7 @@ THUMBNAIL_PRESERVE_FORMAT = True
    ```
 
 ### Importing Data to Local S3
-- Command: `./manage.py tenant_command import_from_woocommerce --schema=eggs "http://www.hoko.pk" "ck_*****" "cs_*****"`
+- Command: `./manage.py tenant_command import_from_woocommerce --schema=eggs "http://www.website.com" "ck_*****" "cs_*****"`
 
 ## Service Creation on Server
 1. Add `store.oscar.com` to `/etc/hosts`.
