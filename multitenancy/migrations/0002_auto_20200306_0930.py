@@ -20,7 +20,10 @@ def add_default_tenant(apps, schema_editor):
              domain='example.com', template_folder='example.com'),
         dict(tenant=dict(schema_name='localhost_db', name='localhost', paid_until=datetime.now() + timedelta(days=30),
                          on_trial=True),
-             domain='localhost', template_folder='example.com')
+             domain='localhost', template_folder='example.com'),
+        dict(tenant=dict(schema_name='public', name='public', paid_until=datetime.now() + timedelta(days=30),
+                         on_trial=True),
+             domain='public', template_folder='public.com')
     ]
     for tenant in tenants:
         t = Tenant.objects.create(**tenant['tenant'])

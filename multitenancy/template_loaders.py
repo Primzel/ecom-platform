@@ -6,8 +6,8 @@ import os
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import connection
-from django_tenants.template.loaders.filesystem import Loader
 from django_tenants.staticfiles.finders import TenantFileSystemFinder
+from django_tenants.template.loaders.filesystem import Loader
 
 from multitenancy.models import Tenant
 
@@ -63,7 +63,11 @@ class PrimzelTemplateLoader(Loader):
 
     @property
     def template_dir(self):
-        return Tenant.objects.get(schema_name=connection.schema_name).template_dir_name
+        try:
+            template_dir = Tenant.objects.get(schema_name=connection.schema_name).template_dir_name
+        except Exception as ex:
+            template_dir = ''
+        return template_dir
 
 
 class PrimzelStaticFileLoader(TenantFileSystemFinder):

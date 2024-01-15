@@ -1,6 +1,5 @@
-<h4>{{payment_method.title}}</h4>
 <form action="{% url "checkout:preview"%}" method="post" id="cod-form">
     {% csrf_token %}
     <input name="payment_method" type="hidden" value="{{payment_method.id}}">
-    <button type="submit">Save</button>
+    <button class="btn btn-lg" type="submit"><h1>{{ payment_method.title }}</h1></button>
 </form>

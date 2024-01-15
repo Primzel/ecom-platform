@@ -9,6 +9,7 @@ class SimpleProductSearchHandler(DefaultSimpleProductSearchHandler):
 
     def __init__(self, request_data, full_path, categories=None):
         self.categories = categories
+        self.request_data = request_data
         self.kwargs = {'page': request_data.get('page', 1), 'partner': request_data.get('partner', None)}
         self.object_list = self.get_queryset()
 

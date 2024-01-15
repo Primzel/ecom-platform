@@ -31,6 +31,7 @@ TENANT_APPS = [
     'oscar.apps.dashboard.shipping',
     'sorl.thumbnail',
     'colorfield',
+    'oscar.apps.communication',
 ]+[
     # Primzel Apps
     'apps.dashboard.pages',

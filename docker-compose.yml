@@ -44,12 +44,14 @@ services:
       - postgres
       - celery_worker
       - celery_beat
+      - mysql
     depends_on:
       - localstack
       - redis
       - postgres
       - celery_beat
       - celery_worker
+      - mysql
     networks:
       primzel-docker-network:
         aliases:
@@ -122,6 +124,25 @@ services:
           - psql.primzel.com
     ports:
       - 5432:5432
+  mysql:
+    image: mysql
+    container_name: com.primzel.mysql
+    hostname: mysql.primzel.com
+    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
+    # (this is just an example, not intended to be a production configuration)
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    networks:
+      primzel-docker-network:
+        aliases:
+          - psql.primzel.com
+    ports:
+      - 3390:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: primzel_store
+      MYSQL_USER: primzel_store
+      MYSQL_PASSWORD: primzel_store
   localstack:
     image: localstack/localstack:latest
     container_name: localstack

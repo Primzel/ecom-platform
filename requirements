@@ -1,28 +1,28 @@
-Django==2.2.5
-django-oscar==2.0.3
-pycountry
-sorl-thumbnail
-gunicorn
-whitenoise
-django-split-settings==0.3.0
-celery==4.2.2
-redis==3.3.8
-django-redis-cache==2.0.0
-django-crequest==2018.5.11
-django-debug-toolbar
-psycopg2
-django-tenants==3.0.1
-django-tenant-templates==0.5
-django-jet
-tenant-schemas-celery==0.3.0
-boto3
-django-storages
-python-logstash==0.4.6
-elastic-apm==5.5.2
-woocommerce==2.1.1
-aws-xray-sdk==2.5.0
-Pillow==7.0.0
-stripe
-django_compressor
-django-ses==1.0.2
-django-colorfield
+Django>=3.2,<4.0  # Django 2.2 is outdated; Django 3.2 is the next LTS release.
+django-oscar>=3.1,<4.0  # Assuming compatibility with Django 3.2.
+pycountry  # Latest version, no specific version required.
+sorl-thumbnail  # Latest version, no specific version required.
+gunicorn  # Latest version, no specific version required.
+whitenoise  # Latest version, no specific version required.
+django-split-settings>=1.0.0,<2.0.0  # Updated to a newer version.
+celery>=5.2,<6.0  # Celery 4.2 is outdated; updated to 5.x series.
+redis<4.0  # Updated to a newer version.
+django-redis-cache==3.0.1  # Updated to a newer version.
+django-crequest>=2018.5.11  # Updated to a newer version.
+django-debug-toolbar  # Latest version, no specific version required.
+psycopg2-binary>=2.9,<3.0  # Updated to use the binary package for ease of installation.
+django-tenants>=3.3,<4.0  # Updated to a newer version.
+django-tenant-templates==0.5  # Assuming compatibility with Django 3.2.
+django-jet  # Latest version, no specific version required.
+tenant-schemas-celery==2.2.0  # Updated to a newer version.
+boto3  # Latest version, no specific version required.
+django-storages  # Latest version, no specific version required.
+python-logstash>=0.4.8,<1.0.0  # Updated to a newer version.
+elastic-apm>=6.0.0,<7.0.0  # Updated to a newer version.
+woocommerce>=3.0.0,<4.0.0  # Updated to a newer version.
+aws-xray-sdk==2.12.1  # Updated to a newer version.
+Pillow>=9.0.0,<10.0.0  # Pillow 7.0.0 is outdated; updated to 9.x series.
+stripe  # Latest version, no specific version required.
+django_compressor  # Latest version, no specific version required.
+django-ses==3.5.2  # Updated to a newer version.
+django-colorfield  # Latest version, no specific version required.

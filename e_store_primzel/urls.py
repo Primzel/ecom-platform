@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.apps import apps
 from django.conf import settings
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 # from django.conf.urls import include, url  # < Django-2.0
 from django.urls import include, path  # > Django-2.0
 from django.contrib import admin
@@ -36,12 +37,12 @@ urlpatterns = [
     path('', include(apps.get_app_config('oscar').urls[0])),  # > Django-2.0
     path('ipn/<str:gateway>/<int:payment_event_type_id>/<str:payment_method>/', csrf_exempt(IPNActionView.as_view())),
 ]
-
-
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
     import debug_toolbar
     from django.urls import path
+
     urlpatterns = [
                       path('__debug__/', include(debug_toolbar.urls)),
 

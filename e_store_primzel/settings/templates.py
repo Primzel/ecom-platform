@@ -23,7 +23,6 @@ TEMPLATES = [
 
                 'oscar.apps.search.context_processors.search_form',
                 'oscar.apps.checkout.context_processors.checkout',
-                'oscar.apps.customer.notifications.context_processors.notifications',
                 'oscar.core.context_processors.metadata',
                 'apps.dashboard.settings.context_processors.store',
             ],
