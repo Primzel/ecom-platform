@@ -40,6 +40,7 @@
                     {% oscar_thumbnail image.original "440x400" upscale=False as thumb %}
                     <a class="cz-thumblist-item {% if forloop.first %}active{% endif %}" href="#image-{{ image.id }}">
                         <img src="{{ thumb.url }}" alt="Product thumb">
+                        
                     </a>
                     {% endfor %}
 
@@ -56,12 +57,14 @@
                 {% endiffeature %}
                 <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">
                     {% include "oscar/catalogue/partials/stock_record.html" %}
+                     {% if product.sale_price %}
+                            <span class="badge badge-danger badge-shadow position-absolute" style="top: 10px; right: 10px;">Sale</span>
+                        {% endif %}
                 </span>
-<!--                    <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del><span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>-->
+                   <!-- <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del><span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span> -->
                 </div>
-
-                </div>
-
+                
+            
                 {% include "oscar/catalogue/partials/add_to_basket_form_compact.html" %}
                
 

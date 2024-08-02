@@ -5,23 +5,20 @@
 {% purchase_info_for_product request product as session %}
 
 {% if session.price.exists %}
-{% if session.price.excl_tax == 0 %}
-{% trans "Free" %}
-{% elif session.price.is_tax_known %}
-{{ session.price.excl_tax|currency:session.price.currency }}
+    {% if session.price.excl_tax == 0 %}
+        <p class="price_color">{% trans "Free" %}</p>
+    {% elif session.price.is_tax_known %}
+        {% if product.sale_price %}
+            <p class="price_color">
+                <span class="text-muted"><s>{{ product.regular_price|currency:session.price.currency }}</s></span>
+                <span>{{ product.sale_price|currency:session.price.currency }}</span>
+            </p>
+        {% else %}
+            <p class="price_color">{{ session.price.excl_tax|currency:session.price.currency }}</p>
+        {% endif %}
+    {% else %}
+        <p class="price_color">{{ session.price.excl_tax|currency:session.price.currency }}</p>
+    {% endif %}
 {% else %}
-{{ session.price.excl_tax|currency:session.price.currency }}
-
+    <p class="price_color">&nbsp;</p>
 {% endif %}
-{% else %}
-<p class="price_color">&nbsp;</p>
-{% endif %}
-
-<!--<p class="{{ session.availability.code }} availability">-->
-<!--    <i class="icon-{% if session.availability.is_available_to_buy %}ok{% else %}remove{% endif %}"></i>-->
-<!--    {% if verbose %}-->
-<!--    {{ session.availability.message }}-->
-<!--    {% else %}-->
-<!--    {{ session.availability.short_message }}-->
-<!--    {% endif %}-->
-<!--</p>-->
