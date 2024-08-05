@@ -85,6 +85,9 @@ OSCAR_SHOP_NAME = 'Primzel Shop'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
 INTERNAL_IPS = [
     # ...
     '127.0.0.1',

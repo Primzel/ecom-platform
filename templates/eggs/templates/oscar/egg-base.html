@@ -2,7 +2,7 @@
 {% load currency_filters %}
 {% load static %}
 {% load image_tags %}
-<html lang="{{ LANGUAGE_CODE|default:"en-gb" }}" class="{% block html_class %}no-js{% endblock %}">
+<html lang="{{ LANGUAGE_CODE|default:'en-gb' }}" class="{% block html_class %}no-js{% endblock %}">
 
 <!-- Mirrored from demo.createx.studio/cartzilla/home-fashion-store-v1.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 25 May 2020 09:13:27 GMT -->
 <head>
@@ -10,7 +10,7 @@
     <title>{% block title %}{{ shop_name }} - {{ shop_tagline }}{% endblock %}</title>
     <!-- SEO Meta Tags-->
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <meta name="created" content="{% now "jS M Y h:i" %}" />
+    <meta name="created" content="{% now 'jS M Y h:i' %}" />
     <meta name="description" content="{% block description %}{% endblock %}" />
     <meta name="robots" content="NOARCHIVE,NOCACHE" />
     <!-- Viewport-->
@@ -21,9 +21,9 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Vendor Styles including: Font Icons, Plugins, etc.-->
 
-    <link rel="stylesheet" media="screen" href="{% static "oscar/css/vendor.min.css" %}">
+    <link rel="stylesheet" media="screen" href="{% static 'oscar/css/vendor.min.css' %}">
     <!-- Main Theme Styles + Bootstrap-->
-    <link rel="stylesheet" media="screen" id="main-styles" href="{% static "oscar/css/theme.min.css" %}">
+    <link rel="stylesheet" media="screen" id="main-styles" href="{% static 'oscar/css/theme.min.css' %}">
     {% block favicon %}
         <!-- Favicon and Touch Icons-->
         {% if setting %}
@@ -76,7 +76,8 @@
 
 {# Block for body onload functions #}
 <script>
-    $(function() {
+    $(function() 
+    {
         {% block onbodyload %}{% endblock %}
     });
 </script>

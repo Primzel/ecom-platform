@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 services:
   webserver:
     image: nginx:alpine
@@ -18,6 +18,7 @@ services:
       primzel-docker-network:
         aliases:
           - nginx.oscar.com
+
   web:
     command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ --log-level debug ; sleep 2; done'
     container_name: com.oscar.store
@@ -45,6 +46,7 @@ services:
       - celery_worker
       - celery_beat
       - mysql
+      - pgadmin
     depends_on:
       - localstack
       - redis
@@ -79,6 +81,7 @@ services:
       POSTGRES_PORT: 5432
     networks:
       - primzel-docker-network
+
   celery_beat:
     command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
     container_name: com.oscar.celery_beat
@@ -101,6 +104,7 @@ services:
       POSTGRES_PORT: 5432
     networks:
       - primzel-docker-network
+
   redis:
     image: redis:latest
     container_name: com.oscar.redis
@@ -109,21 +113,39 @@ services:
       primzel-docker-network:
         aliases:
           - redis.oscar.com
+
   postgres:
     restart: always
-    image: kiasaki/alpine-postgres:9.5
+    image: postgres:13
     container_name: com.primzel.psql
     hostname: psql.primzel.com
     environment:
       POSTGRES_USER: primzel_store
       POSTGRES_PASSWORD: primzel_store
       POSTGRES_DB: primzel_store
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       primzel-docker-network:
         aliases:
           - psql.primzel.com
     ports:
       - 5432:5432
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin-container
+    hostname: pgadmin.primzel.com
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - 80:80
+    networks:
+      primzel-docker-network:
+        aliases:
+          - pgadmin.primzel.com
+
   mysql:
     image: mysql
     container_name: com.primzel.mysql
@@ -143,6 +165,7 @@ services:
       MYSQL_DATABASE: primzel_store
       MYSQL_USER: primzel_store
       MYSQL_PASSWORD: primzel_store
+
   localstack:
     image: localstack/localstack:latest
     container_name: localstack
@@ -157,6 +180,7 @@ services:
       - AWS_ACCESS_KEY_ID=123
       - AWS_SECRET_ACCESS_KEY=xyz
       - AWS_DEFAULT_REGION=us-east-2
+      - AWS_S3_ENDPOINT_URL=http://com.localstack.s3:4566/
     volumes:
       - './.localstack:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
@@ -165,6 +189,7 @@ services:
         aliases:
           - com.localstack.s3
           - com.localstack.route53
+
   elk:
     # image documentations : https://elk-docker.readthedocs.io/
     image: sebp/elk
@@ -181,6 +206,7 @@ services:
       primzel-docker-network:
         aliases:
           - com.primzel.elk
+
   apm-server:
     image: docker.elastic.co/apm/apm-server:7.6.0
     command: --strict.perms=false
@@ -199,6 +225,10 @@ services:
       primzel-docker-network:
         aliases:
           - com.primzel.apm
+
+volumes:
+  postgres_data:
+  
 networks:
   primzel-docker-network:
     driver: bridge
