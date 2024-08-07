@@ -1,5 +1,7 @@
 # README - Project Setup Instructions
 
+![Migration Checker](https://github.com/Primzel/ecom-platform/actions/workflows/migrations-checker.yml/badge.svg)
+
 ## SSL Setup
 
 Follow the instructions [here](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal) to set up SSL.
