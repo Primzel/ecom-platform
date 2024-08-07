@@ -13,11 +13,14 @@
     {% oscar_thumbnail image.original "296x276" upscale=False as thumb %}
     <a class="card-img-top d-block overflow-hidden" href="{{ product.get_absolute_url }}" alt="Product">
         <img src="{{ thumb.url }}" alt="{{ product.get_title }}">
+        {% if product.sale_price %}
+                            <span class="badge badge-danger badge-shadow position-absolute" style="top: 10px; right: 10px;">Sale</span>
+                        {% endif %}
     </a>
     {% endwith %}
 
     <div class="card-body py-2"><a class="product-meta d-block font-size-xs pb-1" href="#">Sneakers &amp; Keds</a>
-        <h3 class="product-title font-size-sm"><a href="{{ product.get_absolute_url }}">{{ product.get_title }}</a></h3>
+        <h3 class="product-title font-size-sm"><a href="{{ product.get_absolute_url }}">{{ product.get_title }}
         <div class="d-flex justify-content-between">
             {% block product_price %}
             <div class="product-price">

@@ -25,10 +25,7 @@ def get_products(client):
         _products = client.get_products(params={'per_page': 100, 'page': page}).json()
         end = True if not _products else False
         products += _products
-        logger.debug(
-            "page number is {page} value of end is {end} and downloaded={downloaded}".format(page=page, end=end,
-                                                                                             downloaded=len(
-                                                                                                 _products)))
+        logger.debug("page number is {page} value of end is {end} and downloaded={downloaded}".format(page=page, end=end,downloaded=len(_products)))
         page += 1
     return products
 
@@ -79,7 +76,7 @@ def oscar_friendly_products(woo_products, categories):
             "type": woo_product['type'],
             "status": woo_product['status'],
             "permalink": woo_product['permalink'],
-            "price": woo_product['price'],
+            # "price": woo_product['price'],
             "regular_price": woo_product['regular_price'],
             "sale_price": woo_product['sale_price'],
             "description": woo_product['description'],
@@ -90,6 +87,8 @@ def oscar_friendly_products(woo_products, categories):
             "requires_shipping": woo_product['shipping_required'],
             "track_stock": woo_product['manage_stock'],
             "featured": woo_product['featured'],
+            "stock_quantity": woo_product.get('stock_quantity', 0),  # Added stock quantity
+            "categories": breadcrumbs_list
         }
 
         def find_category_ranking(breadcrumbs_list, woo_product):
