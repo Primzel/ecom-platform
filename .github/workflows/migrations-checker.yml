@@ -10,7 +10,6 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        restart: always
         image: kiasaki/alpine-postgres:9.5
         env:
           POSTGRES_USER: primzel_store
