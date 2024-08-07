@@ -15,8 +15,8 @@ jobs:
           POSTGRES_USER: primzel_store
           POSTGRES_PASSWORD: primzel_store
           POSTGRES_DB: primzel_store
-      ports:
-        - 5432:5432
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout the latest code
         uses: actions/checkout@v2
