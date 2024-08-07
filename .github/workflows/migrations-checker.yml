@@ -34,4 +34,4 @@ jobs:
           python -m pip install -r requirements
       - name: Apply Migrations
         run: |
-          POSTGRES_HOST=postgres python manage.py migrate_schemas
+          POSTGRES_HOST=localhost python manage.py migrate_schemas
