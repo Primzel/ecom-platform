@@ -73,16 +73,30 @@
                 <div class="col-lg-5 pt-4 pt-lg-0">
                     <div class="product-details ml-auto pb-3">
                         {% iffeature "reviews" %}
-                        {% include "oscar/catalogue/reviews/partials/review_stars.html" with yellow_stars=True total_reviews=product.reviews.count %}
+                            {% include "oscar/catalogue/reviews/partials/review_stars.html" with yellow_stars=True total_reviews=product.reviews.count %}
                         {% endiffeature %}
+
                         <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">
                             {% include "oscar/catalogue/partials/stock_record.html" %}
                         </span>
-<!--                            <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del>-->
-<!--                            <span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>-->
-                        </div>
+                    </div>
 
-                        {% include "oscar/catalogue/partials/options/option_control.html" %}
+
+                    {% block product_basket_form %}
+                        {% include "oscar/catalogue/partials/add_to_basket_form.html" %}
+                    {% endblock %}
+
+                    {% if product.is_parent %}
+                        {% block variants %}
+                            <h2>{% trans 'Variants:' %}</h2>
+                            {% for child in product.children.public %}
+                                {% purchase_info_for_product request child as child_session %}
+                                {% if child_session.availability.is_available_to_buy %}
+                                    <a href="{{ child.get_absolute_url }}">{{ child.get_title }}</a><br>
+                                {% endif %}
+                            {% endfor %}
+                        {% endblock %}
+                    {% endif %}
 
                     </div>
                 </div>
