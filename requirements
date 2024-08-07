@@ -1,5 +1,5 @@
 Django>=3.2,<4.0  # Django 2.2 is outdated; Django 3.2 is the next LTS release.
-django-oscar>=3.1,<4.0  # Assuming compatibility with Django 3.2.
+django-oscar==3.2.4  # Assuming compatibility with Django 3.2.
 pycountry  # Latest version, no specific version required.
 sorl-thumbnail  # Latest version, no specific version required.
 gunicorn  # Latest version, no specific version required.

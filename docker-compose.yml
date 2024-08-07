@@ -1,23 +1,5 @@
 version: '3'
 services:
-  webserver:
-    image: nginx:alpine
-    hostname: nginx.oscar.com
-    container_name: webserver
-    restart: unless-stopped
-    tty: true
-    ports:
-      - "8080:80"
-      - "4343:443"
-    volumes:
-      - ./:/var/www/
-      - ./nginx/conf.d/:/etc/nginx/conf.d/
-    depends_on:
-      - web
-    networks:
-      primzel-docker-network:
-        aliases:
-          - nginx.oscar.com
   web:
     command: bash -c 'while true; do gunicorn --workers=4 --bind=0.0.0.0:8080 e_store_primzel.wsgi --chdir /src/backend/ --log-level debug ; sleep 2; done'
     container_name: com.oscar.store
@@ -42,65 +24,14 @@ services:
     links:
       - redis
       - postgres
-      - celery_worker
-      - celery_beat
-      - mysql
     depends_on:
       - localstack
       - redis
       - postgres
-      - celery_beat
-      - celery_worker
-      - mysql
     networks:
       primzel-docker-network:
         aliases:
           - store.oscar.com
-
-  celery_worker:
-    command: bash -c 'while true; do celery -A e_store_primzel.settings worker -Q celery_app -l debug --workdir /src/backend/; sleep 2; done'
-    container_name: com.oscar.celery_worker
-    build: .
-    stdin_open: true
-    tty: true
-    links:
-      - redis
-      - postgres
-    depends_on:
-      - redis
-      - postgres
-    environment:
-      CELERY_BROKER_URL: redis://redis.oscar.com:6379/
-      CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
-      POSTGRES_USER: primzel_store
-      POSTGRES_PASSWORD: primzel_store
-      POSTGRES_DB: primzel_store
-      POSTGRES_HOST: psql.primzel.com
-      POSTGRES_PORT: 5432
-    networks:
-      - primzel-docker-network
-  celery_beat:
-    command: bash -c 'while true; do celery -A e_store_primzel.settings  beat -l debug --workdir /src/backend/; sleep 2; done'
-    container_name: com.oscar.celery_beat
-    build: .
-    stdin_open: true
-    tty: true
-    links:
-      - redis
-      - postgres
-    depends_on:
-      - redis
-      - postgres
-    environment:
-      CELERY_BROKER_URL: redis://redis.oscar.com:6379/
-      CELERY_RESULT_BACKEND: redis://redis.oscar.com:6379/
-      POSTGRES_USER: primzel_store
-      POSTGRES_PASSWORD: primzel_store
-      POSTGRES_DB: primzel_store
-      POSTGRES_HOST: psql.primzel.com
-      POSTGRES_PORT: 5432
-    networks:
-      - primzel-docker-network
   redis:
     image: redis:latest
     container_name: com.oscar.redis
@@ -124,25 +55,6 @@ services:
           - psql.primzel.com
     ports:
       - 5432:5432
-  mysql:
-    image: mysql
-    container_name: com.primzel.mysql
-    hostname: mysql.primzel.com
-    # NOTE: use of "mysql_native_password" is not recommended: https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password
-    # (this is just an example, not intended to be a production configuration)
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    networks:
-      primzel-docker-network:
-        aliases:
-          - psql.primzel.com
-    ports:
-      - 3390:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: primzel_store
-      MYSQL_USER: primzel_store
-      MYSQL_PASSWORD: primzel_store
   localstack:
     image: localstack/localstack:latest
     container_name: localstack
@@ -165,40 +77,6 @@ services:
         aliases:
           - com.localstack.s3
           - com.localstack.route53
-  elk:
-    # image documentations : https://elk-docker.readthedocs.io/
-    image: sebp/elk
-    container_name: com.primzel.elk
-    hostname: com.primzel.elk
-    volumes:
-      - './logstash/conf.d/:/etc/logstash/conf.d'
-    ports:
-      - "5601:5601"
-      - "9200:9200"
-      - "5044:5044"
-      - "5959:5959"
-    networks:
-      primzel-docker-network:
-        aliases:
-          - com.primzel.elk
-  apm-server:
-    image: docker.elastic.co/apm/apm-server:7.6.0
-    command: --strict.perms=false
-    container_name: com.primzel.apm
-    hostname: com.primzel.apm
-    ports:
-      - '8200:8200'
-      - '8201:8200'
-    environment:
-      - apm-server.host=0.0.0.0
-      - setup.kibana.host=com.primzel.elk:5601
-      - output.elasticsearch.hosts=["com.primzel.elk:9200"]
-    depends_on:
-      - elk
-    networks:
-      primzel-docker-network:
-        aliases:
-          - com.primzel.apm
 networks:
   primzel-docker-network:
     driver: bridge
