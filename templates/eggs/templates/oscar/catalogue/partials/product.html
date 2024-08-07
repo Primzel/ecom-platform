@@ -36,6 +36,7 @@
     </div>
         <div class="card-body card-body-hidden">
             <form class="mb-grid-gutter" id="basket-form-product-{{ product.id }}" method="post" onsubmit="return addToBasketFormHandler(this)">
+                {% csrf_token %}
                 {{ basket_form.as_p }}
             {% if product.is_parent %}
             <div class="text-center pb-2">
