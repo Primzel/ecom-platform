@@ -5,7 +5,7 @@ function addToBasketFormHandler(form) {
             selected.push(field['value'].split(','));
         }
     });
-    var selected_child = _.intersection( selected);
+    var selected_child = _.intersection(...selected);
     if (selected_child) {
         selected_child = selected_child[0];
         $(form).attr('action', '/basket/add/' + selected_child + '/');
