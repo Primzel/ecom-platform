@@ -13,7 +13,10 @@
     </div>
     <div class="form-group d-flex align-items-center">
         <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="number" min="1" value="1"/>
-
-        <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..."><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
-    </div>
+        {% if product.availability.is_available_to_buy %}
+            <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..."><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
+        {% else %}
+            <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..." disabled="disabled"><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
+        {% endif %}
+        </div>
 </form>
