@@ -1,21 +1,32 @@
 {% load currency_filters %}
 {% load i18n %}
 {% load purchase_info_tags %}
+{% load primzel_tags %}
 
 {% purchase_info_for_product request product as session %}
 
-{% if session.price.exists %}
-{% if session.price.excl_tax == 0 %}
-{% trans "Free" %}
-{% elif session.price.is_tax_known %}
-{{ session.price.excl_tax|currency:session.price.currency }}
+{% get_discounted_price product as info %}
+{% if info.discounted_price %}
+    {# Display the original price as slashed-through and the discounted price #}
+    <p class="price">
+        <del>{{ session.price.excl_tax|currency:session.price.currency }}</del>
+        <span class="sale-price">{{ info.discounted_price|currency:session.price.currency }}</span>
+    </p>
 {% else %}
-{{ session.price.excl_tax|currency:session.price.currency }}
+    {# Display the regular price as before #}
+    {% if session.price.exists %}
+        {% if session.price.excl_tax == 0 %}
+            {% trans "Free" %}
+        {% elif session.price.is_tax_known %}
+            {{ session.price.excl_tax|currency:session.price.currency }}
+        {% else %}
+            {{ session.price.excl_tax|currency:session.price.currency }}
+        {% endif %}
+    {% else %}
+        <p class="price_color">&nbsp;</p>
+    {% endif %}
+{% endif %}
 
-{% endif %}
-{% else %}
-<p class="price_color">&nbsp;</p>
-{% endif %}
 
 <!--<p class="{{ session.availability.code }} availability">-->
 <!--    <i class="icon-{% if session.availability.is_available_to_buy %}ok{% else %}remove{% endif %}"></i>-->
