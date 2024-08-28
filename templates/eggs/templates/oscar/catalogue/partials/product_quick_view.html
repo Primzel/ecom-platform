@@ -17,7 +17,6 @@
             <div class="cz-product-gallery">
                 <div class="cz-preview order-sm-2">
 
-
                     {% with all_images=product.get_all_images %}
                     {% if all_images|length > 0 %}
                     {% for image in all_images %}
@@ -54,10 +53,14 @@
                 {% iffeature "reviews" %}
                 {% include "oscar/catalogue/reviews/partials/review_stars.html" with yellow_stars=True total_reviews=product.reviews.count %}
                 {% endiffeature %}
-                <div class="mb-3"><span class="h3 font-weight-normal text-accent mr-1">
+                <div class="mb-3">
+                    <span class="h3 font-weight-normal text-accent mr-1">
                     {% include "oscar/catalogue/partials/stock_record.html" %}
-                </span>
-<!--                    <del class="text-muted font-size-lg mr-3">$25.<small>00</small></del><span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>-->
+                    </span>
+                    {% get_discounted_price product as info %}
+                    {% if info.discounted_price %}
+                        <span class="badge badge-danger badge-shadow align-middle mt-n2">Sale</span>
+                    {% endif %}
                 </div>
 
                 {% include "oscar/catalogue/partials/options/option_control.html" %}
