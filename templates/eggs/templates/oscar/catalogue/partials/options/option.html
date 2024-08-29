@@ -5,8 +5,7 @@
     </a>
 </div>
 <select class="custom-select" required="" name="{{ key }}" id="product-{{ key }}">
-    <option value="">Select {{ key }}</option>
     {% for label, ids in options %}
-        <option value="{{ ids|join:',' }}">{{ label }}</option>
+        <option value="{{ ids|join:',' }}" {% if forloop.first %}selected{% endif %}>{{ label }}</option>
     {% endfor %}
 </select>
