@@ -1,5 +1,6 @@
 from django import template
 from oscar.apps.catalogue.models import ProductAttributeValue
+from oscar.apps.partner.models import StockRecord 
 
 register = template.Library()
 
@@ -20,14 +21,21 @@ def product_options(context, product):
 def _get_variant_descriptors(product):
     descriptors = {}
     for child in product.children.all():
-        for attribute_value in ProductAttributeValue.objects.filter(product=child).select_related('product',
-                                                                                                  'attribute'):
-            attribute_name, value = attribute_value.attribute.name, attribute_value.value
+        stock_record = StockRecord.objects.filter(product_id=child.id).first()
+        if stock_record:
+            num_in_stock = stock_record.num_in_stock
+        else:
+            num_in_stock = 0  # Handle the case where no stock record exists
 
-            descriptors.setdefault(attribute_name, {}).setdefault(value, set()).add(attribute_value.product_id)
+        if num_in_stock > 0:
+            for attribute_value in ProductAttributeValue.objects.filter(product=child).select_related('product', 'attribute'):
+                attribute_name, value = attribute_value.attribute.name, attribute_value.value
+
+                # Add product IDs for attribute values
+                descriptors.setdefault(attribute_name, {}).setdefault(value, set()).add(attribute_value.product_id)
 
     # In general, we want things sorted when we output them
-    return sorted((attribute, value_map.items()) for attribute, value_map in descriptors.items())
+    return sorted((attribute, sorted(value_map.items())) for attribute, value_map in descriptors.items())
 
 
 @register.inclusion_tag('oscar/catalogue/partials/variant_descriptors.html')
