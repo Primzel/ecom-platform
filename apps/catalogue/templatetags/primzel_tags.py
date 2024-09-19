@@ -27,7 +27,7 @@ def _get_variant_descriptors(product):
         else:
             num_in_stock = 0  # Handle the case where no stock record exists
 
-        if num_in_stock > 0:
+        if num_in_stock > 0 or not product.product_class.track_stock:
             for attribute_value in ProductAttributeValue.objects.filter(product=child).select_related('product', 'attribute'):
                 attribute_name, value = attribute_value.attribute.name, attribute_value.value
 
