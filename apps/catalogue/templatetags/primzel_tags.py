@@ -23,7 +23,7 @@ def _get_variant_descriptors(product):
     for child in product.children.all():
         stock_record = StockRecord.objects.filter(product_id=child.id).first()
         if stock_record:
-            num_in_stock = stock_record.num_in_stock
+            num_in_stock = stock_record.num_in_stock or 0
         else:
             num_in_stock = 0  # Handle the case where no stock record exists
 
