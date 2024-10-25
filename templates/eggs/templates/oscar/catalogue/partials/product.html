@@ -8,6 +8,12 @@
 
 {% block product %}
 <div class="card product-card">
+
+    {% get_discounted_price product as info %}
+    {% if info.discounted_price %}
+        <span class="badge badge-danger badge-shadow">Sale</span>
+    {% endif %}
+
     {% include 'oscar/catalogue/partials/wishlist-button.html' %}
     {% with image=product.primary_image %}
     {% oscar_thumbnail image.original "296x276" upscale=False as thumb %}
