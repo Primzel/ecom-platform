@@ -21,3 +21,11 @@ AWS_SES_REGION_ENDPOINT = os.getenv('AWS_SES_REGION_ENDPOINT', 'email.us-east-2.
 STATICFILES_STORAGE = "backends.storage_backends.StaticFileStorage"
 AWS_QUERYSTRING_AUTH = os.getenv('AWS_QUERYSTRING_AUTH', False)
 AWS_S3_SIGNATURE_VERSION = os.getenv('AWS_S3_SIGNATURE_VERSION', 's3v4')
+STORAGES = {
+    'default': {
+        'BACKEND': DEFAULT_FILE_STORAGE,
+    },
+    'staticfiles': {
+        'BACKEND': STATICFILES_STORAGE,
+    },
+}

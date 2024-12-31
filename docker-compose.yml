@@ -69,8 +69,8 @@ services:
       - AWS_ACCESS_KEY_ID=123
       - AWS_SECRET_ACCESS_KEY=xyz
       - AWS_DEFAULT_REGION=us-east-2
+      - PERSISTANCE=1
     volumes:
-      - './.localstack:/var/lib/localstack'
       - '/var/run/docker.sock:/var/run/docker.sock'
     networks:
       primzel-docker-network:
