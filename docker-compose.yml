@@ -28,6 +28,7 @@ services:
       - localstack
       - redis
       - postgres
+      - stripe-cli
     networks:
       primzel-docker-network:
         aliases:
@@ -77,6 +78,17 @@ services:
         aliases:
           - com.localstack.s3
           - com.localstack.route53
+  stripe-cli:
+    image: stripe/stripe-cli
+    container_name: stripe-cli
+    hostname: com.stripe.cli
+    command: "listen --api-key ${STRIPE_API_KEY} --device-name ${STRIPE_DEVICE_NAME} --forward-to web:8080/ipn/stripe/1/1/"
+    env_file:
+      - stripe_cli.env
+    networks:
+      primzel-docker-network:
+        aliases:
+          - com.stripe.cli
 networks:
   primzel-docker-network:
     driver: bridge
