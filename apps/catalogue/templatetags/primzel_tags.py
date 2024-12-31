@@ -35,7 +35,7 @@ def _get_variant_descriptors(product):
                 descriptors.setdefault(attribute_name, {}).setdefault(value, set()).add(attribute_value.product_id)
 
     # In general, we want things sorted when we output them
-    return sorted((attribute, sorted(value_map.items())) for attribute, value_map in descriptors.items())
+    return sorted((attribute, value_map.items()) for attribute, value_map in descriptors.items())
 
 
 @register.inclusion_tag('oscar/catalogue/partials/variant_descriptors.html')
