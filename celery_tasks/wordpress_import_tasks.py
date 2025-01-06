@@ -68,9 +68,12 @@ def import_categories_from_wordpress(*args, **kwargs):
                     for woo_option in woo_option_group['options']:
                         AttributeOption.objects.get_or_create(group=option_group, option=woo_option)
 
-                    ProductAttribute.objects.get_or_create(
-                        product_class=product_class, name=option_group.name, code=slugify(option_group.name),
-                        type='option', option_group=option_group)
+                    try:
+                        ProductAttribute.objects.get_or_create(
+                            product_class=product_class, name=option_group.name, code=slugify(option_group.name),
+                            type='option', option_group=option_group)
+                    except Exception as e:
+                        logger.error(e)
                 oscar_product.product_class = product_class
                 oscar_product.save()
 
