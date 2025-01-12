@@ -33,7 +33,7 @@ TENANT_APPS = [
     'colorfield',
 ]+[
     # Primzel Apps
-    'apps.communication',
+    'apps.communication.apps.CommunicationConfig',
     'apps.dashboard.pages',
     'apps.dashboard.configurable_menu',
     'apps.checkout',
