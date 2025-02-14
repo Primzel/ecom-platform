@@ -1,5 +1,10 @@
 {% load primzel_tags %}
+{% load purchase_info_tags %}
 {% load i18n %}
+
+{% purchase_info_for_product request product as session %}
+
+
 
 <form class="mb-grid-gutter" method="post" id="quick-view-add-to-basket-form" onsubmit="return addToBasketFormHandler(this)">
     {% csrf_token %}
@@ -13,7 +18,7 @@
     </div>
     <div class="form-group d-flex align-items-center">
         <input class="custom-select mr-3" style="width: 5rem;" name="quantity" type="number" min="1" value="1"/>
-        {% if product.availability.is_available_to_buy %}
+        {% if session.availability.is_available_to_buy %}
             <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..."><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
         {% else %}
             <button class="btn btn-primary btn-shadow btn-block" type="submit" data-loading-text="Adding..." disabled="disabled"><i class="czi-cart font-size-lg mr-2"></i>Add to Cart</button>
