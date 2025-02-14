@@ -1,0 +1,4 @@
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/hokofifl/primzel
+    - /bin/cp -R /home/hokofifl/primzel $DEPLOYPATH
