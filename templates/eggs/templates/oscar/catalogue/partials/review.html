@@ -32,7 +32,7 @@
         <form  action="{% url 'catalogue:reviews-vote' product_slug=product.slug product_pk=product.pk pk=review.pk %}" method="post" style="width: auto;display: inline-block;" >
             {% csrf_token %}
             <input type="hidden" name="delta" value="-1"/>
-            <button class="btn-dislike" type="submit" {% if not review|may_vote:user %} disabled {% endif %}>{{ review.delta_votes }}</button>
+            <button class="btn-dislike" type="submit" {% if not review|may_vote:user %} disabled {% endif %}>{{ review.num_down_votes }}</button>
         </form>
 
     </div>
