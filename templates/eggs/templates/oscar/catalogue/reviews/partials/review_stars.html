@@ -1,3 +1,4 @@
+{% load primzel_tags %}
 {% load reviews_tags %}
 {% load i18n %}
 
@@ -25,6 +26,8 @@
     <i class="{% if product.rating >= 5 %} czi-star-filled active {% else %} czi-star {% endif %} font-size-sm text-muted mr-1"></i>
 </div>
 <span class="d-inline-block align-middle">{{ product.rating }} Overall rating</span>
-<p class="pt-3 font-size-sm text-muted">58 out of {{total_reviews}} (77%)<br>Customers recommended this product</p>
+    {% with high_reviews=product.reviews.approved.all|count_high_reviews %}
+    <p class="pt-3 font-size-sm text-muted">{{ high_reviews }} out of {{total_reviews}}<br>Customers recommended this product</p>
+    {% endwith %}
 {% endif %}
 
