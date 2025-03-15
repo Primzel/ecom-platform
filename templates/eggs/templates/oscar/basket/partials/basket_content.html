@@ -134,55 +134,6 @@
                     </div>
                     {% endif %}
                     {% endblock vouchers %}
-                    <div class="card">
-                        <div class="card-header">
-                            <h3 class="accordion-heading"><a class="collapsed" href="#shipping-estimates" role="button"
-                                                             data-toggle="collapse" aria-expanded="true"
-                                                             aria-controls="shipping-estimates">Shipping estimates<span
-                                    class="accordion-indicator"></span></a></h3>
-                        </div>
-                        <div class="collapse" id="shipping-estimates" data-parent="#order-options">
-                            <div class="card-body">
-                                <form class="needs-validation" novalidate="">
-                                    <div class="form-group">
-                                        <select class="form-control custom-select" required="">
-                                            <option value="">Choose your country</option>
-                                            <option value="Australia">Australia</option>
-                                            <option value="Belgium">Belgium</option>
-                                            <option value="Canada">Canada</option>
-                                            <option value="Finland">Finland</option>
-                                            <option value="Mexico">Mexico</option>
-                                            <option value="New Zealand">New Zealand</option>
-                                            <option value="Switzerland">Switzerland</option>
-                                            <option value="United States">United States</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please choose your country!</div>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control custom-select" required="">
-                                            <option value="">Choose your city</option>
-                                            <option value="Bern">Bern</option>
-                                            <option value="Brussels">Brussels</option>
-                                            <option value="Canberra">Canberra</option>
-                                            <option value="Helsinki">Helsinki</option>
-                                            <option value="Mexico City">Mexico City</option>
-                                            <option value="Ottawa">Ottawa</option>
-                                            <option value="Washington D.C.">Washington D.C.</option>
-                                            <option value="Wellington">Wellington</option>
-                                        </select>
-                                        <div class="invalid-feedback">Please choose your city!</div>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="ZIP / Postal code"
-                                               required="">
-                                        <div class="invalid-feedback">Please provide a valid zip!</div>
-                                    </div>
-                                    <button class="btn btn-outline-primary btn-block" type="submit">Calculate shipping
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <button form="to-checkout-form" type="submit" class="btn btn-primary btn-shadow btn-block mt-4 {% if not request.basket.num_lines %} disabled {% endif %}"><i
                         class="czi-card font-size-lg mr-2"></i>Proceed to Checkout</button>
