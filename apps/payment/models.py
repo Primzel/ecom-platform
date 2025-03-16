@@ -14,9 +14,19 @@ class PaymentMethod(models.Model):
     signing_secret_key = models.CharField(max_length=1024, help_text=_('Signing secret key'), blank=True, null=True)
     price_currency = models.CharField(
         _("Currency"), max_length=12, default=get_default_currency)
-    currency_factory = models.IntegerField(default=1,
-                                           help_text=_('1 Dollar = 100 cents (1 dollar x Currency Factor(100) = 100)'),
-                                           verbose_name=_('Currency Factor'))
+    currency_factory = models.IntegerField(
+        default=1,
+        help_text=_('1 Dollar = 100 cents (1 dollar x Currency Factor(100) = 100)'),
+        verbose_name=_('Currency Factor')
+    )
+    charges=models.DecimalField(
+        default=0,
+        decimal_places=3,
+        max_digits=10,
+        help_text=_('Cash on Delivery charges are non refundable.'),
+        verbose_name=_('COD Charges'),
+
+    )
     is_active = models.BooleanField(default=False)
 
     def __str__(self):
