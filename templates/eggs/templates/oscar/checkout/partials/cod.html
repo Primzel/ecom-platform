@@ -1,0 +1,31 @@
+<div class="card">
+    <form action="{% url "checkout:preview" %}" method="post" id="cod-form">
+        {% csrf_token %}
+        <input name="payment_method" type="hidden" value="{{ payment_method.id }}">
+    </form>
+    {% if payment_method.charges > 0 %}
+        <div class="card-header" role="tab">
+            <h3 class="accordion-heading"><a href="#cod" data-toggle="collapse" class="collapsed" aria-expanded="false"><i
+                    class="czi-dollar-circle font-size-lg mr-2 mt-n1 align-middle"></i>Cash on Delivery<span
+                    class="accordion-indicator"><i data-feather="chevron-up"></i></span></a></h3>
+        </div>
+        <div class="collapse" id="cod" data-parent="#payment-method" role="tabpanel" style="">
+            <p class="alert">You will be charged
+                <strong>{{ payment_method.charges|floatformat:2 }}<small>{{ payment_method.price_currency }}</small></strong> for this payment method.</p>
+            <button class="btn btn-primary btn-block" href="" type="submit" form="cod-form">
+                <span class="d-none d-sm-inline">Select Payment Method</span>
+                <span class="d-inline d-sm-none">Next</span>
+                <i class="czi-arrow-right mt-sm-0 ml-1"></i>
+            </button>
+        </div>
+    {% else %}
+        <div class="card-header">
+
+            <button href="#cod" data-toggle="collapse" class="btn" form="cod-form">
+                <h3 class="accordion-heading"><i class="czi-dollar-circle font-size-lg mr-2 mt-n1 align-middle"></i>Cash
+                    on Delivery</h3>
+            </button>
+
+        </div>
+    {% endif %}
+</div>
