@@ -1,0 +1,8 @@
+<form id="auto-post" action="{{ form_action }}" method="post">
+    {% for key, value in form_data.items %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+</form>
+<script>
+    document.getElementById('auto-post').submit();
+</script>

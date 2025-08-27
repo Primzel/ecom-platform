@@ -1,0 +1,12 @@
+<div class="card">
+    <form action="{% url "checkout:preview" %}" method="post" id="easypaisa-form" style="display: none">
+        {% csrf_token %}
+        <input name="payment_method" type="hidden" value="{{ payment_method.id }}">
+    </form>
+    <div class="card-header" role="button">
+        <h3 class="accordion-heading"><a href="#easypaisa-form" onclick="$('#easypaisa-form').submit()" data-toggle="collapse" class="collapsed"
+                                         aria-expanded="false">
+            <i class="czi-card font-size-lg mr-2 mt-n1 align-middle"></i>Pay with Credit Card</a>
+        </h3>
+    </div>
+</div>
