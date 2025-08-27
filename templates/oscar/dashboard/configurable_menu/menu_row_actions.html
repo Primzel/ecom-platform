@@ -1,22 +1,21 @@
 {% load django_tables2 %}
 {% load i18n %}
 <div class="btn-toolbar">
-    <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+    <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
             {% trans "Actions" %}
             <span class="caret"></span>
         </button>
-        <ul class="nav dropdown-menu pull-right">
-            <li>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-items' menu_id=record.id %}">
-                    {% trans "List menu items" %}
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=record.id %}">
-                    {% trans "Add menu items" %}
-                </a>
-            </li>
-        </ul>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+
+            <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-items' menu_id=record.id %}">
+                {% trans "List menu items" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-create' menu_id=record.id %}">
+                {% trans "Add menu items" %}
+            </a>
+
+        </div>
     </div>
 </div>

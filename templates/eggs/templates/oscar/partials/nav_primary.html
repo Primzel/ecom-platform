@@ -34,7 +34,7 @@
 
                                         {% for child in menu_item.get_descendants %}
                                         <li class="widget-list-item">
-                                            <a class="widget-list-link" href="#">{{ child.name }}</a>
+                                            <a class="widget-list-link" href="{{ child.included_categories.first.get_absolute_url }}">{{ child.name }}</a>
                                         </li>
                                         {% endfor %}
                                     </ul>
