@@ -1,27 +1,24 @@
 {% load django_tables2 %}
 {% load i18n %}
 <div class="btn-toolbar">
-    <div class="btn-group">
-        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+    <div class="dropdown">
+        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true" id="dropdownMenuButton">
             {% trans "Actions" %}
             <span class="caret"></span>
         </button>
-        <ul class="nav dropdown-menu pull-right">
-            <li>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-update' menu_id=record.patner_menu_id pk=record.id %}">
-                    {% trans "Edit menu item" %}
-                </a>
-            </li>
-            <li>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=record.patner_menu_id parent=record.pk %}">
-                    {% trans "Add child menu item" %}
-                </a>
-            </li>
-            <li{% if not record.has_children %} class="disabled"{% endif %}>
-                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-details' menu_id=record.patner_menu_id pk=record.pk %}">
-                    {% trans "Edit children" %}
-                </a>
-            </li>
-        </ul>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-update' menu_id=record.patner_menu_id pk=record.id %}">
+                {% trans "Edit menu item" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-child-menu-item-create' menu_id=record.patner_menu_id parent=record.pk %}">
+                {% trans "Add child menu item" %}
+            </a>
+            <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-details' menu_id=record.patner_menu_id pk=record.pk %}" {% if not record.has_children %} class="disabled"{% endif %}>
+                {% trans "Edit children" %}
+            </a>
+            <a class="dropdown-item text-danger" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-delete' menu_id=record.patner_menu_id pk=record.pk %}">
+                {% trans "Delete" %}
+            </a>
+        </div>
     </div>
 </div>
