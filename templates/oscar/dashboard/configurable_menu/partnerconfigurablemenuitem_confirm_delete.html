@@ -1,0 +1,31 @@
+{% extends 'oscar/dashboard/layout.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }} | {% trans "Delete Menu Item" %}{% endblock %}
+
+{% block breadcrumbs %}
+<ul class="breadcrumb">
+    <li><a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a></li>
+    <li><a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-items' menu_id=object.patner_menu_id %}">{% trans "Menu Items" %}</a></li>
+    <li class="active">{% trans "Delete Menu Item" %}</li>
+</ul>
+{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>{% trans "Delete Menu Item" %}</h2>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <p>{% blocktrans with name=object.name %}Are you sure you want to delete the menu item "{{ name }}"?{% endblocktrans %}</p>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-danger">{% trans "Delete" %}</button>
+                <a href="{% url 'dashboard:configurable_menu:partner-configurable-menu-items' menu_id=object.patner_menu_id %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -154,3 +154,18 @@ class MenuItemUpdateView(MenuItemListMixin, generic.UpdateView):
     def get_success_url(self):
         messages.info(self.request, _("Menu Item updated successfully"))
         return super().get_success_url()
+
+
+class MenuItemDeleteView(generic.DeleteView):
+    model = PartnerConfigurableMenuItem
+    template_name = 'oscar/dashboard/configurable_menu/partnerconfigurablemenuitem_confirm_delete.html'
+
+    def get_success_url(self):
+        messages.info(self.request, _("Menu item deleted successfully"))
+        parent = self.object.get_parent()
+        menu_id = self.kwargs.get('menu_id')
+        if parent is None:
+            return reverse("dashboard:configurable_menu:partner-configurable-menu-items", kwargs={'menu_id': menu_id})
+        else:
+            return reverse("dashboard:configurable_menu:partner-configurable-menu-item-details",
+                           args=(menu_id, parent.pk,))

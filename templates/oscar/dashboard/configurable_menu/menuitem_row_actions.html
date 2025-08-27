@@ -16,6 +16,9 @@
             <a class="dropdown-item" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-details' menu_id=record.patner_menu_id pk=record.pk %}" {% if not record.has_children %} class="disabled"{% endif %}>
                 {% trans "Edit children" %}
             </a>
+            <a class="dropdown-item text-danger" href="{% url 'dashboard:configurable_menu:partner-configurable-menu-item-delete' menu_id=record.patner_menu_id pk=record.pk %}">
+                {% trans "Delete" %}
+            </a>
         </div>
     </div>
 </div>

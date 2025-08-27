@@ -19,6 +19,7 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
         'partner-configurable-child-menu-item-create': (['is_staff'], ['partner.dashboard_access']),
         'partner-configurable-menu-item-details': (['is_staff'], ['partner.dashboard_access']),
         'partner-configurable-menu-item-update': (['is_staff'], ['partner.dashboard_access']),
+        'partner-configurable-menu-item-delete': (['is_staff'], ['partner.dashboard_access']),
     }
 
     def ready(self):
@@ -30,9 +31,11 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
         self.partner_configurable_menu_item_create = get_class('dashboard.configurable_menu.views',
                                                                'MenuItemCreateView')
         self.partner_configurable_menu_detail = get_class('dashboard.configurable_menu.views',
-                                                               'MenuItemDetailListView')
+                                                          'MenuItemDetailListView')
         self.partner_configurable_menu_item_update = get_class('dashboard.configurable_menu.views',
                                                                'MenuItemUpdateView')
+        self.partner_configurable_menu_item_delete = get_class('dashboard.configurable_menu.views',
+                                                               'MenuItemDeleteView')
 
     def get_urls(self):
         urls = [
@@ -54,5 +57,8 @@ class ConfigurableMenuConfig(OscarDashboardConfig):
             path(r'<int:menu_id>/menuitems/<int:pk>/update/',
                  self.partner_configurable_menu_item_update.as_view(),
                  name='partner-configurable-menu-item-update'),
+            path(r'<int:menu_id>/menuitems/<int:pk>/delete/',
+                 self.partner_configurable_menu_item_delete.as_view(),
+                 name='partner-configurable-menu-item-delete'),
         ]
         return self.post_process_urls(urls)
