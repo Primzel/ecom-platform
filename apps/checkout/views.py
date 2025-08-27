@@ -74,8 +74,20 @@ class PaymentDetailsView(PaymentDetailsView):
         return super(PaymentDetailsView, self).render_preview(request, **kwargs)
 
     def handle_place_order_submission(self, request):
+        response = super(PaymentDetailsView, self).handle_place_order_submission(request)
+        payment_method = PaymentMethod.objects.get(pk=self.get_payment_method(request=self.request))
 
-        return super(PaymentDetailsView, self).handle_place_order_submission(request)
+        module = importlib.import_module(
+            'primzel.payment_gateways.gateway.{gateway}.client'.format(gateway=payment_method.payment_gateway.slug))
+        Client = getattr(module, 'Client')
+        if hasattr(Client, 'redirect'):
+            return Client.redirect(
+                self.request,
+                payment_method=payment_method,
+                response=response,
+                **self.build_submission()
+            )
+        return response
 
     def get_message_context(self, order, code=None):
         site=get_current_site(self.request)
