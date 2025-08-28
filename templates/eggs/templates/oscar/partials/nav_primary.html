@@ -23,11 +23,13 @@
                             <div class="mega-dropdown-column pt-4 px-3">
                                 <div class="widget widget-links">
                                     {% with image=menu_item.image %}
-                                    {% oscar_thumbnail image "208x117" upscale=False as thumb %}
-                                    <a class="d-block overflow-hidden rounded-lg mb-3" href="{{ menu_item.included_categories.first.get_absolute_url }}" alt="menu item">
-                                        <img src="{{ thumb.url }}" alt="{{ menu_item.name }}"
-                                             style="height: 117px;width: 208px">
-                                    </a>
+                                        {% if image %}
+                                            {% oscar_thumbnail image "350x326" upscale=False as thumb %}
+                                            <a class="d-block overflow-hidden rounded-lg mb-3" href="{{ menu_item.included_categories.first.get_absolute_url }}" alt="menu item">
+                                                <img src="{{ thumb.url }}" alt="{{ menu_item.name }}"
+                                                     style="height: 150px;width: 208px">
+                                            </a>
+                                        {% endif %}
                                     {% endwith %}
                                     <h6 class="font-size-base mb-2">{{ menu_item.name }}</h6>
                                     <ul class="widget-list">
