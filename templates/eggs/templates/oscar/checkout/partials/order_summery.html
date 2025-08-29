@@ -67,6 +67,12 @@
                     {% endif %}
                 </span>
             </li>
+            {% for surcharge in basket_surcharges %}
+                <li class="d-flex justify-content-between align-items-center">
+                    <span class="mr-2">{{ surcharge.name }}:</span>
+                    <span class="text-right">{{ surcharge.excl_tax|currency:basket.currency }}</span>
+                </li>
+            {% endfor %}
             <li class="d-flex justify-content-between align-items-center">
                 <span class="mr-2">Taxes:</span>
                 <span class="text-right">{{ basket.total_tax|currency:basket.currency }}</span>

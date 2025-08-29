@@ -8,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 from django_tenants.utils import get_model
 from oscar.core.loading import get_class
 
+from apps.checkout.applicator import SurchargeApplicator
 from apps.payment.models import PaymentMethod
 
 BillingAddress = get_model("order", "BillingAddress")
@@ -43,7 +44,6 @@ class PaymentDetailsView(PaymentDetailsView):
             currency=total.currency,
             amount_allocated=total.incl_tax,
             amount_debited=total.incl_tax
-
         )
 
         self.add_payment_source(source)
@@ -63,8 +63,10 @@ class PaymentDetailsView(PaymentDetailsView):
         paypal_object_str = self.is_paypal_payment(request)
         try:
             payment_method_object = PaymentMethod.objects.get(pk=payment_method)
+            basket_surcharges = SurchargeApplicator(request=request).get_surcharges(basket=request.basket)
+
             kwargs.update(dict(payment_method=payment_method_object, stripe_token=stripe_token,
-                               paypal_object_str=paypal_object_str))
+                               paypal_object_str=paypal_object_str, basket_surcharges=basket_surcharges))
         except ValueError as e:
             messages.error(
                 self.request,
