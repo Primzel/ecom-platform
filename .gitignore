@@ -119,3 +119,4 @@ images
 /pki/
 e_store_primzel/settings/env/local.py
 cmd.txt
+/stripe_cli.env

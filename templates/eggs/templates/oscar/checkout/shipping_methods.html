@@ -32,10 +32,10 @@
                     </thead>
                     <tbody>
                     {% for method in methods %}
-                    <tr>
+                    <tr class="shipping-method-row" data-method-code="{{ method.code }}">
                         <td>
-                            <div class="custom-control custom-radio mb-4">
-                                <input class="custom-control-input" type="radio" id="{{ method.code }}" value="{{ method.code }}" name="method_code">
+                            <div class="custom-control custom-radio">
+                                <input class="custom-control-input" type="radio" id="{{ method.code }}" value="{{ method.code }}" name="method_code" {% if forloop.first %}checked="checked"{% endif %}>
                                 <label class="custom-control-label" for="{{ method.code }}"></label>
                             </div>
                         </td>
@@ -78,5 +78,23 @@
         {% include "oscar/checkout/partials/order_summery.html"%}
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.shipping-method-row').forEach(function(row) {
+        row.addEventListener('click', function(e) {
+            // Prevent double trigger if clicking the radio or label
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') return;
+            var code = row.getAttribute('data-method-code');
+            var radio = document.getElementById(code);
+            if (radio) {
+                radio.checked = true;
+                // Optionally, trigger change event if needed
+                radio.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        });
+    });
+});
+</script>
 
 {% endblock %}
