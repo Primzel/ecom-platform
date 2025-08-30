@@ -28,13 +28,13 @@
         <!-- Favicon and Touch Icons-->
         {% if setting %}
         {% with image=setting.logo %}
-        {% oscar_thumbnail image.url '180x180' crop='center' quality=99 as thumb %}
+        {% oscar_thumbnail image '180x180' crop='center' quality=99 as thumb %}
             <link rel="apple-touch-icon" sizes="180x180" href="{{ thumb.url }}">
-        {% oscar_thumbnail image.url '32x32' crop='center' quality=99 as thumb %}
+        {% oscar_thumbnail image '32x32' crop='center' quality=99 as thumb %}
             <link rel="icon" type="image/png" sizes="32x32" href="{{ thumb.url }}">
-        {% oscar_thumbnail image.url '16x16' crop='center' quality=99 as thumb %}
+        {% oscar_thumbnail image '16x16' crop='center' quality=99 as thumb %}
             <link rel="icon" type="image/png" sizes="16x16" href="{{ thumb.url }}">
-            {% oscar_thumbnail image.url setting.logo_size crop='center' quality=99 as thumb %}
+            {% oscar_thumbnail image setting.logo_size crop='center' quality=99 as thumb %}
                 <link rel="shortcut icon" href="{{ thumb.url }}" />
             {% endwith %}
         {% endif %}
