@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy as _
 from django.views import generic
 from django_tables2 import SingleTableView
 from oscar.core.loading import get_class, get_model
+from django.urls import reverse_lazy
 
 from apps.dashboard.banners.forms import BannerForm, SlideForm
 
@@ -63,6 +64,7 @@ class SlideCreateView(generic.CreateView):
         initial['banner'] = self.kwargs.get('banner_id', None)
         return initial
 
+
 class SlideUpdateView(generic.edit.UpdateView):
     template_name = 'banners/dashboard/slide-form.html'
     model = BannerImage
@@ -72,4 +74,20 @@ class SlideUpdateView(generic.edit.UpdateView):
         ctx = super(SlideUpdateView, self).get_context_data(**kwargs)
         ctx['title'] = _("Add a new slide")
         ctx['banner'] = Banner.objects.get(pk=self.kwargs.get('banner_id', None))
+        return ctx
+
+
+class SlideDeleteView(generic.edit.DeleteView):
+    model = BannerImage
+    template_name = 'banners/dashboard/slide_confirm_delete.html'
+
+    def get_success_url(self):
+        messages.success(self.request, _("Slide deleted successfully"))
+        banner_id = self.kwargs.get('banner_id')
+        return reverse_lazy('dashboard:dashboard_banners:slide-create', kwargs={'banner_id': banner_id})
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx['banner'] = Banner.objects.get(pk=self.kwargs.get('banner_id', None))
+        ctx['title'] = _("Delete slide")
         return ctx

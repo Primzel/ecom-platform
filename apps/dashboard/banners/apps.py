@@ -15,6 +15,7 @@ class BannersConfig(OscarDashboardConfig):
         self.banners_create = get_class('dashboard.banners.views', 'BannerCreateView')
         self.slide_create = get_class('dashboard.banners.views', 'SlideCreateView')
         self.slide_update = get_class('dashboard.banners.views', 'SlideUpdateView')
+        self.slide_delete = get_class('dashboard.banners.views', 'SlideDeleteView')
 
     def get_urls(self):
         urls = [
@@ -22,5 +23,6 @@ class BannersConfig(OscarDashboardConfig):
             path(r'create/', self.banners_create.as_view(), name='banners-create'),
             path(r'<int:banner_id>/slide/', self.slide_create.as_view(), name='slide-create'),
             path(r'<int:banner_id>/slide/<int:pk>/update', self.slide_update.as_view(), name='slide-update'),
+            path('<int:banner_id>/slide/<int:pk>/delete/', self.slide_delete.as_view(), name='slide-delete'),
         ]
         return urls

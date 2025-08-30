@@ -11,13 +11,13 @@
 
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-    <li>
+    <li class="breadcrumb-item">
         <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
     </li>
-    <li>
+    <li class="breadcrumb-item">
         <a href="#">{% trans "Banners" %}</a>
     </li>
-    <li class="active">{{ title }}</li>
+    <li class="breadcrumb-item active">{{ title }}</li>
 </ul>
 {% endblock %}
 
@@ -34,19 +34,78 @@
 <div class="table-header">
     <h2>Existing Slides</h2>
 </div>
+<style>
+.cartzilla-banner-card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 16px rgba(60,72,88,.08);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+    position: relative;
+    background: #fff;
+    border: none;
+}
+.cartzilla-banner-img-wrapper {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    background: #f8f9fa;
+}
+.cartzilla-banner-img-wrapper img {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;
+    border-radius: 0;
+}
+.cartzilla-banner-actions {
+    position: absolute;
+    top: 0; right: 0;
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem;
+    opacity: 0;
+    transition: opacity 0.2s;
+    z-index: 2;
+}
+.cartzilla-banner-card:hover .cartzilla-banner-actions {
+    opacity: 1;
+}
+.cartzilla-banner-content {
+    padding: 1rem;
+    min-height: 80px;
+    transition: background 0.2s;
+}
+</style>
 <div class="well">
-    {% for slide_image in banner.images.all %}
-    <a name="edit" href="{% url 'dashboard:dashboard_banners:slide-update' banner_id=banner.id pk=slide_image.id %}" class="btn btn-primary scale-up delay-4">Edit</a>
-    {% with image=slide_image.image %}
-    {% oscar_thumbnail image "100x100" upscale=True as thumb %}
-    <div class="thumbnail">
-        <img src="{{ thumb.url }}" height="100" width="100">
-        <div>
-            {{ slide_image.content|safe }}
+    <div class="row p-4">
+        {% for slide_image in banner.images.all %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="cartzilla-banner-card h-100">
+                <div class="cartzilla-banner-img-wrapper">
+                    {% with image=slide_image.image %}
+                    {% oscar_thumbnail image "600x338" upscale=True as thumb %}
+                    <img src="{{ thumb.url }}" alt="Slide image">
+                    {% endwith %}
+                    <div class="cartzilla-banner-actions">
+                        <a name="edit" href="{% url 'dashboard:dashboard_banners:slide-update' banner_id=banner.id pk=slide_image.id %}" class="btn btn-primary btn-sm" title="Edit"><i class="fas fa-edit"></i></a>
+                        <form method="post" action="{% url 'dashboard:dashboard_banners:slide-delete' banner_id=banner.id pk=slide_image.id %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm ml-2" title="Delete" onclick="return confirm('Are you sure you want to delete this slide?');">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="cartzilla-banner-content" style="background: {{ slide_image.color|default:'#fff' }};">
+                    <div class="slide-content mb-2">
+                        {{ slide_image.content|safe }}
+                    </div>
+                </div>
+            </div>
         </div>
+        {% empty %}
+        <div class="col-12">
+            <p class="text-muted">No slides available.</p>
+        </div>
+        {% endfor %}
     </div>
-    {% endwith %}
-
-    {% endfor %}
 </div>
 {% endblock dashboard_content %}
