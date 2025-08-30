@@ -5,10 +5,10 @@
 {% load render_table from django_tables2 %}
 {% block breadcrumbs %}
 <ul class="breadcrumb">
-    <li>
+    <li class="breadcrumb-item">
         <a href="{% url 'dashboard:index' %}">{% trans "Dashboard" %}</a>
     </li>
-    <li class="active">{{ title }}</li>
+    <li class="breadcrumb-item active">{{ title }}</li>
 </ul>
 {% endblock %}
 {% block dashboard_content %}
