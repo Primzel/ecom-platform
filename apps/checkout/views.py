@@ -23,11 +23,35 @@ class PaymentDetailsView(PaymentDetailsView):
 
     def get_context_data(self, **kwargs):
         ctx = super(PaymentDetailsView, self).get_context_data(**kwargs)
+        payment_method = self.get_payment_method(self.request)
+        payment_method_object = PaymentMethod.objects.get(pk=payment_method) if payment_method else None
+
+        stripe_token = self.is_stripe_payment(self.request)
+        paypal_object_str = self.is_paypal_payment(self.request)
+
+        basket_surcharges = SurchargeApplicator(request=self.request).get_surcharges(basket=self.request.basket)
+
+        ctx.update(dict(basket_surcharges=basket_surcharges))
+
+        ctx.update(dict(
+            payment_method=payment_method_object,
+            stripe_token=stripe_token,
+            paypal_object_str=paypal_object_str
+        ))
 
         return ctx
 
     def get_payment_method(self, request):
-        return request.POST.get('payment_method')
+        return request.POST.get('payment_method') or request.session.get('selected_payment_method')
+
+    def set_selected_payment_method(self, request, payment_method):
+        request.session['selected_payment_method'] = payment_method
+
+    def set_paypal_object(self, request, paypal_object_str):
+        request.session['paypal_object_str'] = paypal_object_str
+
+    def set_stripe_token(self, request, stripe_token):
+        request.session['stripe_token'] = stripe_token
 
     def handle_payment(self, order_number, total, **kwargs):
         payment_method = PaymentMethod.objects.get(pk=self.get_payment_method(request=self.request))
@@ -49,35 +73,46 @@ class PaymentDetailsView(PaymentDetailsView):
         self.add_payment_source(source)
 
     def handle_payment_details_submission(self, request):
+        self.clean_session(request)
         return self.render_preview(request)
 
     def is_stripe_payment(self, request):
-        return request.POST.get('stripe_token', False)
+        return request.POST.get('stripe_token', False) or request.session.get('stripe_token', False)
 
     def is_paypal_payment(self, request):
-        return request.POST.get('paypal_transaction_detail_object', False)
+        return request.POST.get('paypal_transaction_detail_object', False) or request.session.get('paypal_object_str',
+                                                                                                  False)
 
     def render_preview(self, request, **kwargs):
         stripe_token = self.is_stripe_payment(request)
-        payment_method = self.get_payment_method(request)
-        paypal_object_str = self.is_paypal_payment(request)
-        try:
-            payment_method_object = PaymentMethod.objects.get(pk=payment_method)
-            basket_surcharges = SurchargeApplicator(request=request).get_surcharges(basket=request.basket)
+        self.set_stripe_token(request, stripe_token)
 
-            kwargs.update(dict(payment_method=payment_method_object, stripe_token=stripe_token,
-                               paypal_object_str=paypal_object_str, basket_surcharges=basket_surcharges))
-        except ValueError as e:
-            messages.error(
-                self.request,
-                _("Please select payment gateway "
-                  "back to the checkout process"))
-            logger.error(e)
+        paypal_object_str = self.is_paypal_payment(request)
+        self.set_paypal_object(request, paypal_object_str)
+
+        payment_method = self.get_payment_method(request)
+        self.set_selected_payment_method(request, payment_method)
+
         return super(PaymentDetailsView, self).render_preview(request, **kwargs)
 
+    def clean_session(self, request):
+        try:
+            del request.session['selected_payment_method']
+        except KeyError:
+            pass
+        try:
+            del request.session['stripe_token']
+        except KeyError:
+            pass
+        try:
+            del request.session['paypal_object_str']
+        except KeyError:
+            pass
     def handle_place_order_submission(self, request):
         response = super(PaymentDetailsView, self).handle_place_order_submission(request)
         payment_method = PaymentMethod.objects.get(pk=self.get_payment_method(request=self.request))
+
+        self.clean_session(request)
 
         module = importlib.import_module(
             'primzel.payment_gateways.gateway.{gateway}.client'.format(gateway=payment_method.payment_gateway.slug))
@@ -92,7 +127,7 @@ class PaymentDetailsView(PaymentDetailsView):
         return response
 
     def get_message_context(self, order, code=None):
-        site=get_current_site(self.request)
+        site = get_current_site(self.request)
         ctx = {
             'user': self.request.user,
             'order': order,
