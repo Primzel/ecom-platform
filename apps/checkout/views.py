@@ -73,6 +73,7 @@ class PaymentDetailsView(PaymentDetailsView):
         self.add_payment_source(source)
 
     def handle_payment_details_submission(self, request):
+        self.clean_session(request)
         return self.render_preview(request)
 
     def is_stripe_payment(self, request):
