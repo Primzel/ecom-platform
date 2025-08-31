@@ -10,7 +10,7 @@ class SurchargeApplicator(applicator.SurchargeApplicator):
         super().__init__(request=request, context=context)
 
     def get_payment_method(self):
-        return self.request.POST.get('payment_method')
+        return self.request.POST.get('payment_method') or self.request.session.get('selected_payment_method')
 
     def get_surcharges(self, basket, **kwargs):
         from apps.payment.models import PaymentMethod
