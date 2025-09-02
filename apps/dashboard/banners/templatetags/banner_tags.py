@@ -1,8 +1,9 @@
+import logging
+
 from django import template
 from django.template.loader import select_template
 
 from apps.dashboard.banners.models import Banner
-import logging
 
 logger = logging.getLogger(__name__)
 register = template.Library()

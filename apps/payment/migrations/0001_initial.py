@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
+from decimal import Decimal
+
 import oscar.models.fields.autoslugfield
 from django.conf import settings
-from decimal import Decimal
+from django.db import models, migrations
 
 
 class Migration(migrations.Migration):

@@ -1,5 +1,5 @@
 import oscar.apps.catalogue.apps as apps
-from django.conf.urls import url
+from django.urls import path
 from oscar.core.loading import get_class
 
 
@@ -12,7 +12,7 @@ class CatalogueConfig(apps.CatalogueConfig):
 
     def get_urls(self):
         urls = [
-            url(r'^(?P<product_slug>[\w-]*)_(?P<pk>\d+)/quick$',
+            path('(?P<product_slug>[\w-]*)_(?P<pk>\d+)/quick',
                 self.quick_detail_view.as_view(template_name='oscar/catalogue/partials/product_quick_view.html',
                                                enforce_paths=False), name='quick_detail')
         ]

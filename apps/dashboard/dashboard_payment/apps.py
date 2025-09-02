@@ -1,4 +1,4 @@
-from django.conf.urls import url
+from django.urls import path
 from django.utils.translation import gettext_lazy as _
 
 from oscar.core.application import OscarDashboardConfig
@@ -46,34 +46,43 @@ class PaymentDashboardConfig(OscarDashboardConfig):
 
     def get_urls(self):
         urls = [
-            url(r'^bankcards/$', self.bankcard_list_view.as_view(), name='bankcards-list'),
-            url(r'^bankcard/create/$', self.bankcard_create_view.as_view(), name='bankcard-create'),
-            url(r'^bankcard/(?P<pk>\d+)/delete/$', self.bankcard_delete_view.as_view(), name='bankcard-delete'),
-            url(r'^bankcard/(?P<pk>\d+)/manage/$', self.bankcard_manage_view.as_view(), name='bankcard-manage'),
+            path('bankcards/', self.bankcard_list_view.as_view(), name='bankcards-list'),
+            path('bankcard/create/', self.bankcard_create_view.as_view(), name='bankcard-create'),
+            path('bankcard/(?P<pk>\d+)/delete/', self.bankcard_delete_view.as_view(), name='bankcard-delete'),
+            path('bankcard/(?P<pk>\d+)/manage/', self.bankcard_manage_view.as_view(), name='bankcard-manage'),
 
-            url(r'^sources/$', self.source_list_view.as_view(), name='sources-list'),
-            url(r'^source/create/$', self.source_create_view.as_view(), name='source-create'),
-            url(r'^source/(?P<pk>\d+)/delete/$', self.source_delete_view.as_view(), name='source-delete'),
-            url(r'^source/(?P<pk>\d+)/manage/$', self.source_manage_view.as_view(), name='source-manage'),
+            path('sources/', self.source_list_view.as_view(), name='sources-list'),
+            path('source/create/', self.source_create_view.as_view(), name='source-create'),
+            path('source/(?P<pk>\d+)/delete/', self.source_delete_view.as_view(), name='source-delete'),
+            path('source/(?P<pk>\d+)/manage/', self.source_manage_view.as_view(), name='source-manage'),
 
-            url(r'^source-types/$', self.source_type_list_view.as_view(), name='source_types-list'),
-            url(r'^source-type/create/$', self.source_type_create_view.as_view(), name='source_type-create'),
-            url(r'^source-type/(?P<pk>\d+)/delete/$', self.source_type_delete_view.as_view(), name='source_type-delete'),
-            url(r'^source-type/(?P<pk>\d+)/manage/$', self.source_type_manage_view.as_view(), name='source_type-manage'),
+            path('source-types/', self.source_type_list_view.as_view(), name='source_types-list'),
+            path('source-type/create/', self.source_type_create_view.as_view(), name='source_type-create'),
+            path('source-type/(?P<pk>\d+)/delete/', self.source_type_delete_view.as_view(),
+                 name='source_type-delete'),
+            path('source-type/(?P<pk>\d+)/manage/', self.source_type_manage_view.as_view(),
+                 name='source_type-manage'),
 
-            url(r'^transactions/$', self.transaction_list_view.as_view(), name='transactions-list'),
-            url(r'^transaction/create/$', self.transaction_create_view.as_view(), name='transaction-create'),
-            url(r'^transaction/(?P<pk>\d+)/delete/$', self.transaction_delete_view.as_view(), name='transaction-delete'),
-            url(r'^transaction/(?P<pk>\d+)/manage/$', self.transaction_manage_view.as_view(), name='transaction-manage'),
+            path('transactions/', self.transaction_list_view.as_view(), name='transactions-list'),
+            path('transaction/create/', self.transaction_create_view.as_view(), name='transaction-create'),
+            path('transaction/(?P<pk>\d+)/delete/', self.transaction_delete_view.as_view(),
+                 name='transaction-delete'),
+            path('transaction/(?P<pk>\d+)/manage/', self.transaction_manage_view.as_view(),
+                 name='transaction-manage'),
 
-            url(r'^payment-methods/$', self.payment_method_list_view.as_view(), name='payment_methods-list'),
-            url(r'^payment-method/create/$', self.payment_method_create_view.as_view(), name='payment_method-create'),
-            url(r'^payment-method/(?P<pk>\d+)/delete/$', self.payment_method_delete_view.as_view(), name='payment_method-delete'),
-            url(r'^payment-method/(?P<pk>\d+)/manage/$', self.payment_method_manage_view.as_view(), name='payment_method-manage'),
+            path('payment-methods/', self.payment_method_list_view.as_view(), name='payment_methods-list'),
+            path('payment-method/create/', self.payment_method_create_view.as_view(), name='payment_method-create'),
+            path('payment-method/(?P<pk>\d+)/delete/', self.payment_method_delete_view.as_view(),
+                 name='payment_method-delete'),
+            path('payment-method/(?P<pk>\d+)/manage/', self.payment_method_manage_view.as_view(),
+                 name='payment_method-manage'),
 
-            url(r'^payment-gateways/$', self.payment_gateway_list_view.as_view(), name='payment_gateways-list'),
-            url(r'^payment-gateway/create/$', self.payment_gateway_create_view.as_view(), name='payment_gateway-create'),
-            url(r'^payment-gateway/(?P<pk>\d+)/delete/$', self.payment_gateway_delete_view.as_view(), name='payment_gateway-delete'),
-            url(r'^payment-gateway/(?P<pk>\d+)/manage/$', self.payment_gateway_manage_view.as_view(), name='payment_gateway-manage'),
+            path('payment-gateways/', self.payment_gateway_list_view.as_view(), name='payment_gateways-list'),
+            path('payment-gateway/create/', self.payment_gateway_create_view.as_view(),
+                 name='payment_gateway-create'),
+            path('payment-gateway/(?P<pk>\d+)/delete/', self.payment_gateway_delete_view.as_view(),
+                 name='payment_gateway-delete'),
+            path('payment-gateway/(?P<pk>\d+)/manage/', self.payment_gateway_manage_view.as_view(),
+                 name='payment_gateway-manage'),
         ]
         return self.post_process_urls(urls)
