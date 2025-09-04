@@ -13,12 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.apps import apps
 from django.conf import settings
-from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-# from django.conf.urls import include, url  # < Django-2.0
-from django.urls import include, path  # > Django-2.0
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.urls import include, path  # > Django-2.0
 from django.views.decorators.csrf import csrf_exempt
 
 from primzel.payment_gateways.views import IPNActionView
@@ -40,13 +40,6 @@ urlpatterns = [
 urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
-    import debug_toolbar
     from django.urls import path
 
-    urlpatterns = [
-                      path('__debug__/', include(debug_toolbar.urls)),
-
-                      # For django versions before 2.0:
-                      # url(r'^__debug__/', include(debug_toolbar.urls)),
-
-                  ] + urlpatterns
+    urlpatterns = debug_toolbar_urls() + urlpatterns
