@@ -16,7 +16,7 @@ TENANT_APPS = [
     'oscar.apps.basket.apps.BasketConfig',
     'oscar.apps.offer.apps.OfferConfig',
     'oscar.apps.order.apps.OrderConfig',
-    'oscar.apps.search.apps.SearchConfig',
+    'apps.search.apps.SearchConfig',
     'oscar.apps.voucher.apps.VoucherConfig',
     'oscar.apps.wishlists.apps.WishlistsConfig',
     'apps.dashboard.apps.DashboardConfig',

@@ -100,33 +100,8 @@ EMAIL_BACKEND = os.getenv('EMAIL_BACKEND', 'django.core.mail.backends.console.Em
 # Search facets
 OSCAR_SEARCH_FACETS = {
     "fields": {
-        # The key for these dicts will be used when passing facet data
-        # to the template. Same for the 'queries' dict below.
-        "product_class": {"name": _("Type"), "field": "product_class"},
-        "rating": {"name": _("Rating"), "field": "rating"},
-        # You can specify an 'options' element that will be passed to the
-        # SearchQuerySet.facet() call.
-        # For instance, with Elasticsearch backend, 'options': {'order': 'term'}
-        # will sort items in a facet by title instead of number of items.
-        # It's hard to get 'missing' to work
-        # correctly though as of Solr's hilarious syntax for selecting
-        # items without a specific facet:
-        # http://wiki.apache.org/solr/SimpleFacetParameters#facet.method
-        # 'options': {'missing': 'true'}
     },
     "queries": {
-        "price_range": {
-            "name": _("Price range"),
-            "field": "price",
-            "queries": [
-                # This is a list of (name, query) tuples where the name will
-                # be displayed on the front-end.
-                (_("0 to 20"), "[0 TO 20]"),
-                (_("20 to 40"), "[20 TO 40]"),
-                (_("40 to 60"), "[40 TO 60]"),
-                (_("60+"), "[60 TO *]"),
-            ],
-        },
     },
 }
 OSCAR_DASHBOARD_NAVIGATION += [
