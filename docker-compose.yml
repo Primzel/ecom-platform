@@ -43,7 +43,7 @@ services:
           - redis.oscar.com
   postgres:
     restart: always
-    image: postgres:17
+    image: bitnami/postgresql:latest
     container_name: com.primzel.psql
     hostname: psql.primzel.com
     environment:

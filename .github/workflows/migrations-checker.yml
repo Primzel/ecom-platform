@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: bitnami/postgresql:latest
+        image: postgres:17
         env:
           POSTGRES_USER: primzel_store
           POSTGRES_PASSWORD: primzel_store
