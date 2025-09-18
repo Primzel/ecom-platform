@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import models, migrations
-
+from django.db import migrations
 from oscar.core.loading import get_model
 
 # Django database migrations require us to fetch the category model

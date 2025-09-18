@@ -1,5 +1,5 @@
 from django.utils.safestring import mark_safe
-from django.utils.translation import gettext_lazy as _, ungettext_lazy
+from django.utils.translation import gettext_lazy as _, ngettext_lazy
 from django_tables2 import LinkColumn, TemplateColumn, A
 from oscar.core.loading import get_class, get_model
 
@@ -9,7 +9,7 @@ PartnerConfigurableMenuItem = get_model('configurable_menu', 'PartnerConfigurabl
 
 
 class MenuTable(DashboardTable):
-    caption = ungettext_lazy("%d Menu", "%d Menus")
+    caption = ngettext_lazy("%d Menu", "%d Menus")
     actions = TemplateColumn(
         template_name='oscar/dashboard/configurable_menu/menu_row_actions.html',
         orderable=False)
@@ -36,7 +36,7 @@ class MenuItemTable(DashboardTable):
         orderable=False)
 
     icon = "sitemap"
-    caption = ungettext_lazy("%s Menu Item", "%s Menu Items")
+    caption = ngettext_lazy("%s Menu Item", "%s Menu Items")
 
     class Meta(DashboardTable.Meta):
         model = PartnerConfigurableMenuItem

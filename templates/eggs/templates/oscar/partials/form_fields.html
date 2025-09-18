@@ -15,14 +15,14 @@
 {% endif %}
 <div class="row">
 {% for field in form %}
-    {% ifequal forloop.counter|divisibleby:"2" True %}
+    {% if forloop.counter|divisibleby:4 == True %}
+        </div>
+    {% endif %}
+    {% if forloop.counter|divisibleby:4 == True %}
         <div class="row">
-    {% endifequal %}
-            <div class="col-sm-6">
+    {% endif %}
+            <div class="col-sm-4">
                 {% include 'oscar/partials/form_field.html' with field=field style=style %}
             </div>
-    {% ifequal forloop.counter|divisibleby:"2" False %}
-        </div>
-    {% endifequal %}
 {% endfor %}
 </div>

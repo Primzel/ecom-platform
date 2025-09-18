@@ -7,7 +7,6 @@ from .celery import *
 from .templates import *
 from .database import *
 from .middleware import *
-from .navigation import *
 from .application_defination import *
 from .multitenant import *
 from .aws import *

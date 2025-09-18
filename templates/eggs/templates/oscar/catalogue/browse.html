@@ -36,7 +36,7 @@
         {% for product in products %}
         <!-- Product-->
         <div class="col-lg-3 col-md-4 col-sm-6 px-2 mb-4">
-            {% render_product product %}
+            {% render_product product.object %}
         </div>
         {% endfor %}
 

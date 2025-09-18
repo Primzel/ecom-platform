@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from apps.dashboard.settings.models import Setting
 from apps.payment.models import PaymentMethod
 

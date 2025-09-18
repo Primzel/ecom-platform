@@ -1,5 +1,6 @@
-from oscar.core.application import OscarDashboardConfig
 from django.utils.translation import gettext_lazy as _
+from oscar.core.application import OscarDashboardConfig
+
 
 class SettingsConfig(OscarDashboardConfig):
     name = 'settings'
