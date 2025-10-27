@@ -1,16 +1,11 @@
 name: Build and Push Docker Image to ECR
 
 on:
+  push:
+    branches:
+      - master
   workflow_dispatch:
-    inputs:
-      environment:
-        description: "Select the environment"
-        required: true
-        default: "UAT"
-        type: choice
-        options:
-          - UAT
-          - PROD
+
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
