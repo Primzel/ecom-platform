@@ -6,3 +6,6 @@ WORKDIR /src/backend/
 RUN chmod -R 777 /src/backend/
 RUN pip install Pillow legacy-cgi
 RUN cd /src/backend/ && pip3 install -r requirements
+
+CMD ["gunicorn", "e_store_primzel.settings"]
+EXPOSE 8000
