@@ -26,3 +26,4 @@ stripe  # Latest version, no specific version required.
 django_compressor  # Latest version, no specific version required.
 django-ses==3.5.2  # Updated to a newer version.
 django-colorfield  # Latest version, no specific version required.
+gunicorn
