@@ -1,0 +1,13 @@
+{
+  "Environment":        "production",
+  "VpcCidr":            "10.30.0.0/16",
+  "PublicSubnet1Cidr":  "10.30.1.0/24",
+  "PublicSubnet2Cidr":  "10.30.2.0/24",
+  "PrivateSubnet1Cidr": "10.30.11.0/24",
+  "PrivateSubnet2Cidr": "10.30.12.0/24",
+  "DBInstanceClass":    "db.t3.medium",
+  "DBName":             "primzel_store",
+  "DBMultiAZ":          "true",
+  "CacheNodeType":      "cache.t3.medium",
+  "CertificateArn":     "arn:aws:acm:us-east-2:ACCOUNT_ID:certificate/REPLACE_ME"
+}

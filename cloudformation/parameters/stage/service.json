@@ -1,0 +1,16 @@
+{
+  "Environment":               "stage",
+  "WebCpu":                    "512",
+  "WebMemory":                 "1024",
+  "WebDesiredCount":           "1",
+  "WebMinCount":               "1",
+  "WebMaxCount":               "3",
+  "GunicornWorkers":           "2",
+  "CeleryWorkerCpu":           "512",
+  "CeleryWorkerMemory":        "1024",
+  "CeleryWorkerDesiredCount":  "1",
+  "CeleryWorkerConcurrency":   "2",
+  "CeleryBeatCpu":             "256",
+  "CeleryBeatMemory":          "512",
+  "S3BucketName":              "primzel-stage-media"
+}

@@ -1,120 +1,194 @@
-# README - Project Setup Instructions
+# Primzel E-Commerce Platform
 
 ![Migration Checker](https://github.com/Primzel/ecom-platform/actions/workflows/migrations-checker.yml/badge.svg)
 
-## SSL Setup
+Django + django-oscar multi-tenant e-commerce platform deployed on AWS ECS Fargate.
 
-Follow the instructions [here](https://certbot.eff.org/instructions?ws=nginx&os=ubuntufocal) to set up SSL.
+---
 
-## Environment Setup
+## Local Development
 
-1. Create a virtual environment: `virtualenv -p <python-path> .env`
-2. Activate the virtual environment: `source path-to-env-activate`
-3. Install dependencies: `pip install -r requirements.txt`
+### Prerequisites
 
-## Database Schema Creation
+- Docker & Docker Compose
+- Python 3.x + virtualenv
 
-1. Generate migrations: `python manage.py makemigrations`
-2. Apply migrations: `python manage.py migrate`
-
-## Running Tests
-
-Execute tests using: `python manage.py test`
-
-## Country Setup
-
-Populate country data: `python manage.py oscar_populate_countries`
-
-## Superuser Creation
-
-Create a superuser account: `python manage.py createsuperuser`
-
-## Stripe CLI Integration
-
-Replace `<paste-api-key-here>` with your actual Stripe API key.
-
-1. `docker run --rm -it stripe/stripe-cli listen --load-from-webhooks-api --forward-to 192.168.1.4:8000 --api-key <paste-api-key-here>`
-2. `docker run --rm -it stripe/stripe-cli logs tail --api-key <paste-api-key-here>`
-3. `docker run --rm -it stripe/stripe-cli trigger charge.succeeded --api-key <paste-api-key-here>`
-
-## Server Setup Steps
-
-### Environment Variables
-
-Set the following environment variables:
+### Setup
 
 ```shell
-export PYTHONUNBUFFERED=1
-export DJANGO_SETTINGS_MODULE=e_store_primzel.settings
-export POSTGRES_HOST=localhost
-export PRIMZEL_DEBUG=True
+virtualenv -p python3 .env
+source .env/bin/activate
+pip install -r requirements
 ```
 
-### Configuration in Local Settings
+### Run locally
 
-Add the following parameters in `/web-backend/e_store_primzel/settings/env/local.py`:
-
-```python
-THUMBNAIL_DEBUG = True
-THUMBNAIL_PRESERVE_FORMAT = True
+```shell
+docker-compose up
 ```
 
-### Creating a Tenant
+Services started: Django (gunicorn), PostgreSQL, Redis, LocalStack S3, Stripe CLI.
 
-- Schema: eggs
-- Command: `./manage.py create_tenant`
+### Useful make commands
 
-### AWS CLI Installation
+```shell
+make dev.migrate                          # Run migrate_schemas
+make dev.makemigrations                   # Generate migrations
+make dev.collectstatic schema=<schema>    # Collect static files
+make dev.create_superuser email=<email> schema=<schema>
+make dev.web.shell                        # Shell into web container
+make dev.postgres.shell                   # psql shell
+```
 
-1. Download and install AWS CLI:
-   ```shell
-   curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
-   unzip awscli-bundle.zip
-   sudo ./awscli-bundle/install -i /usr/local/aws -b /usr/local/bin/aws
-   ```
-2. Create S3 Bucket
-   ```shell
-   aws --endpoint-url=http://localhost:4566 s3 mb s3://demo-bucket
-   ```
+---
 
-### Importing Data to Local S3
+## AWS Deployment
 
--
-Command: `./manage.py tenant_command import_from_woocommerce --schema=eggs "http://www.website.com" "ck_*****" "cs_*****"`
+### Prerequisites
 
-## Service Creation on Server
+- AWS CLI configured with sufficient IAM permissions (see below)
+- Docker with `linux/amd64` build support
+- `jq` installed
 
-1. Add `store.oscar.com` to `/etc/hosts`.
-2. Create a systemd service file: `/etc/systemd/system/primzel-backend.service`.
-3. Populate the file with the following configuration, replacing sensitive data with your actual credentials.
-   ```shell
-   [Unit]
-   Description=Primzel backend.
+### Repository / file structure
 
-   [Service]
-   # Environment variables with masked sensitive data
-   Environment="POSTGRES_PASSWORD=********"
-   Environment="AWS_ACCESS_KEY_ID=********"
-   Environment="AWS_SECRET_ACCESS_KEY=********"
-   # Additional configurations...
+```
+build.sh                          # Build and push Docker image to ECR
+deploy.sh                         # Deploy CloudFormation stacks
+VERSION                           # Current version (e.g. 0.1.1)
+cloudformation/
+  infrastructure.yml              # VPC, RDS, Redis, ALB, ECS cluster, IAM  (stable)
+  service.yml                     # ECS task definitions + services          (per deploy)
+  parameters/
+    dev/infra.json                 # Dev infrastructure parameters
+    dev/service.json               # Dev service sizing parameters
+    stage/infra.json
+    stage/service.json
+    production/infra.json
+    production/service.json
+```
 
-   WorkingDirectory=/home/ec2-user/codebase/web-backend
-   ExecStart=/home/ec2-user/codebase/web-backend/.env/bin/gunicorn --workers 8 --bind 0.0.0.0:8080 e_store_primzel.wsgi:application --chdir /home/ec2-user/codebase/web-backend
-   ```
+### Environment differences
 
-## Nginx Configuration
+| | dev | stage | production |
+|---|---|---|---|
+| RDS | t3.micro, single-AZ | t3.small, single-AZ | t3.medium, Multi-AZ |
+| Redis | t3.micro, single node | t3.small, single node | t3.medium, primary + replica |
+| NAT Gateway | 1 | 1 | 1 per AZ |
+| Fargate capacity | SPOT | SPOT | on-demand |
+| Web tasks | 1 (max 1) | 1 (max 3) | 2 (max 10) |
+| Gunicorn workers | 2 | 2 | 4 |
 
-1. Create an Nginx configuration file: `/etc/nginx/conf.d/demo.primzel.com.conf`.
-2. Add the following server block configuration:
-   ```nginx
-   server {
-       server_name demo.primzel.com;
-       listen 443;
+### build.sh
 
-       ssl on;
-       ssl_certificate /etc/ssl/demo.primzel.com/certificate.crt;
-       ssl_certificate_key /etc/ssl/demo.primzel.com/private.key;
+Builds the Docker image and optionally pushes to ECR. The default tag is `<version>-<git-sha>` derived from the `VERSION` file and current commit.
 
-       # Additional Nginx configurations...
-   }
-   ```
+```shell
+./build.sh <env> [--push] [--tag <tag>] [--no-cache]
+
+# Examples
+./build.sh dev --push
+./build.sh production --push --tag v1.2.0
+```
+
+After a successful push the tag is saved to `.last-build-tag` and picked up automatically by `deploy.sh`.
+
+### deploy.sh
+
+Deploys or updates CloudFormation stacks.
+
+```shell
+./deploy.sh <env> [--stack infra|app|all] [--tag <tag>] [--create-db] [--run-migrations] [--dry-run]
+```
+
+| Flag | Description |
+|---|---|
+| `--stack infra` | Deploy VPC / RDS / Redis / ALB / ECS cluster only |
+| `--stack app` | Deploy ECS task definitions and services only |
+| `--stack all` | Deploy both (default) |
+| `--tag <tag>` | Image tag to deploy (defaults to `.last-build-tag` or `<version>-<git-sha>`) |
+| `--create-db` | Create the `primzel_store` database on RDS (run once after first infra deploy) |
+| `--run-migrations` | Run `manage.py migrate_schemas` as a one-off ECS task |
+| `--dry-run` | Print all commands without executing |
+
+### First-time environment setup
+
+```shell
+# 1. Build and push the image
+./build.sh dev --push
+
+# 2. Deploy infrastructure + app, create the database, and run migrations
+./deploy.sh dev --stack all --create-db --run-migrations
+```
+
+### Subsequent deploys
+
+```shell
+./build.sh production --push
+./deploy.sh production --stack app --run-migrations
+```
+
+### Updating infrastructure only (e.g. resize DB)
+
+```shell
+./deploy.sh production --stack infra
+```
+
+### Before deploying to production
+
+1. Replace `REPLACE_ME` in `cloudformation/parameters/production/infra.json` with a valid ACM certificate ARN.
+2. Create the S3 media buckets: `primzel-dev-media`, `primzel-stage-media`, `primzel-production-media`.
+3. Ensure a `/health/` endpoint exists in the Django app (used by ALB health checks).
+
+### Required IAM permissions
+
+The deploying user/role needs permissions across: CloudFormation, ECR, EC2, ELB, ECS, IAM, RDS, Secrets Manager, ElastiCache, CloudWatch Logs, and Application Auto Scaling. See the full permission list in the project wiki or ask the platform team.
+
+---
+
+## Versioning
+
+The `VERSION` file at the repo root is the single source of truth for the release version.
+
+```shell
+echo "1.2.0" > VERSION
+git commit -m "chore: bump version to 1.2.0" VERSION
+./build.sh production --push          # tags image as 1.2.0-<sha>
+./deploy.sh production --stack app --run-migrations
+```
+
+---
+
+## Celery
+
+Background tasks run as separate ECS services (`celery-worker`, `celery-beat`) using the same Docker image as the web service.
+
+- Worker queue: `celery_app`
+- Broker / result backend: ElastiCache Redis (TLS, `redis://`)
+- Beat scheduler: default (override with `DatabaseScheduler` if `django-celery-beat` is installed)
+
+---
+
+## Tenant management
+
+```shell
+# Create a new tenant (run inside the web container or via ECS exec)
+python manage.py create_tenant
+
+# Populate countries for a tenant
+python manage.py tenant_command oscar_populate_countries --schema=<schema>
+
+# Import products from WooCommerce
+python manage.py tenant_command import_from_woocommerce --schema=<schema> "<host>" "<ck_key>" "<cs_key>"
+```
+
+---
+
+## Stripe CLI (local testing)
+
+```shell
+docker run --rm -it stripe/stripe-cli listen \
+  --load-from-webhooks-api \
+  --forward-to 192.168.1.4:8000 \
+  --api-key <stripe-api-key>
+```

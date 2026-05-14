@@ -1,0 +1,13 @@
+{
+  "Environment":        "dev",
+  "VpcCidr":            "10.10.0.0/16",
+  "PublicSubnet1Cidr":  "10.10.1.0/24",
+  "PublicSubnet2Cidr":  "10.10.2.0/24",
+  "PrivateSubnet1Cidr": "10.10.11.0/24",
+  "PrivateSubnet2Cidr": "10.10.12.0/24",
+  "DBInstanceClass":    "db.t3.micro",
+  "DBName":             "primzel_store",
+  "DBMultiAZ":          "false",
+  "CacheNodeType":      "cache.t3.micro",
+  "CertificateArn":     ""
+}

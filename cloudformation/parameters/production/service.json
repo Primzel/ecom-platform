@@ -1,0 +1,16 @@
+{
+  "Environment":               "production",
+  "WebCpu":                    "1024",
+  "WebMemory":                 "2048",
+  "WebDesiredCount":           "2",
+  "WebMinCount":               "2",
+  "WebMaxCount":               "10",
+  "GunicornWorkers":           "4",
+  "CeleryWorkerCpu":           "1024",
+  "CeleryWorkerMemory":        "2048",
+  "CeleryWorkerDesiredCount":  "2",
+  "CeleryWorkerConcurrency":   "4",
+  "CeleryBeatCpu":             "256",
+  "CeleryBeatMemory":          "512",
+  "S3BucketName":              "primzel-production-media"
+}
