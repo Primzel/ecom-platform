@@ -53,31 +53,57 @@ make dev.postgres.shell                   # psql shell
 ### Repository / file structure
 
 ```
-build.sh                          # Build and push Docker image to ECR
-deploy.sh                         # Deploy CloudFormation stacks
-VERSION                           # Current version (e.g. 0.1.1)
+build.sh                                  # Build and push Docker image to ECR
+deploy.sh                                 # Deploy CloudFormation stacks
+VERSION                                   # Current version (e.g. 0.1.1)
 cloudformation/
-  infrastructure.yml              # VPC, RDS, Redis, ALB, ECS cluster, IAM  (stable)
-  service.yml                     # ECS task definitions + services          (per deploy)
+  infrastructure.yml                      # VPC, RDS (optional), Redis, ALB, ECS cluster, IAM
+  task-definitions.yml                    # ECS task definitions (web, celery-worker, celery-beat)
+  service.yml                             # ECS services and auto-scaling
   parameters/
-    dev/infra.json                 # Dev infrastructure parameters
-    dev/service.json               # Dev service sizing parameters
+    dev/infra.json                         # Dev infrastructure parameters
+    dev/task-definitions.json             # Dev task sizing parameters
+    dev/service.json                       # Dev service scaling parameters
     stage/infra.json
+    stage/task-definitions.json
     stage/service.json
     production/infra.json
+    production/task-definitions.json
     production/service.json
 ```
+
+Stacks are deployed in order: `infra` → `task-definitions` → migrations → `service`. This guarantees migrations run against the new image before any traffic-serving tasks start.
 
 ### Environment differences
 
 | | dev | stage | production |
 |---|---|---|---|
-| RDS | t3.micro, single-AZ | t3.small, single-AZ | t3.medium, Multi-AZ |
+| RDS | external (via `ExistingDBEndpoint`) | external (via `ExistingDBEndpoint`) | t3.medium, Multi-AZ, provisioned |
 | Redis | t3.micro, single node | t3.small, single node | t3.medium, primary + replica |
 | NAT Gateway | 1 | 1 | 1 per AZ |
 | Fargate capacity | SPOT | SPOT | on-demand |
-| Web tasks | 1 (max 1) | 1 (max 3) | 2 (max 10) |
+| Web tasks | 0 min / 1 max | 1 min / 3 max | 2 min / 10 max |
 | Gunicorn workers | 2 | 2 | 4 |
+
+### Database configuration
+
+RDS is only provisioned for production by default. For dev and stage, point the deployment at an existing PostgreSQL instance:
+
+**`cloudformation/parameters/dev/infra.json`**
+```json
+{
+  "ExistingDBEndpoint": "my-postgres.example.com",
+  "ExistingDBSecretArn": "arn:aws:secretsmanager:us-east-2:ACCOUNT:secret/my-db-secret"
+}
+```
+
+The secret must have `username` and `password` keys. For dev you can create a Secrets Manager secret manually and paste the ARN here.
+
+To provision RDS for dev or stage (e.g. for a more production-like test), pass `--force-rds`:
+
+```shell
+./deploy.sh stage --stack infra --force-rds
+```
 
 ### build.sh
 
@@ -98,17 +124,18 @@ After a successful push the tag is saved to `.last-build-tag` and picked up auto
 Deploys or updates CloudFormation stacks.
 
 ```shell
-./deploy.sh <env> [--stack infra|app|all] [--tag <tag>] [--create-db] [--run-migrations] [--dry-run]
+./deploy.sh <env> [options]
 ```
 
 | Flag | Description |
 |---|---|
 | `--stack infra` | Deploy VPC / RDS / Redis / ALB / ECS cluster only |
-| `--stack app` | Deploy ECS task definitions and services only |
+| `--stack app` | Deploy task definitions and services only |
 | `--stack all` | Deploy both (default) |
 | `--tag <tag>` | Image tag to deploy (defaults to `.last-build-tag` or `<version>-<git-sha>`) |
 | `--create-db` | Create the `primzel_store` database on RDS (run once after first infra deploy) |
-| `--run-migrations` | Run `manage.py migrate_schemas` as a one-off ECS task |
+| `--run-migrations` | Run `manage.py migrate_schemas` as a one-off ECS task before services start |
+| `--force-rds` | Provision an RDS instance even for dev/stage |
 | `--dry-run` | Print all commands without executing |
 
 ### First-time environment setup
@@ -119,6 +146,15 @@ Deploys or updates CloudFormation stacks.
 
 # 2. Deploy infrastructure + app, create the database, and run migrations
 ./deploy.sh dev --stack all --create-db --run-migrations
+```
+
+For dev/stage, set `ExistingDBEndpoint` and `ExistingDBSecretArn` in `cloudformation/parameters/dev/infra.json` before step 2.
+
+For production (RDS is provisioned automatically):
+
+```shell
+./build.sh production --push
+./deploy.sh production --stack all --create-db --run-migrations
 ```
 
 ### Subsequent deploys
@@ -138,7 +174,6 @@ Deploys or updates CloudFormation stacks.
 
 1. Replace `REPLACE_ME` in `cloudformation/parameters/production/infra.json` with a valid ACM certificate ARN.
 2. Create the S3 media buckets: `primzel-dev-media`, `primzel-stage-media`, `primzel-production-media`.
-3. Ensure a `/health/` endpoint exists in the Django app (used by ALB health checks).
 
 ### Required IAM permissions
 
@@ -164,7 +199,7 @@ git commit -m "chore: bump version to 1.2.0" VERSION
 Background tasks run as separate ECS services (`celery-worker`, `celery-beat`) using the same Docker image as the web service.
 
 - Worker queue: `celery_app`
-- Broker / result backend: ElastiCache Redis (TLS, `redis://`)
+- Broker / result backend: ElastiCache Redis over TLS (`rediss://`)
 - Beat scheduler: default (override with `DatabaseScheduler` if `django-celery-beat` is installed)
 
 ---

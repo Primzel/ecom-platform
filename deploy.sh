@@ -14,6 +14,7 @@ usage() {
   echo "  --stack <target>      infra | app | all  (default: all)"
   echo "  --run-migrations      Run 'manage.py migrate_schemas' as a one-off ECS task"
   echo "  --create-db           Create the primzel_store database on RDS (run once after infra deploy)"
+  echo "  --force-rds           Provision an RDS instance even for dev/stage (overrides CreateRDS=false)"
   echo "  --dry-run             Print commands without executing"
   echo ""
   echo "Examples:"
@@ -29,6 +30,7 @@ IMAGE_TAG=""
 STACK_TARGET="all"
 RUN_MIGRATIONS=false
 CREATE_DB=false
+FORCE_RDS=false
 DRY_RUN=false
 
 while [[ $# -gt 0 ]]; do
@@ -37,6 +39,7 @@ while [[ $# -gt 0 ]]; do
     --stack)            STACK_TARGET="$2"; shift 2 ;;
     --run-migrations)   RUN_MIGRATIONS=true; shift ;;
     --create-db)        CREATE_DB=true; shift ;;
+    --force-rds)        FORCE_RDS=true; shift ;;
     --dry-run)          DRY_RUN=true; shift ;;
     -h|--help)          usage ;;
     *)                  echo "ERROR: Unknown option: $1"; usage ;;
@@ -159,19 +162,50 @@ stack_output() {
 # --- deploy functions
 
 deploy_infra() {
+  local extra_params=""
+  [[ "$FORCE_RDS" == "true" ]] && extra_params="CreateRDS=true"
+
   deploy_stack \
     "$INFRA_STACK" \
     "$CFN_DIR/infrastructure.yml" \
-    "$CFN_DIR/parameters/${ENV}/infra.json"
+    "$CFN_DIR/parameters/${ENV}/infra.json" \
+    ${extra_params}
 }
 
 deploy_task_defs() {
+  local db_endpoint db_secret_arn creates_rds=false
+
+  # Determine whether this deploy provisioned (or reuses) an RDS instance
+  if [[ "$FORCE_RDS" == "true" ]]; then
+    creates_rds=true
+  else
+    local _create_rds_param
+    _create_rds_param="$(jq -r '.CreateRDS // "false"' "$CFN_DIR/parameters/${ENV}/infra.json")"
+    [[ "$_create_rds_param" == "true" ]] && creates_rds=true
+  fi
+
+  if [[ "$creates_rds" == "true" ]]; then
+    db_endpoint="$(stack_output "$INFRA_STACK" DBEndpoint)"
+    db_secret_arn="$(stack_output "$INFRA_STACK" DBSecretArn)"
+  else
+    db_endpoint="$(jq -r '.ExistingDBEndpoint // ""' "$CFN_DIR/parameters/${ENV}/infra.json")"
+    db_secret_arn="$(jq -r '.ExistingDBSecretArn // ""' "$CFN_DIR/parameters/${ENV}/infra.json")"
+  fi
+
+  if [[ -z "$db_endpoint" ]]; then
+    echo "ERROR: DB endpoint not resolved."
+    echo "       Set ExistingDBEndpoint in parameters/${ENV}/infra.json, or use --force-rds."
+    exit 1
+  fi
+
   deploy_stack \
     "$TASKDEFS_STACK" \
     "$CFN_DIR/task-definitions.yml" \
     "$CFN_DIR/parameters/${ENV}/task-definitions.json" \
     "ImageUri=${ECR_URI}:${IMAGE_TAG}" \
-    "InfraStackName=${INFRA_STACK}"
+    "InfraStackName=${INFRA_STACK}" \
+    "DBEndpoint=${db_endpoint}" \
+    "DBSecretArn=${db_secret_arn}"
 }
 
 deploy_services() {

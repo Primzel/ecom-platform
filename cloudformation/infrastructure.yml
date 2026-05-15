@@ -62,10 +62,29 @@ Parameters:
     Type: String
     Default: ''
 
+  # Set to 'true' to provision an RDS instance. Always true for production.
+  # For dev/stage, pass --force-rds to deploy.sh or set this to 'true' manually.
+  CreateRDS:
+    Type: String
+    Default: 'false'
+    AllowedValues: ['true', 'false']
+
+  # Required when CreateRDS=false — point to an existing PostgreSQL host.
+  ExistingDBEndpoint:
+    Type: String
+    Default: ''
+
+  # Required when CreateRDS=false — ARN of an existing Secrets Manager secret
+  # with keys 'username' and 'password'.
+  ExistingDBSecretArn:
+    Type: String
+    Default: ''
+
 Conditions:
   IsProduction: !Equals [!Ref Environment, production]
   IsNotDev: !Not [!Equals [!Ref Environment, dev]]
   HasCertificate: !Not [!Equals [!Ref CertificateArn, '']]
+  ShouldCreateRDS: !Equals [!Ref CreateRDS, 'true']
 
 Resources:
 
@@ -468,9 +487,11 @@ Resources:
                 Resource: !Sub 'arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/primzel/${Environment}/*'
 
   # ── RDS (PostgreSQL) ──────────────────────────────────────────────────────────
+  # Only created when CreateRDS=true (always for production; opt-in for dev/stage).
 
   DBSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
+    Condition: ShouldCreateRDS
     Properties:
       DBSubnetGroupDescription: !Sub 'Primzel ${Environment} DB subnet group'
       SubnetIds:
@@ -479,8 +500,8 @@ Resources:
 
   DBSecret:
     Type: AWS::SecretsManager::Secret
+    Condition: ShouldCreateRDS
     Properties:
-      Name: !Sub 'primzel/${Environment}/db-credentials'
       Description: !Sub 'RDS master credentials for primzel-${Environment}'
       GenerateSecretString:
         SecretStringTemplate: !Sub '{"username": "primzel_${Environment}"}'
@@ -490,6 +511,7 @@ Resources:
 
   RDSInstance:
     Type: AWS::RDS::DBInstance
+    Condition: ShouldCreateRDS
     DeletionPolicy: !If [IsProduction, Snapshot, Delete]
     UpdateReplacePolicy: !If [IsProduction, Snapshot, Delete]
     Properties:
@@ -498,8 +520,8 @@ Resources:
       Engine: postgres
       EngineVersion: '16'
       DBName: !Ref DBName
-      MasterUsername: !Sub '{{resolve:secretsmanager:primzel/${Environment}/db-credentials:SecretString:username}}'
-      MasterUserPassword: !Sub '{{resolve:secretsmanager:primzel/${Environment}/db-credentials:SecretString:password}}'
+      MasterUsername: !Sub '{{resolve:secretsmanager:${DBSecret}:SecretString:username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DBSecret}:SecretString:password}}'
       AllocatedStorage: !If [IsProduction, '100', '20']
       StorageType: gp3
       MultiAZ: !Ref DBMultiAZ
@@ -627,6 +649,7 @@ Outputs:
       Name: !Sub '${AWS::StackName}-LoadBalancerDNS'
 
   DBEndpoint:
+    Condition: ShouldCreateRDS
     Value: !GetAtt RDSInstance.Endpoint.Address
     Export:
       Name: !Sub '${AWS::StackName}-DBEndpoint'
@@ -637,6 +660,7 @@ Outputs:
       Name: !Sub '${AWS::StackName}-DBName'
 
   DBSecretArn:
+    Condition: ShouldCreateRDS
     Value: !Ref DBSecret
     Export:
       Name: !Sub '${AWS::StackName}-DBSecretArn'

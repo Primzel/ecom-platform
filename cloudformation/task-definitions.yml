@@ -51,6 +51,29 @@ Parameters:
   S3BucketName:
     Type: String
 
+  DBEndpoint:
+    Type: String
+    Description: 'PostgreSQL host — from RDS output or ExistingDBEndpoint'
+
+  DBSecretArn:
+    Type: String
+    Default: ''
+    Description: 'Secrets Manager ARN with username/password keys. Leave empty to use DBUser/DBPassword instead.'
+
+  DBUser:
+    Type: String
+    Default: ''
+    Description: 'Plain-text DB username. Used only when DBSecretArn is empty.'
+
+  DBPassword:
+    Type: String
+    Default: ''
+    NoEcho: true
+    Description: 'Plain-text DB password. Used only when DBSecretArn is empty.'
+
+Conditions:
+  HasDBSecret: !Not [!Equals [!Ref DBSecretArn, '']]
+
 Resources:
 
   # ── Web Task Definition ───────────────────────────────────────────────────────
@@ -94,12 +117,11 @@ Resources:
               Value:
                 'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
             - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
+              Value: !Ref DBEndpoint
             - Name: CELERY_BROKER_URL
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/0?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/0?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -107,7 +129,7 @@ Resources:
             - Name: CELERY_RESULT_BACKEND
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/1?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/1?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -120,19 +142,27 @@ Resources:
               Value: !Ref AWS::Region
             - Name: ENVIRONMENT
               Value: !Ref Environment
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_USER
+                Value: !Ref DBUser
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_PASSWORD
+                Value: !Ref DBPassword
           Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_USER
+                ValueFrom: !Sub '${DBSecretArn}:username::'
+              - !Ref AWS::NoValue
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_PASSWORD
+                ValueFrom: !Sub '${DBSecretArn}:password::'
+              - !Ref AWS::NoValue
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -142,7 +172,7 @@ Resources:
           HealthCheck:
             Command:
               - CMD-SHELL
-              - 'python -c "import urllib.request; urllib.request.urlopen(''http://localhost:8000/health/'')" || exit 1'
+              - 'python -c "import urllib.request; urllib.request.urlopen(''http://localhost:8000/'')" || exit 1'
             Interval: 30
             Timeout: 10
             Retries: 3
@@ -187,12 +217,11 @@ Resources:
               Value:
                 'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
             - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
+              Value: !Ref DBEndpoint
             - Name: CELERY_BROKER_URL
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/0?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/0?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -200,7 +229,7 @@ Resources:
             - Name: CELERY_RESULT_BACKEND
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/1?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/1?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -211,19 +240,27 @@ Resources:
               Value: !Ref AWS::Region
             - Name: ENVIRONMENT
               Value: !Ref Environment
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_USER
+                Value: !Ref DBUser
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_PASSWORD
+                Value: !Ref DBPassword
           Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_USER
+                ValueFrom: !Sub '${DBSecretArn}:username::'
+              - !Ref AWS::NoValue
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_PASSWORD
+                ValueFrom: !Sub '${DBSecretArn}:password::'
+              - !Ref AWS::NoValue
           LogConfiguration:
             LogDriver: awslogs
             Options:
@@ -267,12 +304,11 @@ Resources:
               Value:
                 'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
             - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
+              Value: !Ref DBEndpoint
             - Name: CELERY_BROKER_URL
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/0?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/0?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -280,7 +316,7 @@ Resources:
             - Name: CELERY_RESULT_BACKEND
               Value:
                 'Fn::Sub':
-                  - 'redis://${Host}:${Port}/1?ssl_cert_reqs=none'
+                  - 'rediss://${Host}:${Port}/1?ssl_cert_reqs=none'
                   - Host:
                       'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
                     Port:
@@ -289,19 +325,27 @@ Resources:
               Value: !Ref AWS::Region
             - Name: ENVIRONMENT
               Value: !Ref Environment
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_USER
+                Value: !Ref DBUser
+            - !If
+              - HasDBSecret
+              - !Ref AWS::NoValue
+              - Name: POSTGRES_PASSWORD
+                Value: !Ref DBPassword
           Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_USER
+                ValueFrom: !Sub '${DBSecretArn}:username::'
+              - !Ref AWS::NoValue
+            - !If
+              - HasDBSecret
+              - Name: POSTGRES_PASSWORD
+                ValueFrom: !Sub '${DBSecretArn}:password::'
+              - !Ref AWS::NoValue
           LogConfiguration:
             LogDriver: awslogs
             Options:

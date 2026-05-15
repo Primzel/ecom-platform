@@ -8,5 +8,7 @@
   "CeleryWorkerConcurrency":   "2",
   "CeleryBeatCpu":             "256",
   "CeleryBeatMemory":          "512",
-  "S3BucketName":              "primzel-dev-media"
+  "S3BucketName":              "primzel-dev-media",
+  "DBUser":                    "primzel_dev",
+  "DBPassword":                ""
 }
