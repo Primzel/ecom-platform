@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
-Description: 'Primzel E-Commerce - ECS Task Definitions and Services'
+Description: 'Primzel E-Commerce - ECS Services and Auto Scaling'
 
-# Updated on every deploy (new image tag = new task definition revision).
+# Deployed after task-definitions stack and migrations.
 # Stack name convention: primzel-ecom-app-<env>
 
 Parameters:
@@ -11,20 +11,9 @@ Parameters:
 
   InfraStackName:
     Type: String
-    Description: 'Name of the infrastructure stack (e.g. primzel-ecom-infra-dev)'
 
-  ImageUri:
+  TaskDefsStackName:
     Type: String
-    Description: 'Full ECR image URI including tag (e.g. 123456789.dkr.ecr.us-east-2.amazonaws.com/primzel-ecom-dev:abc1234)'
-
-  # ── Web (Gunicorn) sizing ────────────────────────────────────────────────────
-  WebCpu:
-    Type: Number
-    Default: 512
-
-  WebMemory:
-    Type: Number
-    Default: 1024
 
   WebDesiredCount:
     Type: Number
@@ -38,306 +27,14 @@ Parameters:
     Type: Number
     Default: 4
 
-  GunicornWorkers:
-    Type: Number
-    Default: 2
-
-  # ── Celery worker sizing ──────────────────────────────────────────────────────
-  CeleryWorkerCpu:
-    Type: Number
-    Default: 512
-
-  CeleryWorkerMemory:
-    Type: Number
-    Default: 1024
-
   CeleryWorkerDesiredCount:
     Type: Number
     Default: 1
-
-  CeleryWorkerConcurrency:
-    Type: Number
-    Default: 2
-
-  # ── Celery beat sizing ────────────────────────────────────────────────────────
-  CeleryBeatCpu:
-    Type: Number
-    Default: 256
-
-  CeleryBeatMemory:
-    Type: Number
-    Default: 512
-
-  # ── App config ────────────────────────────────────────────────────────────────
-  S3BucketName:
-    Type: String
-    Description: 'S3 bucket for Django Storages (media/static files)'
 
 Conditions:
   IsProduction: !Equals [!Ref Environment, production]
 
 Resources:
-
-  # ── Shared environment variables macro ───────────────────────────────────────
-  # Each container definition below uses the same core env vars + secrets.
-  # CloudFormation does not support YAML anchors, so they are repeated per
-  # container; extract to a nested stack if the duplication becomes a pain.
-
-  # ── Web Task Definition ───────────────────────────────────────────────────────
-
-  WebTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Sub 'primzel-${Environment}-web'
-      NetworkMode: awsvpc
-      RequiresCompatibilities: [FARGATE]
-      Cpu: !Ref WebCpu
-      Memory: !Ref WebMemory
-      ExecutionRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskExecutionRoleArn'
-      TaskRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskRoleArn'
-      ContainerDefinitions:
-        - Name: web
-          Image: !Ref ImageUri
-          Essential: true
-          WorkingDirectory: /src/backend
-          PortMappings:
-            - ContainerPort: 8000
-              Protocol: tcp
-          Command:
-            - gunicorn
-            - !Sub '--workers=${GunicornWorkers}'
-            - '--bind=0.0.0.0:8000'
-            - '--timeout=120'
-            - '--access-logfile=-'
-            - '--error-logfile=-'
-            - 'e_store_primzel.wsgi:application'
-          Environment:
-            - Name: DJANGO_SETTINGS_MODULE
-              Value: e_store_primzel.settings
-            - Name: PRIMZEL_DEBUG
-              Value: 'False'
-            - Name: POSTGRES_PORT
-              Value: '5432'
-            - Name: POSTGRES_DB
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
-            - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
-            - Name: CELERY_BROKER_URL
-              Value:
-                'Fn::Sub':
-                  - 'redis://${Host}:${Port}/0?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: CELERY_RESULT_BACKEND
-              Value:
-                'Fn::Sub':
-                  - 'redis://${Host}:${Port}/1?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: AWS_STORAGE_BUCKET_NAME
-              Value: !Ref S3BucketName
-            - Name: AWS_S3_REGION_NAME
-              Value: !Ref AWS::Region
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: ENVIRONMENT
-              Value: !Ref Environment
-          Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Sub '/primzel/${Environment}/web'
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: web
-          HealthCheck:
-            Command:
-              - CMD-SHELL
-              - 'python -c "import urllib.request; urllib.request.urlopen(''http://localhost:8000/health/'')" || exit 1'
-            Interval: 30
-            Timeout: 10
-            Retries: 3
-            StartPeriod: 60
-
-  # ── Celery Worker Task Definition ─────────────────────────────────────────────
-
-  CeleryWorkerTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Sub 'primzel-${Environment}-celery-worker'
-      NetworkMode: awsvpc
-      RequiresCompatibilities: [FARGATE]
-      Cpu: !Ref CeleryWorkerCpu
-      Memory: !Ref CeleryWorkerMemory
-      ExecutionRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskExecutionRoleArn'
-      TaskRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskRoleArn'
-      ContainerDefinitions:
-        - Name: celery-worker
-          Image: !Ref ImageUri
-          Essential: true
-          WorkingDirectory: /src/backend
-          Command:
-            - celery
-            - '-A'
-            - e_store_primzel.settings
-            - worker
-            - '-Q'
-            - celery_app
-            - '--loglevel=info'
-            - !Sub '--concurrency=${CeleryWorkerConcurrency}'
-          Environment:
-            - Name: DJANGO_SETTINGS_MODULE
-              Value: e_store_primzel.settings
-            - Name: PRIMZEL_DEBUG
-              Value: 'False'
-            - Name: POSTGRES_PORT
-              Value: '5432'
-            - Name: POSTGRES_DB
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
-            - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
-            - Name: CELERY_BROKER_URL
-              Value:
-                'Fn::Sub':
-                  - 'rediss://${Host}:${Port}/0?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: CELERY_RESULT_BACKEND
-              Value:
-                'Fn::Sub':
-                  - 'rediss://${Host}:${Port}/1?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: AWS_STORAGE_BUCKET_NAME
-              Value: !Ref S3BucketName
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: ENVIRONMENT
-              Value: !Ref Environment
-          Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Sub '/primzel/${Environment}/celery-worker'
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: celery-worker
-
-  # ── Celery Beat Task Definition ───────────────────────────────────────────────
-
-  CeleryBeatTaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: !Sub 'primzel-${Environment}-celery-beat'
-      NetworkMode: awsvpc
-      RequiresCompatibilities: [FARGATE]
-      Cpu: !Ref CeleryBeatCpu
-      Memory: !Ref CeleryBeatMemory
-      ExecutionRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskExecutionRoleArn'
-      TaskRoleArn:
-        'Fn::ImportValue': !Sub '${InfraStackName}-ECSTaskRoleArn'
-      ContainerDefinitions:
-        - Name: celery-beat
-          Image: !Ref ImageUri
-          Essential: true
-          WorkingDirectory: /src/backend
-          Command:
-            - celery
-            - '-A'
-            - e_store_primzel.settings
-            - beat
-            - '--loglevel=info'
-          Environment:
-            - Name: DJANGO_SETTINGS_MODULE
-              Value: e_store_primzel.settings
-            - Name: PRIMZEL_DEBUG
-              Value: 'False'
-            - Name: POSTGRES_PORT
-              Value: '5432'
-            - Name: POSTGRES_DB
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBName'
-            - Name: POSTGRES_HOST
-              Value:
-                'Fn::ImportValue': !Sub '${InfraStackName}-DBEndpoint'
-            - Name: CELERY_BROKER_URL
-              Value:
-                'Fn::Sub':
-                  - 'rediss://${Host}:${Port}/0?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: CELERY_RESULT_BACKEND
-              Value:
-                'Fn::Sub':
-                  - 'rediss://${Host}:${Port}/1?ssl_cert_reqs=none'
-                  - Host:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisEndpoint'
-                    Port:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-RedisPort'
-            - Name: AWS_DEFAULT_REGION
-              Value: !Ref AWS::Region
-            - Name: ENVIRONMENT
-              Value: !Ref Environment
-          Secrets:
-            - Name: POSTGRES_USER
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:username::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-            - Name: POSTGRES_PASSWORD
-              ValueFrom:
-                'Fn::Sub':
-                  - '${SecretArn}:password::'
-                  - SecretArn:
-                      'Fn::ImportValue': !Sub '${InfraStackName}-DBSecretArn'
-          LogConfiguration:
-            LogDriver: awslogs
-            Options:
-              awslogs-group: !Sub '/primzel/${Environment}/celery-beat'
-              awslogs-region: !Ref AWS::Region
-              awslogs-stream-prefix: celery-beat
 
   # ── ECS Services ──────────────────────────────────────────────────────────────
 
@@ -347,7 +44,8 @@ Resources:
       ServiceName: !Sub 'primzel-${Environment}-web'
       Cluster:
         'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
-      TaskDefinition: !Ref WebTaskDefinition
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-WebTaskDefinitionArn'
       DesiredCount: !Ref WebDesiredCount
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -365,7 +63,6 @@ Resources:
             'Fn::ImportValue': !Sub '${InfraStackName}-ALBTargetGroupArn'
       DeploymentConfiguration:
         MaximumPercent: 200
-        # Production: never go below 100% capacity during deploy; dev/stage: allow 50%
         MinimumHealthyPercent: !If [IsProduction, 100, 50]
         DeploymentCircuitBreaker:
           Enable: true
@@ -381,7 +78,8 @@ Resources:
       ServiceName: !Sub 'primzel-${Environment}-celery-worker'
       Cluster:
         'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
-      TaskDefinition: !Ref CeleryWorkerTaskDefinition
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-CeleryWorkerTaskDefinitionArn'
       DesiredCount: !Ref CeleryWorkerDesiredCount
       LaunchType: FARGATE
       NetworkConfiguration:
@@ -402,15 +100,14 @@ Resources:
         - Key: Environment
           Value: !Ref Environment
 
-  # Celery beat must run as a singleton — DesiredCount is always 1 and
-  # MinimumHealthyPercent=0 so the old task is stopped before the new one starts.
   CeleryBeatService:
     Type: AWS::ECS::Service
     Properties:
       ServiceName: !Sub 'primzel-${Environment}-celery-beat'
       Cluster:
         'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
-      TaskDefinition: !Ref CeleryBeatTaskDefinition
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-CeleryBeatTaskDefinitionArn'
       DesiredCount: 1
       LaunchType: FARGATE
       NetworkConfiguration:

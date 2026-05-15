@@ -73,6 +73,7 @@ AWS_ACCOUNT_ID="262004543713"
 ECR_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/primzel-ecom-${ENV}"
 
 INFRA_STACK="primzel-ecom-infra-${ENV}"
+TASKDEFS_STACK="primzel-ecom-taskdefs-${ENV}"
 APP_STACK="primzel-ecom-app-${ENV}"
 
 echo ""
@@ -164,13 +165,22 @@ deploy_infra() {
     "$CFN_DIR/parameters/${ENV}/infra.json"
 }
 
-deploy_app() {
+deploy_task_defs() {
+  deploy_stack \
+    "$TASKDEFS_STACK" \
+    "$CFN_DIR/task-definitions.yml" \
+    "$CFN_DIR/parameters/${ENV}/task-definitions.json" \
+    "ImageUri=${ECR_URI}:${IMAGE_TAG}" \
+    "InfraStackName=${INFRA_STACK}"
+}
+
+deploy_services() {
   deploy_stack \
     "$APP_STACK" \
     "$CFN_DIR/service.yml" \
     "$CFN_DIR/parameters/${ENV}/service.json" \
-    "ImageUri=${ECR_URI}:${IMAGE_TAG}" \
-    "InfraStackName=${INFRA_STACK}"
+    "InfraStackName=${INFRA_STACK}" \
+    "TaskDefsStackName=${TASKDEFS_STACK}"
 }
 
 create_db() {
@@ -304,15 +314,17 @@ case "$STACK_TARGET" in
     deploy_infra
     ;;
   app)
-    deploy_app
+    deploy_task_defs
     [[ "$CREATE_DB" == "true" ]] && create_db
     [[ "$RUN_MIGRATIONS" == "true" ]] && run_migrations
+    deploy_services
     ;;
   all)
     deploy_infra
-    deploy_app
+    deploy_task_defs
     [[ "$CREATE_DB" == "true" ]] && create_db
     [[ "$RUN_MIGRATIONS" == "true" ]] && run_migrations
+    deploy_services
     ;;
 esac
 

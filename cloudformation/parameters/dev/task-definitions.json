@@ -1,0 +1,12 @@
+{
+  "Environment":               "dev",
+  "WebCpu":                    "512",
+  "WebMemory":                 "1024",
+  "GunicornWorkers":           "2",
+  "CeleryWorkerCpu":           "256",
+  "CeleryWorkerMemory":        "512",
+  "CeleryWorkerConcurrency":   "2",
+  "CeleryBeatCpu":             "256",
+  "CeleryBeatMemory":          "512",
+  "S3BucketName":              "primzel-dev-media"
+}
