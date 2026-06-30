@@ -1,0 +1,179 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Primzel E-Commerce - ECS Services and Auto Scaling'
+
+# Deployed after task-definitions stack and migrations.
+# Stack name convention: primzel-ecom-app-<env>
+
+Parameters:
+  Environment:
+    Type: String
+    AllowedValues: [dev, stage, production]
+
+  InfraStackName:
+    Type: String
+
+  TaskDefsStackName:
+    Type: String
+
+  WebDesiredCount:
+    Type: Number
+    Default: 1
+
+  WebMinCount:
+    Type: Number
+    Default: 1
+
+  WebMaxCount:
+    Type: Number
+    Default: 4
+
+  CeleryWorkerDesiredCount:
+    Type: Number
+    Default: 1
+
+Conditions:
+  IsProduction: !Equals [!Ref Environment, production]
+
+Resources:
+
+  # ── ECS Services ──────────────────────────────────────────────────────────────
+
+  WebService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub 'primzel-${Environment}-web'
+      Cluster:
+        'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-WebTaskDefinitionArn'
+      DesiredCount: !Ref WebDesiredCount
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-ECSSecurityGroup'
+          Subnets:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet1'
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet2'
+      LoadBalancers:
+        - ContainerName: web
+          ContainerPort: 8000
+          TargetGroupArn:
+            'Fn::ImportValue': !Sub '${InfraStackName}-ALBTargetGroupArn'
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: !If [IsProduction, 100, 50]
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      HealthCheckGracePeriodSeconds: 120
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  CeleryWorkerService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub 'primzel-${Environment}-celery-worker'
+      Cluster:
+        'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-CeleryWorkerTaskDefinitionArn'
+      DesiredCount: !Ref CeleryWorkerDesiredCount
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-ECSSecurityGroup'
+          Subnets:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet1'
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet2'
+      DeploymentConfiguration:
+        MaximumPercent: 200
+        MinimumHealthyPercent: !If [IsProduction, 50, 0]
+        DeploymentCircuitBreaker:
+          Enable: true
+          Rollback: true
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  CeleryBeatService:
+    Type: AWS::ECS::Service
+    Properties:
+      ServiceName: !Sub 'primzel-${Environment}-celery-beat'
+      Cluster:
+        'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterArn'
+      TaskDefinition:
+        'Fn::ImportValue': !Sub '${TaskDefsStackName}-CeleryBeatTaskDefinitionArn'
+      DesiredCount: 1
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsvpcConfiguration:
+          AssignPublicIp: DISABLED
+          SecurityGroups:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-ECSSecurityGroup'
+          Subnets:
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet1'
+            - 'Fn::ImportValue': !Sub '${InfraStackName}-PrivateSubnet2'
+      DeploymentConfiguration:
+        MaximumPercent: 100
+        MinimumHealthyPercent: 0
+      Tags:
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ── Auto Scaling (web only) ───────────────────────────────────────────────────
+
+  WebScalingTarget:
+    Type: AWS::ApplicationAutoScaling::ScalableTarget
+    DependsOn: WebService
+    Properties:
+      MinCapacity: !Ref WebMinCount
+      MaxCapacity: !Ref WebMaxCount
+      ResourceId:
+        'Fn::Sub':
+          - 'service/${ClusterName}/primzel-${Environment}-web'
+          - ClusterName:
+              'Fn::ImportValue': !Sub '${InfraStackName}-ECSClusterName'
+      ScalableDimension: ecs:service:DesiredCount
+      ServiceNamespace: ecs
+
+  WebCPUScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub 'primzel-${Environment}-web-cpu'
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref WebScalingTarget
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageCPUUtilization
+        TargetValue: 70.0
+        ScaleInCooldown: 300
+        ScaleOutCooldown: 60
+
+  WebMemoryScalingPolicy:
+    Type: AWS::ApplicationAutoScaling::ScalingPolicy
+    Properties:
+      PolicyName: !Sub 'primzel-${Environment}-web-memory'
+      PolicyType: TargetTrackingScaling
+      ScalingTargetId: !Ref WebScalingTarget
+      TargetTrackingScalingPolicyConfiguration:
+        PredefinedMetricSpecification:
+          PredefinedMetricType: ECSServiceAverageMemoryUtilization
+        TargetValue: 80.0
+        ScaleInCooldown: 300
+        ScaleOutCooldown: 60
+
+Outputs:
+  WebServiceName:
+    Value: !GetAtt WebService.Name
+    Export:
+      Name: !Sub '${AWS::StackName}-WebServiceName'
+
+  CeleryWorkerServiceName:
+    Value: !GetAtt CeleryWorkerService.Name
+    Export:
+      Name: !Sub '${AWS::StackName}-CeleryWorkerServiceName'

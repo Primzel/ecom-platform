@@ -1,0 +1,7 @@
+{
+  "Environment":               "production",
+  "WebDesiredCount":           "2",
+  "WebMinCount":               "2",
+  "WebMaxCount":               "10",
+  "CeleryWorkerDesiredCount":  "2"
+}

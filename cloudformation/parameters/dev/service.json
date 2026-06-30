@@ -1,0 +1,7 @@
+{
+  "Environment":               "dev",
+  "WebDesiredCount":           "1",
+  "WebMinCount":               "0",
+  "WebMaxCount":               "1",
+  "CeleryWorkerDesiredCount":  "1"
+}

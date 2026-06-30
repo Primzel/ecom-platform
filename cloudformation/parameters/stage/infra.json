@@ -1,0 +1,16 @@
+{
+  "Environment":          "stage",
+  "VpcCidr":              "10.20.0.0/16",
+  "PublicSubnet1Cidr":    "10.20.1.0/24",
+  "PublicSubnet2Cidr":    "10.20.2.0/24",
+  "PrivateSubnet1Cidr":   "10.20.11.0/24",
+  "PrivateSubnet2Cidr":   "10.20.12.0/24",
+  "DBInstanceClass":      "db.t3.small",
+  "DBName":               "primzel_store",
+  "DBMultiAZ":            "false",
+  "CacheNodeType":        "cache.t3.small",
+  "CertificateArn":       "",
+  "CreateRDS":            "false",
+  "ExistingDBEndpoint": "ep-dark-leaf-a5dviiwx.us-east-2.aws.neon.tech",
+  "ExistingDBSecretArn":  ""
+}

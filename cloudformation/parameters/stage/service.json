@@ -1,0 +1,7 @@
+{
+  "Environment":               "stage",
+  "WebDesiredCount":           "1",
+  "WebMinCount":               "1",
+  "WebMaxCount":               "3",
+  "CeleryWorkerDesiredCount":  "1"
+}
